@@ -3,17 +3,32 @@
 {% block title%}My Profile{% endblock %}
 
 {% block main %}
-	<h2>Your Profile</h2>
+	<h2>My Profile</h2>
 	<h3>{{ target_user.first_name }} {{ target_user.last_name }}</h3>
 	
 	<p>
 		<code>
-			<strong>Email</strong> {{ target_user.user.email }}<br />
-			<strong>Hometown</strong> {{ target_user.town.name }}
+						
+			<strong>Email:</strong> {{ target_user.user.email }}<br /><br />
+
+			{% if target_user.town.name %}
+				<strong>Hometown:</strong> {{ target_user.town.name }}<br /><br />
+			{% endif %}
+
+			{% if target_user.phone %}
+				<strong>Phone:</strong> {{ target_user.phone }}<br /><br />
+			{% endif %}
+			
 		</code>
 	</p>
 	
-	<p class="post-footer">		
-		<a href="/profile?user={{ target_user.key.id }}&edit=True" class="edit">Edit</a>	
+	<p class="post-footer">	
+	
+		<input 
+			class="button" 
+			value="Edit My Profile"
+			onclick = "window.location.href = '/profile?user={{ target_user.key.id }}&edit=True'"
+			type = "submit"
+		/>		
 	</p>
 {% endblock %}
