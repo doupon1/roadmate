@@ -1,0 +1,15 @@
+{% extends "templates/base.html" %}
+
+{% block title%}Create Ride Offer{% endblock %}
+
+{% block main %}
+	<h2>Create Ride Offer</h2>
+	
+	<form method="post">		
+		{{ ride_form }}
+		<p>
+			<input type="hidden" name="_do_create_rideoffer" value="True">
+			<input class="button" type="submit" value="Save"/>	
+		</p>		
+	</form>
+{% endblock %}

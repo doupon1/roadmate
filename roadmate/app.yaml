@@ -28,10 +28,12 @@ handlers:
 - url: /about
   script: pages/about.py
   
-- url: /user_profile
-  script: pages/user_profile.py
+- url: /profile(.*)
+  script: pages/profile.py
+  
+- url: /rideoffer_create(.*)
+  script: pages/rideoffer.py
   login: required
   
-- url: /user_rides
-  script: pages/user_rides.py
-  login: required
+- url: /rideoffer(.*)
+  script: pages/rideoffer.py

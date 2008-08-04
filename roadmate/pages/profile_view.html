@@ -1,0 +1,19 @@
+{% extends "templates/base.html" %}
+
+{% block title%}My Profile{% endblock %}
+
+{% block main %}
+	<h2>Your Profile</h2>
+	<h3>{{ target_user.first_name }} {{ target_user.last_name }}</h3>
+	
+	<p>
+		<code>
+			<strong>Email</strong> {{ target_user.user.email }}<br />
+			<strong>Hometown</strong> {{ target_user.town.name }}
+		</code>
+	</p>
+	
+	<p class="post-footer">		
+		<a href="/profile?user={{ target_user.key.id }}&edit=True" class="edit">Edit</a>	
+	</p>
+{% endblock %}
