@@ -30,7 +30,8 @@
 		<th>Source</th>
 		<th>Destination</th>
 		<th>Date</th>
-		<th>Available Seats</th>
+		<th>Seats</th>
+		<th>Owner</th>
 		<th></th>
 	</tr>
 	{% for ride in rides %}
@@ -39,6 +40,7 @@
 		<td>{{ride.destination.name}}</td>
 		<td>{{ride.date}}</td>
 		<td>{{ride.available_seats}}</td>
+		<td><a href ="/profile?user={{ride.owner.key.id}}">{{ride.owner.user.nickname}}</a></td>
 		<td><a href="/rideoffer?id={{ride.key.id}}">View</a> </td>
 	</tr>
 	{% endfor %}
