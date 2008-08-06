@@ -4,12 +4,14 @@ import os
 import logging
 
 from google.appengine.api import users
+from google.appengine.ext import db
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 
 from roadmate.handlers.baserequesthandler import BaseRequestHandler
 from roadmate.models.roadmateuser import RoadMateUser
+from roadmate.models.rideoffer import RideOffer
 from roadmate.models.roadmateuser import RoadMateUserForm
 
 # ----------------------------------------------------------------------------
@@ -67,11 +69,13 @@ class ProfilePageHandler(BaseRequestHandler):
 		# --------------------------------------------------------------------
 		template_values = BaseRequestHandler.generate_template_values(self,
 			self.request.url)
-			
+		rides = db.GqlQuery("SELECT * FROM RideOffer WHERE owner = :1", target_user)	
 		# because this page requires the user to be logged in, if they logout
 		# we redirect them back to the home page.
 		template_values['logout_url'] = users.create_logout_url('/')
 		
+		template_values['rides'] = rides
+		template_values['current_user'] = current_user
 		template_values['target_user'] = target_user
 		template_values['user_form'] = RoadMateUserForm(instance=target_user)
 		

@@ -31,4 +31,33 @@
 			type = "submit"
 		/>		
 	</p>
+
+	<h2>My Rides</h2>
+
+	<table>
+		<tr>
+			<th>Source</th>
+			<th>Destination</th>
+			<th>Date</th>
+			<th>Available Seats</th>
+			<th></th>
+			{% ifequal target_user current_user %}
+			<th></th> <!-- Create edit link column -->
+			{% endifequal %}
+		</tr>
+	{% for ride in rides %}
+	<tr class="row-a">
+		<td>{{ride.source.name}}</td>
+		<td>{{ride.destination.name}}</td>
+		<td>{{ride.date}}</td>
+		<td>{{ride.available_seats}}</td>
+		<td><a href="/rideoffer?id={{ride.key.id}}">View</a> </td>
+		{% ifequal target_user current_user %}
+		<td><a href="/rideoffer?id={{ride.key.id}&edit=True">Edit</a> </td>
+		{% endifequal %}
+	</tr>
+	{% endfor %}
+	
+
+</table>
 {% endblock %}
