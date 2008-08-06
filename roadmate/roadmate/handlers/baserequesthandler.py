@@ -1,5 +1,4 @@
 
-
 from google.appengine.api import users
 from google.appengine.ext import webapp
 
@@ -11,11 +10,22 @@ class BaseRequestHandler(webapp.RequestHandler):
 			/templates/base.html
 	"""
 	
+	def get_request_parameter(self, name, converter=None, default=None):
+		"""docstring for get_request_parameter"""
+		request_value = self.request.get(name)
+		
+		if request_value == "":
+			return default
+		
+		elif converter is not None:
+			try:
+				return converter(request_value)
+				
+			except (TypeError, ValueError):
+				return default
+	
 	def generate_template_values(self, page_url):
-		"""
-			generate_template_values
-			
-			Generates a dictionary of template values required by the pages
+		"""	Generates a dictionary of template values required by the pages
 			served from this request handler.
 			
 			Parameters:

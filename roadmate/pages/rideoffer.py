@@ -18,89 +18,24 @@ from roadmate.models.town import Town
 #  Request Handlers
 # ----------------------------------------------------------------------------
 
-class RideOfferPageHandler(BaseRequestHandler):
-	"""
-		RoadMate RequestHandler
-		
-		Page:
-			/ride/offer
-		Get Arguments:
-			id - Integer (RideOffer.key.id) [Required]
-			edit - Boolean [Default=False]
-			
-	"""	
-		
-	def get(self):
-		# --------------------------------------------------------------------
-		# Retrive and Validate Request
-		# --------------------------------------------------------------------
-		# Default Values
-		current_user = RoadMateUser.get_current_user()
-		target_ride = None
-		is_editing = False
-		
-		# Retrive GET parameters
-		try:
-			target_ride_id = int(self.request.get('id'))
-			target_ride = RideOffer.get_by_id(target_ride_id)		
-			is_editing = (self.request.get('edit') == "True")
-			
-		except (TypeError, ValueError):
-			logging.error('invalid GET parameters')
-		
-		# if the target ride does not exist in the datastore, then redirect
-		# the user back to the home page.
-		if target_ride is None:
-			self.redirect('/')
-			# TODO: This should display an error page
-		
-		if is_editing:
-			if target_ride.owner != current_user:
-				# if the user is trying to edit a ride they did not create,
-				# redirect them to the read-only version.
-				self.redirect('/rideoffer?id=%s' % target_ride.key().id())
-		
-		# --------------------------------------------------------------------
-		# Generate Template Values
-		# --------------------------------------------------------------------
-		template_values = BaseRequestHandler.generate_template_values(self,
-			self.request.url)
-			
-		# because this page requires the user to be logged in, if they logout
-		# we redirect them back to the home page.
-		if is_editing:
-			template_values['logout_url'] = users.create_logout_url('/')
-		
-		template_values['target_ride'] = target_ride
-		template_values['ride_form'] = RideOfferForm(instance=target_ride)
-		
-		# --------------------------------------------------------------------
-		# Render and Server Template
-		# --------------------------------------------------------------------
-		page_path = os.path.join(os.path.dirname(__file__), 'rideoffer_view.html')
-		
-		if is_editing:
-			page_path = os.path.join(os.path.dirname(__file__), 'rideoffer_edit.html')
-			
-		self.response.out.write(template.render(page_path, template_values))
-
-
 class CreateRideOfferPageHandler(BaseRequestHandler):
 	"""
 		RoadMate RequestHandler
 		
 		Page:
-			/ride/offer/create
-			
+			/rideoffer_create	
 	"""	
 		
 	def get(self):
 		# --------------------------------------------------------------------
-		# Retrive and Validate Request
+		# Retrive Session Info and Request Data
 		# --------------------------------------------------------------------
-		# Default Values
+		# Session Values
 		current_user = RoadMateUser.get_current_user()
 		
+		# --------------------------------------------------------------------
+		# Validate Session and Request
+		# --------------------------------------------------------------------
 		# if the current users in not logged in, then we redirect them through
 		# a login page.
 		if current_user is None:
@@ -110,61 +45,271 @@ class CreateRideOfferPageHandler(BaseRequestHandler):
 		# --------------------------------------------------------------------
 		# Generate Template Values
 		# --------------------------------------------------------------------
-		template_values = BaseRequestHandler.generate_template_values(self,
-			self.request.url)
+		template_values = super(CreateRideOfferPageHandler, self
+			).generate_template_values(self.request.url)
 			
 		# because this page requires the user to be logged in, if they logout
 		# we redirect them back to the home page.
-		template_values['logout_url'] = users.create_logout_url('/')
-		
+		template_values['logout_url'] = users.create_logout_url("/")
 		
 		ride_offer = RideOffer(owner=current_user)
 		template_values['ride_form'] = RideOfferForm(instance=ride_offer)
 		
 		# --------------------------------------------------------------------
-		# Render and Server Template
+		# Render and Serve Template
 		# --------------------------------------------------------------------
-		page_path = os.path.join(os.path.dirname(__file__), 'rideoffer_create.html')			
+		page_path = os.path.join(os.path.dirname(__file__), "rideoffer_create.html")			
 		self.response.out.write(template.render(page_path, template_values))
 	
 	def post(self):
 		# --------------------------------------------------------------------
-		# Retrive and Validate Request
+		# Retrive Session Info
 		# --------------------------------------------------------------------
-		# Default Values
+		# Session Values
 		current_user = RoadMateUser.get_current_user()
 
+		# --------------------------------------------------------------------
+		# Validate Sesson
+		# --------------------------------------------------------------------
 		# if the current users in not logged in, then we redirect them through
 		# a login page.
 		if current_user is None:
 			self.redirect(users.create_login_url(self.request.url))
 			return
 
+		# --------------------------------------------------------------------
+		# Retrive POST Data
+		# --------------------------------------------------------------------
 		ride_offer = RideOffer(owner=current_user)
-		ride_form = RideOfferForm(data=self.request.POST,
-			instance=ride_offer)
+		ride_form = RideOfferForm(
+			data=self.request.POST,
+			instance=ride_offer
+		)
 
-		if ride_form.is_valid():
-			ride_form.save()
-			self.redirect('/rideoffer?id=%s' % ride_form.instance.key().id())
+		# --------------------------------------------------------------------
+		# Validate POST Data
+		# --------------------------------------------------------------------
+		# if there are errors in the form, then re-serve the page with the
+		# error values highlighted.
+		if not ride_form.is_valid():
+			# ----------------------------------------------------------------
+			# Generate Template Values
+			# ----------------------------------------------------------------
+			template_values = BaseRequestHandler.generate_template_values(self,
+				self.request.url)
+
+			# because this page requires the user to be logged in, if they
+			# logout we redirect them back to the home page.
+			template_values['logout_url'] = users.create_logout_url("/")
+
+			template_values['ride_form'] = ride_form
+
+			# ----------------------------------------------------------------
+			# Render and Serve Template
+			# ----------------------------------------------------------------
+			page_path = os.path.join(os.path.dirname(__file__), "rideoffer_create.html")
+			self.response.out.write(template.render(page_path, template_values))
 			return
 
 		# --------------------------------------------------------------------
+		# Finalise POST Request
+		# --------------------------------------------------------------------
+		ride_form.save()
+		self.redirect("/rideoffer?id=%s" % ride_offer.key().id())
+		
+
+class EditRideOfferPageHandler(BaseRequestHandler):
+	"""
+		RoadMate RequestHandler
+		
+		Page:
+			/rideoffer_edit	
+		
+		GET Arguments:
+			id - Integer (RideOffer.key.id) [Required]
+			
+		POST Parameters:
+			_id - Integer (RideOffer.key.id) [Required]
+	"""
+	def get(self):
+		# --------------------------------------------------------------------
+		# Retrive Session Info and Request Data
+		# --------------------------------------------------------------------
+		# Session Values
+		current_user = RoadMateUser.get_current_user()
+		
+		# Request Values
+		target_ride_id = self.get_request_parameter('id', converter=int, default=None)
+		
+		# Datastore Values
+		target_ride = RideOffer.get_by_id(target_ride_id)
+		
+		# --------------------------------------------------------------------
+		# Validate Session and Request
+		# --------------------------------------------------------------------
+		# if the target ride does not exist in the datastore, then redirect
+		# the user back to the home page.
+		if target_ride is None:
+			self.error(404)
+			return
+		
+		# if the user is trying to view the edit page for a ride they did 
+		# not create, then redirect them to the read-only version.
+		if target_ride.owner != current_user:
+			if current_user is None:
+				logging.warning("A guest attempted to view the edit"\
+					" ride page of user '%s'. Redirecting to read-only"\
+					" version." % target_ride.owner.user.email)
+			else:
+				logging.warning("User '%s' attempted to view the edit"\
+					" profile page of user '%s'. Redirecting to read-only"\
+					" version." % 
+					(current_user.user.email, target_ride.owner.user.email))
+					
+			self.redirect("/rideoffer?id=%s" % target_ride.key().id())
+			return
+		
+		# --------------------------------------------------------------------
 		# Generate Template Values
 		# --------------------------------------------------------------------
-		template_values = BaseRequestHandler.generate_template_values(self,
-			self.request.url)
-
-		# because this page requires the user to be logged in, if they logout
-		# we redirect them back to the home page.
-		template_values['logout_url'] = users.create_logout_url('/')
-
-		template_values['ride_form'] = ride_form
+		template_values = super(EditRideOfferPageHandler, self
+			).generate_template_values(self.request.url)
+			
+		# because the user is viewing the page in edit mode, then logging out
+		# should redirect to the read-only version.
+		template_values['logout_url'] = users.create_logout_url(
+			"/rodeoffer?id=%s" % target_ride.key().id())
+		
+		template_values['target_ride'] = target_ride
+		template_values['ride_form'] = RideOfferForm(instance=target_ride)
+		
+		# --------------------------------------------------------------------
+		# Render and Serve Template
+		# --------------------------------------------------------------------
+		page_path = os.path.join(os.path.dirname(__file__), "rideoffer_edit.html")
+		self.response.out.write(template.render(page_path, template_values))
+		
+	def post(self):
+		# --------------------------------------------------------------------
+		# Retrive Session Info
+		# --------------------------------------------------------------------
+		# Session Values
+		current_user = RoadMateUser.get_current_user()
 
 		# --------------------------------------------------------------------
-		# Render and Server Template
+		# Validate Sesson
 		# --------------------------------------------------------------------
-		page_path = os.path.join(os.path.dirname(__file__), 'rideoffer_create.html')
+		# if the current users in not logged in, then we redirect them through
+		# a login page.
+		if current_user is None:
+			self.redirect(users.create_login_url(self.request.url))
+			return
+
+		# --------------------------------------------------------------------
+		# Retrive POST Data
+		# --------------------------------------------------------------------
+		# POST Values
+		target_ride_id = self.get_request_parameter('_id', converter=int, default=None)
+		target_ride = RideOffer.get_by_id(target_ride_id)
+		
+		# --------------------------------------------------------------------
+		# Validate POST Data
+		# --------------------------------------------------------------------
+		# if the target ride does not exist in the datastore, then redirect
+		# the user back to an error page.
+		if target_ride is None:
+			self.error(404)
+			return
+		
+		# if the user is trying to edit a ride they did not create,
+		# redirect them to an error page (403: Forbidden).
+		if target_ride.owner != current_user:
+			logging.warning("User '%s' attempted to edit a ride offer"\
+				" belonging to user '%s'. Redirecting to an error page."  % 
+				(current_user.user.email, target_ride.owner.user.email))
+			
+			self.error(403)
+			return
+		
+		ride_form = RideOfferForm(
+			data=self.request.POST,
+			instance=target_ride
+		)
+		
+		# if there are errors in the form, then re-serve the page with the
+		# error values highlighted.
+		if not ride_form.is_valid():
+			# ----------------------------------------------------------------
+			# Generate Template Values
+			# ----------------------------------------------------------------
+			template_values = super(EditRideOfferPageHandler, self
+				).generate_template_values(self.request.url)
+
+			# because this page requires the user to be logged in, if they
+			# logout we redirect them back to the home page.
+			template_values['logout_url'] = users.create_logout_url("/")
+
+			template_values['ride_form'] = ride_form
+
+			# ----------------------------------------------------------------
+			# Render and Serve Template
+			# ----------------------------------------------------------------
+			page_path = os.path.join(os.path.dirname(__file__), "rideoffer_edit.html")
+			self.response.out.write(template.render(page_path, template_values))
+			return
+
+		# --------------------------------------------------------------------
+		# Finalise POST Request
+		# --------------------------------------------------------------------
+		ride_form.save()
+		self.redirect("/rideoffer?id=%s" % target_ride.key().id())
+	
+	
+class ViewRideOfferPageHandler(BaseRequestHandler):
+	"""
+		RoadMate RequestHandler
+		
+		Page:
+			/rideoffer
+		
+		Get Arguments:
+			id - Integer (RideOffer.key.id) [Required]
+	"""
+		
+	def get(self):
+		# --------------------------------------------------------------------
+		# Retrive Session Info and GET Data
+		# --------------------------------------------------------------------
+		# Session Values
+		current_user = RoadMateUser.get_current_user()
+		
+		# Request Values
+		target_ride_id = self.get_request_parameter('id', converter=int, default=None)
+		
+		# Datastore Values
+		target_ride = RideOffer.get_by_id(target_ride_id)
+		
+		# --------------------------------------------------------------------
+		# Validate Request
+		# --------------------------------------------------------------------
+		# if the target ride does not exist in the datastore, then redirect
+		# the user back to the home page.
+		if target_ride is None:
+			self.error(404)
+			return
+		
+		# --------------------------------------------------------------------
+		# Generate and Store Template Values
+		# --------------------------------------------------------------------
+		template_values = super(ViewRideOfferPageHandler, self
+			).generate_template_values(self.request.url)
+		
+		template_values['target_ride'] = target_ride
+		
+		# --------------------------------------------------------------------
+		# Render and Serve Template
+		# --------------------------------------------------------------------
+		page_path = os.path.join(os.path.dirname(__file__), "rideoffer_view.html")
 		self.response.out.write(template.render(page_path, template_values))
 
 
@@ -173,12 +318,12 @@ class CreateRideOfferPageHandler(BaseRequestHandler):
 # ----------------------------------------------------------------------------
 
 def main():
-	
 	# Instalise web application
 	application = webapp.WSGIApplication(
 		[
-		 ('/rideoffer_create', CreateRideOfferPageHandler),
-		 ('/rideoffer', RideOfferPageHandler)
+		 ("/rideoffer_create", CreateRideOfferPageHandler),
+		 ("/rideoffer_edit", EditRideOfferPageHandler),
+		 ('/rideoffer', ViewRideOfferPageHandler)
 		], debug=True)
 	run_wsgi_app(application)
 

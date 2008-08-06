@@ -48,7 +48,7 @@
 		<td>{{ride.available_seats}}</td>
 		<td><a href="/rideoffer?id={{ride.key.id}}">View</a> </td>
 		{% ifequal target_user current_user %}
-		<td><a href="/rideoffer?id={{ride.key.id}&edit=True">Edit</a> </td>
+		<td><a href="/rideoffer_edit?id={{ride.key.id}}">Edit</a> </td>
 		{% endifequal %}
 	</tr>
 	{% endfor %}
