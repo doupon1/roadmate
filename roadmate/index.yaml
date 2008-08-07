@@ -10,8 +10,16 @@ indexes:
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
 
-# Used 3 times in query history.
+# Used 19 times in query history.
 - kind: RideOffer
   properties:
   - name: date
     direction: desc
+
+# Used 29 times in query history.
+- kind: RideOffer
+  properties:
+  - name: destination
+  - name: source
+  - name: date
+  - name: time

@@ -17,12 +17,14 @@ class BaseRequestHandler(webapp.RequestHandler):
 		if request_value == "":
 			return default
 		
-		elif converter is not None:
+		if converter is not None:
 			try:
 				return converter(request_value)
 				
 			except (TypeError, ValueError):
 				return default
+		
+		return request_value
 	
 	def generate_template_values(self, page_url):
 		"""	Generates a dictionary of template values required by the pages

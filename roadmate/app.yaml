@@ -34,6 +34,13 @@ handlers:
 - url: /rideoffer_create(.*)
   script: pages/rideoffer.py
   login: required
+
+- url: /rideoffer_edit(.*)
+  script: pages/rideoffer.py
+  login: required
   
 - url: /rideoffer(.*)
   script: pages/rideoffer.py
+  
+- url: /browse(.*)
+  script: pages/browse.py

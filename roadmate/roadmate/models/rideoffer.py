@@ -12,14 +12,14 @@ class RideOffer(db.Model):
 	"""
 		RoadMate Data Model
 		
-		Ride
+		RideOffer
 			Stores data on an offered ride.
 	"""
 	owner = db.ReferenceProperty(RoadMateUser, required=True)
 	source = db.ReferenceProperty(Town, required=True,
-		collection_name='ride_source_set', default=Town.all().get())
+		collection_name='outgoing_rides', default=Town.all().get())
 	destination = db.ReferenceProperty(Town, required=True,
-		collection_name='ride_desination_set', default=Town.all().get())
+		collection_name='incomming_rides', default=Town.all().get())
 	date = db.DateProperty(required=True, auto_now_add=True)
 	time = db.TimeProperty()
 	available_seats = db.IntegerProperty(required=True, default=1)
@@ -31,8 +31,29 @@ class RideOfferForm(djangoforms.ModelForm):
 		RoadMate Django ModelForm
 
 		RoadUserForm
-			Form for RideOffer.
+			Form for ride offers.
 	"""
 	class Meta:
 		model = RideOffer
 		exclude = ['owner', 'creation_date']
+
+class RideOfferSearch(db.Model):
+	"""
+		RoadMate Data Model
+
+		RideOfferSearch
+			Stores search data for ride offer.
+	"""
+	source = db.StringProperty(choices=[town.name for town in Town.all()])
+	destination = db.StringProperty(choices=[town.name for town in Town.all()])
+
+class RideOfferSearchForm(djangoforms.ModelForm):
+	"""
+		RoadMate Django ModelForm
+
+		RideOfferSearchForm
+			Form for searching for ride offers.
+	"""
+	class Meta:
+		model = RideOfferSearch
+					
