@@ -9,7 +9,7 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 
-from roadmate.converters import str_to_bool
+from roadmate.converters import is_true
 from roadmate.handlers.baserequesthandler import BaseRequestHandler
 from roadmate.models.roadmateuser import RoadMateUser
 from roadmate.models.rideoffer import RideOffer
@@ -40,7 +40,7 @@ class ProfilePageHandler(BaseRequestHandler):
 		
 		# Request Values
 		target_user_id = self.get_request_parameter('user', converter=int, default=None)
-		is_editing = self.get_request_parameter('edit', converter=str_to_bool, default=False)
+		is_editing = self.get_request_parameter('edit', converter=is_true, default=False)
 		
 		# Datastore Values
 		target_user = None
