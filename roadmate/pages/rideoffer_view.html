@@ -7,9 +7,13 @@
 	
 	<p>
 		<code>
-			<strong>Owner</strong> {{ target_ride.owner.user.email }}<br />
+			<strong>Owner</strong> <a href="/profile?user={{ target_ride.owner.key.id }}">{{ target_ride.owner.user.email }}</a><br />
 			<strong>Source</strong> {{ target_ride.source.name }}<br />
 			<strong>Destination</strong> {{ target_ride.destination.name }}<br />
+			<strong>Date</strong> {{ target_ride.date }}<br />
+			{% if target_ride.time %}
+				<strong>Time</strong> {{ target_ride.time }}<br />
+			{% endif %}
 			<strong>Available Count</strong> {{ target_ride.available_seats }}<br />
 			
 			{% if target_ride.notes %}
