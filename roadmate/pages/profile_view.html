@@ -14,7 +14,7 @@
 			{% if target_user.town.name %}
 				<strong>Hometown:</strong> {{ target_user.town.name }}<br /><br />
 			{% endif %}
-
+			
 			{% if target_user.phone %}
 				<strong>Phone:</strong> {{ target_user.phone }}<br /><br />
 			{% endif %}
@@ -36,9 +36,9 @@
 			<th>Destination</th>
 			<th>Date</th>
 			<th>Available Seats</th>
-			<th></th>
+			<th></th> <!-- View link column -->
 			{% ifequal target_user current_user %}
-			<th></th> <!-- Create edit link column -->
+			<th></th> <!-- Edit link column -->
 			{% endifequal %}
 		</tr>
 	{% for ride in rides %}
