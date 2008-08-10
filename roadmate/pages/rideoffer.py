@@ -4,6 +4,7 @@ import os
 import logging
 
 from google.appengine.api import users
+
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
@@ -117,6 +118,11 @@ class CreateRideOfferPageHandler(BaseRequestHandler):
 		ride_form.save()
 		self.redirect("/rideoffer?id=%s" % ride_offer.key().id())
 		
+		
+		
+		
+		
+		
 
 class EditRideOfferPageHandler(BaseRequestHandler):
 	"""
@@ -178,7 +184,7 @@ class EditRideOfferPageHandler(BaseRequestHandler):
 		# because the user is viewing the page in edit mode, then logging out
 		# should redirect to the read-only version.
 		template_values['logout_url'] = users.create_logout_url(
-			"/rodeoffer?id=%s" % target_ride.key().id())
+			"/rideoffer?id=%s" % target_ride.key().id())
 		
 		template_values['target_ride'] = target_ride
 		template_values['ride_form'] = RideOfferForm(instance=target_ride)
@@ -265,12 +271,18 @@ class EditRideOfferPageHandler(BaseRequestHandler):
 		self.redirect("/rideoffer?id=%s" % target_ride.key().id())
 	
 	
+	
+	
+	
+	
+
+	
 class ViewRideOfferPageHandler(BaseRequestHandler):
 	"""
 		RoadMate RequestHandler
 		
 		Page:
-			/rideoffer
+			/rideoffer ( = rideoffer_view.html)
 		
 		Get Arguments:
 			id - Integer (RideOffer.key.id) [Required]
@@ -305,7 +317,7 @@ class ViewRideOfferPageHandler(BaseRequestHandler):
 			).generate_template_values(self.request.url)
 		
 		template_values['target_ride'] = target_ride
-		
+
 		# --------------------------------------------------------------------
 		# Render and Serve Template
 		# --------------------------------------------------------------------

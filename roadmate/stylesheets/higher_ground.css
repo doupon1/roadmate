@@ -4,8 +4,9 @@
 	TEMPLATE NAME:		HigherGround
 	TEMPLATE CODE:		S-0014
 	VERSION:			1.1   
-	LAST MODIFIED:		January-12-2008       	
+	LAST MODIFIED:		9/8/08    	
  *******************************************/
+ /* Slogan changed to Version 9/8/08 
  
 /********************************************
    HTML ELEMENTS
@@ -233,7 +234,7 @@ input.button {
 #header {
 	width: 820px;
 	position: relative;
-	height: 100px;
+	height: 75px;
 	background: #CCC url(higher_ground_images/header-bg.jpg) repeat-y center top;
 	padding: 0;	
 	color: #FFF;	
@@ -261,7 +262,17 @@ input.button {
 	color: #838181;
 	
 	/* change the values of top and left to adjust the position of the slogan*/
-	top: 67px; left: 95px;		
+	top: 65px; left: 30px;		
+}
+#header p#version {
+	position: absolute;
+	margin: 0; padding: 0;
+	font: normal 12px 'Trebuchet MS', Arial, Sans-serif;
+	text-transform: none;
+	color: #838181;
+	
+	/* change the values of top and left to adjust the position of the version*/
+	top: 48px; left: 190px;		
 }
 
 /* header links */

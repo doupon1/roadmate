@@ -27,24 +27,20 @@
 
 <table>
 	<tr>
-		<th>Source</th>
-		<th>Destination</th>
+		<th>Ride</th>
 		<th>Date</th>
 		<th>Seats</th>
 		<th>Owner</th>
-		<th></th>
 	</tr>
 	{% for ride in rides %}
 	<tr class="row-a">
-		<td>{{ride.source.name}}</td>
-		<td>{{ride.destination.name}}</td>
+		<td><a href="/rideoffer?id={{ride.key.id}}">{{ride.source.name}} - {{ride.destination.name}}</a></td>
 		<td>{{ride.date}}</td>
 		<td>{{ride.available_seats}}</td>
 		<td><a href ="/profile?user={{ride.owner.key.id}}">{{ride.owner.user.email|local_part_from_email }}</a></td>
-		<td><a href="/rideoffer?id={{ride.key.id}}">View</a> </td>
 	</tr>
 	{% endfor %}
-	
+
 
 </table>
 

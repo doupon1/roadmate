@@ -39,6 +39,7 @@ class BaseRequestHandler(webapp.RequestHandler):
 		# Generate Template Values
 		# --------------------------------------------------------------------
 		current_user = users.get_current_user()
+		current_version = "0.1" ## update me
 
 		isLoggedIn = False
 		if current_user:
@@ -46,6 +47,7 @@ class BaseRequestHandler(webapp.RequestHandler):
 
 		login_url = users.create_login_url(page_url)
 		logout_url = users.create_logout_url(page_url)
+		
 
 		# --------------------------------------------------------------------
 		# Store Template Values
@@ -53,6 +55,7 @@ class BaseRequestHandler(webapp.RequestHandler):
 		template_values = {}
 		
 		template_values['current_user'] = current_user
+		template_values['current_version'] = current_version
 		template_values['isLoggedIn'] = isLoggedIn
 		template_values['login_url'] = login_url
 		template_values['logout_url'] = logout_url

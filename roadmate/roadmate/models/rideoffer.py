@@ -5,8 +5,12 @@ from google.appengine.ext.webapp import template
 
 from google.appengine.ext.db import djangoforms
 
+from google.appengine.ext.db import datetime
+
 from roadmate.models.roadmateuser import RoadMateUser
 from roadmate.models.town import Town
+
+
 
 class RideOffer(db.Model):
 	"""
@@ -20,7 +24,7 @@ class RideOffer(db.Model):
 		collection_name='outgoing_rides', default=Town.all().get())
 	destination = db.ReferenceProperty(Town, required=True,
 		collection_name='incomming_rides', default=Town.all().get())
-	date = db.DateProperty(required=True, auto_now_add=True)
+	date = db.DateProperty()
 	time = db.TimeProperty()
 	available_seats = db.IntegerProperty(required=True, default=1)
 	notes = db.TextProperty()

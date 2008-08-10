@@ -25,10 +25,8 @@ class BrowseRideOffersPageHandler(BaseRequestHandler):
 		RoadMate RequestHandler
 		
 		Page:
-			/browse.html
+			"browse_rideoffers.html"
 		Get Arguments:
-			source - String
-			destination - String
 			maxresults - Integer [Default=20]
 	"""	
 		
@@ -40,19 +38,12 @@ class BrowseRideOffersPageHandler(BaseRequestHandler):
 		current_user = RoadMateUser.get_current_user()
 		
 		# Request Values
-		source = self.get_request_parameter('source', default=None)
-		destination = self.get_request_parameter('destination', default=None)
 		max_results = self.get_request_parameter('maxresults', converter=int, default=20)
 		
 		# Datastore Values
-		rides = db.GqlQuery("SELECT * FROM RideOffer"\
-							" WHERE source = :source"\
-							"  AND destination = :destination"\
-							" ORDER BY date, time"\
-						 	" LIMIT %u" % max_results,
-			source=Town.all().filter("name =", source).get(),
-			destination=Town.all().filter("name =", destination).get()
-		)
+		rides = db.GqlQuery("SELECT * FROM RideOffer ORDER BY date, time LIMIT %u" % max_results)
+
+
 		
 		# --------------------------------------------------------------------
 		# Generate Template Values
@@ -60,8 +51,6 @@ class BrowseRideOffersPageHandler(BaseRequestHandler):
 		template_values = super(BrowseRideOffersPageHandler, self
 			).generate_template_values(self.request.url)
 		
-		ride_search = RideOfferSearch(source=source, destination=destination)
-		template_values['search_form'] = RideOfferSearchForm(instance=ride_search)
 		template_values['rides'] = list(rides)
 		
 		# --------------------------------------------------------------------

@@ -40,7 +40,9 @@ class IndexPageHandler(BaseRequestHandler):
 		template_values = BaseRequestHandler.generate_template_values(self, 
 			page_path)
 
-		rides = db.GqlQuery("SELECT * FROM RideOffer ORDER BY date DESC LIMIT 10")
+        #10 most recently created rides
+
+		rides = db.GqlQuery("SELECT * FROM RideOffer ORDER BY creation_date DESC LIMIT 10")
 		
 		# --------------------------------------------------------------------
 		# Store Template Values

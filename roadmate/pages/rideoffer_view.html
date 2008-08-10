@@ -3,24 +3,26 @@
 {% block title%}Ride Offer{% endblock %}
 
 {% block main %}
-	<h2>Ride Offer</h2>
+	<h2>View Ride Offer</h2>
 	
+    <h3>{{ target_ride.source.name }} to {{ target_ride.destination.name }}, {{ target_ride.date }}</h3><br />
 	<p>
-		<code>
+		
 			<strong>Owner</strong> <a href="/profile?user={{ target_ride.owner.key.id }}">{{ target_ride.owner.user.email }}</a><br />
-			<strong>Source</strong> {{ target_ride.source.name }}<br />
-			<strong>Destination</strong> {{ target_ride.destination.name }}<br />
-			<strong>Date</strong> {{ target_ride.date }}<br />
-			{% if target_ride.time %}
-				<strong>Time</strong> {{ target_ride.time }}<br />
-			{% endif %}
-			<strong>Available Count</strong> {{ target_ride.available_seats }}<br />
+            
+            
+            
+			<strong>From</strong> {{ target_ride.source.name }}	<strong>to</strong> {{ target_ride.destination.name }}<br />
+			<strong>On</strong> {{ target_ride.date }} departing from {{ target_ride.source.name }} at {{ target_ride.time }}<br />
+			
+            <strong>Seats Available</strong> {{ target_ride.available_seats }}<br />
+
 			
 			{% if target_ride.notes %}
 				<strong>Notes</strong><br />
 				{{ target_ride.notes }}<br />
 			{% endif %}
-		</code>
+		
 	</p>
 	
 	<p class="post-footer">		

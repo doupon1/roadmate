@@ -1,32 +1,27 @@
 {% extends "templates/base.html" %}
 
-{% block title%}Browse Rides{% endblock %}
+{% block title%}Home{% endblock %}
 
 {% block main %}
 
-	<form method="get">
-		<table border="0" width="100%">
-			<tr>
-				<td><label for="id_source">From</label></td><td>{{ search_form.source }}</td>
-				<td><label for="id_destination">To</label></td><td>{{ search_form.destination }}</td>
-				<td><input class="button" type="submit" value="Search"/></td>
-			</tr>
-		</table>		
-	</form>
-	
-	
-	{% if rides %}
-		<table border="0" width="100%">
-			<tr><th>Owner</th><th>Date</th><th>Time</th><th></th></tr>
-			{% for ride in rides %}
-				<tr>
-					<td><a href="/profile?user={{ ride.owner.key.id }}">{{ ride.owner.user.email|local_part_from_email }}</a></td>
-					<td>{{ ride.date }}</td>
-					<td>{{ ride.time }}</td>
-					<td><a href="/rideoffer?id={{ ride.key.id }}">View</a></td>
-				</tr>
-			{% endfor %}
-		</table>
-	{% endif %}
-	
+
+<table>
+	<tr>
+		<th>Ride</th>
+		<th>Date</th>
+		<th>Seats</th>
+		<th>Owner</th>
+	</tr>
+	{% for ride in rides %}
+	<tr class="row-a">
+		<td><a href="/rideoffer?id={{ride.key.id}}">{{ride.source.name}} - {{ride.destination.name}}</a></td>
+		<td>{{ride.date}}</td>
+		<td>{{ride.available_seats}}</td>
+		<td><a href ="/profile?user={{ride.owner.key.id}}">{{ride.owner.user.email|local_part_from_email }}</a></td>
+	</tr>
+	{% endfor %}
+
+
+</table>
+
 {% endblock %}
