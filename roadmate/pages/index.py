@@ -48,7 +48,7 @@ class IndexPageHandler(BaseRequestHandler):
 		# Store Template Values
 		# --------------------------------------------------------------------
 		
-		template_values['rides'] = rides
+		template_values['rides'] = list(rides)
 		
 		return template_values
 		
