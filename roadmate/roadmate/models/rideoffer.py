@@ -4,11 +4,13 @@ from google.appengine.ext import db
 from google.appengine.ext.webapp import template
 
 from google.appengine.ext.db import djangoforms
-
-from google.appengine.ext.db import datetime
+from django import newforms as forms
 
 from roadmate.models.roadmateuser import RoadMateUser
 from roadmate.models.town import Town
+
+from roadmate.widgets.selectdatewidget import SelectDateWidget
+from roadmate.widgets.selecttimewidget import SelectTimeWidget
 
 
 
@@ -37,6 +39,9 @@ class RideOfferForm(djangoforms.ModelForm):
 		RoadUserForm
 			Form for ride offers.
 	"""
+	date = forms.DateField(widget=SelectDateWidget)
+	time = forms.TimeField(widget=SelectTimeWidget)
+	
 	class Meta:
 		model = RideOffer
 		exclude = ['owner', 'creation_date']
