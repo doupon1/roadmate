@@ -25,7 +25,9 @@
 		
 	</p>
 	
-	<p class="post-footer">		
-		<a href="/rideoffer_edit?id={{ target_ride.key.id }}" class="edit">Edit</a>	
-	</p>
+	{% ifequal target_ride.owner current_user %}
+		<p class="post-footer">		
+			<a href="/rideoffer_edit?id={{ target_ride.key.id }}" class="edit">Edit</a>	
+		</p>
+	{% endifequal %}
 {% endblock %}
