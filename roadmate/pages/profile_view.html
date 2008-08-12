@@ -9,14 +9,16 @@
 	<p>
 		<code>
 						
-			<strong>Email:</strong> {{ target_user.user.email }}<br /><br />
+			<strong>Email:</strong> {{ target_user.user.email }}
 
 			{% if target_user.town.name %}
-				<strong>Hometown:</strong> {{ target_user.town.name }}<br /><br />
+				<br /><br />
+				<strong>Hometown:</strong> {{ target_user.town.name }}
 			{% endif %}
 			
 			{% if target_user.phone %}
-				<strong>Phone:</strong> {{ target_user.phone }}<br /><br />
+				<br /><br />
+				<strong>Phone:</strong> {{ target_user.phone }}
 			{% endif %}
 			
 		</code>
@@ -34,22 +36,18 @@
 
 		<table>
 			<tr>
-				<th>Source</th>
-				<th>Destination</th>
+				<th>Ride</th>
 				<th>Date</th>
-				<th>Available Seats</th>
-				<th></th> <!-- View link column -->
+				<th>Seats</th>
 				{% ifequal target_user current_user %}
 				<th></th> <!-- Edit link column -->
 				{% endifequal %}
 			</tr>
 			{% for ride in rides %}
 				<tr class="row-a">
-					<td>{{ ride.source.name }}</td>
-					<td>{{ ride.destination.name }}</td>
+					<td><a href="/rideoffer?id={{ ride.key.id }}">{{ ride.source.name }} - {{ ride.destination.name }}</a></td>
 					<td>{{ ride.date }}</td>
 					<td>{{ ride.available_seats }}</td>
-					<td><a href="/rideoffer?id={{ ride.key.id }}">View</a> </td>
 					{% ifequal ride.owner current_user %}
 						<td><a href="/rideoffer_edit?id={{ ride.key.id }}">Edit</a> </td>
 					{% endifequal %}
