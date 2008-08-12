@@ -4,16 +4,16 @@
 
 {% block main %}
 	<h2>View Ride Offer</h2>
-	
-    <h3>{{ target_ride.source.name }} to {{ target_ride.destination.name }}, {{ target_ride.date }}</h3><br />
+    <h3>{{ target_ride.source.name }} to {{ target_ride.destination.name }}, {{ target_ride.date }}</h3>
+
 	<p>
-		
+		<code>
 			<strong>Owner</strong> <a href="/profile?user={{ target_ride.owner.key.id }}">{{ target_ride.owner.user.email }}</a><br />
             
             
             
 			<strong>From</strong> {{ target_ride.source.name }}	<strong>to</strong> {{ target_ride.destination.name }}<br />
-			<strong>On</strong> {{ target_ride.date }} departing from {{ target_ride.source.name }} at {{ target_ride.time }}<br />
+			<strong>On</strong> {{ target_ride.date }} <strong>departing at</strong> {{ target_ride.time }}<br />
 			
             <strong>Seats Available</strong> {{ target_ride.available_seats }}<br />
 
@@ -22,7 +22,7 @@
 				<strong>Notes</strong><br />
 				{{ target_ride.notes }}<br />
 			{% endif %}
-		
+		</code>
 	</p>
 	
 	{% ifequal target_ride.owner current_user %}
