@@ -2,6 +2,8 @@
 from google.appengine.api import users
 from google.appengine.ext import webapp
 
+from roadmate.models.roadmateuser import RoadMateUser
+
 class BaseRequestHandler(webapp.RequestHandler):
 	"""
 		RoadMate RequestHandler
@@ -38,7 +40,7 @@ class BaseRequestHandler(webapp.RequestHandler):
 		# --------------------------------------------------------------------
 		# Generate Template Values
 		# --------------------------------------------------------------------
-		current_user = users.get_current_user()
+		current_user = RoadMateUser.get_current_user()
 		current_version = "0.1" ## update me
 
 		isLoggedIn = False
