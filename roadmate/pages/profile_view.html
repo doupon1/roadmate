@@ -24,11 +24,9 @@
 		</code>
 	</p>
 	
-	{% ifequal target_user current_user %}
 		<p class="post-footer">	
 			<a href= "/profile?user={{ target_user.key.id }}&edit=True">Edit</a> 	
 		</p>
-	{% endifequal %}
 
 
 	{% if rides %}
