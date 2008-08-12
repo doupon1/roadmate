@@ -99,8 +99,7 @@ class ProfilePageHandler(BaseRequestHandler):
 		
 		rides = db.GqlQuery("SELECT * FROM RideOffer WHERE owner = :1", target_user)
 		
-		template_values['rides'] = rides
-		template_values['current_user'] = current_user
+		template_values['rides'] = list(rides)
 		template_values['target_user'] = target_user
 		template_values['user_form'] = RoadMateUserForm(instance=target_user)
 		
