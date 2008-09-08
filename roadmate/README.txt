@@ -35,9 +35,6 @@ The following is an outline of RoadMate's directory structure:
 		when is it is first run on a new system.
 
 		E.g. Lists of towns, geographical data .etc.
-
-		The rational behind this, is that text files play much more nicely with 
-		version control systems than binary datastores.
 	
 --	./stylesheets
 
@@ -46,3 +43,7 @@ The following is an outline of RoadMate's directory structure:
 --	./templates
 
 		Template files used as starting points for most of the common files in RoadMate.
+
+--	./openid
+
+		JanRain's Python OpenID library.
