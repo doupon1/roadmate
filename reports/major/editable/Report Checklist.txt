@@ -1,0 +1,29 @@
+== Checklist for Reports ==
+
+Just some stuff to remember when writing the next report.
+
++ Provide more detail on features in upcoming releases.
+	- E.g: Noting the Locations feature for Prototype 2.
+
++ Proof Read
+	- Duh :)
+	- Make sure everything is proof read, by the author _AND_ someone else
+
++ Fold-out Gantt Chart
+	- Time Zone: Prototype 1 => Prototype 2 (?)
+	
++ Additional RMMM Procedures:
+	- Role of Subversion in Site Recovery
+	- Role of Unit Tests in Continuous Integration
+	
++ RMMM Plan
+	- More concrete, related to most likely risks
+	- Sort by probability of risks
+	
++ Presentation
+	- At least font size 12
+	- No template text
+	
++ Documentation vs. Reality
+	- Report = Living Document
+	- 
