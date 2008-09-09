@@ -19,11 +19,11 @@ Just some stuff to remember when writing the next report.
 + RMMM Plan
 	- More concrete, related to most likely risks
 	- Sort by probability of risks
+	- E.g: Risks faced by straying from the status-quo - Java => Python + Google
 	
 + Presentation
 	- At least font size 12
 	- No template text
 	
 + Documentation vs. Reality
-	- Report = Living Document
-	- 
+	- Report = Living Document, it should reflect the current state of the project

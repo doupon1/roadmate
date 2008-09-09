@@ -1,0 +1,59 @@
+==== Report 2 - Layout ====
+
+The following is the layout structure for our second report.
+
+Top Level Headings      :   === <title> ===
+Second Level Headings   :   -- <title> --
+
+
+
+=== Summary ===
+Brief summary of the report.
+	+ Current state of project
+
+=== Project Plan ===
+	
+--- Design Methodology ---
+	+ Straight for Report 1
+
+=== RMMM Plan ===
+	+ Copy from design docs
+	+ Proof Read - Spelling + Grammar
+	
+=== Design Documentation ===
+
+--- Use Case Diagram ---
+	+ Insert use case diagram
+	+ Provide a brief description of actors
+	
+--- ER Model ---
+	+ Copy from design docs
+	
+=== Project Scope ===
+The project scope section contains a description of the site
+structure and functionality as provided in each prototype.
+
+--- Terminology ---
+Outlines any terminology used within the project scope.
+
+--- Prototype 1 ---
+--- Prototype 2 ---
+--- Final Prototype ---
+
+=== Software Quality Assurance ===
+
+--- Unit Testing ---
+Report on the unit testing procedures we have in place.
+	+ Use Report 1 as basis
+	+ Server + Client Side
+
+--- Usability ---
+
+--- Usability Testing ---
+
+--- Testing Matrix ---
+Browser and OS testing matrix.
+
+=== Gantt Chart ===
+
+=== Individual Use Case Descriptions ===
