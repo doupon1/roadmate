@@ -8,9 +8,6 @@ Just some stuff to remember when writing the next report.
 + Proof Read
 	- Duh :)
 	- Make sure everything is proof read, by the author _AND_ someone else
-
-+ Fold-out Gantt Chart
-	- Time Zone: Prototype 1 => Prototype 2 (?)
 	
 + Additional RMMM Procedures:
 	- Role of Subversion in Site Recovery

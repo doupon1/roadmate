@@ -55,5 +55,7 @@ Report on the unit testing procedures we have in place.
 Browser and OS testing matrix.
 
 === Gantt Chart ===
+	+ Time Slice: Prototype 1 => Prototype 2
+	+ Maybe print it separately as a fold out. 
 
 === Individual Use Case Descriptions ===
