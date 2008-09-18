@@ -4,7 +4,7 @@
 #  Imports
 # ----------------------------------------------------------------------------
 
-import tools.unitest as unittest
+import unittest, time, re
 
 from tools.selenium import selenium
 
@@ -15,6 +15,7 @@ from tools.selenium import selenium
 class RideOfferTest(unittest.TestCase):
     def setUp(self):
         self.verificationErrors = []
+        #if you test your application from remote massey host change "http://localhost:8080/ to "http://seat-web3.massey.ac.nz:8080/"
         self.selenium = selenium("localhost", 5555, "*iexplore", "http://localhost:8080/")
         self.selenium.start()
         #usual case:
@@ -136,6 +137,7 @@ class RideOfferTest(unittest.TestCase):
 
     def tearDown(self):
         self.selenium.stop()
+        #self.assertEqual([], self.verificationErrors)
 
 if __name__ == "__main__":
     unittest.main()

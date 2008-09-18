@@ -4,7 +4,8 @@
 #  Imports
 # ----------------------------------------------------------------------------
 
-import tools.unitest as unittest
+import unittest, time, re
+
 
 from tools.selenium import selenium
 
@@ -15,10 +16,14 @@ from tools.selenium import selenium
 class ProfilePageTest(unittest.TestCase):
     def setUp(self):
         self.verificationErrors = []
+        #if you test your application from remote massey host change "http://localhost:8080/ to "http://seat-web3.massey.ac.nz:8080/"
         self.selenium = selenium("localhost", 5555, "*iexplore", "http://localhost:8080/")
         self.selenium.start()
-        
-        self.owners=(["owner1@example.com","Akaroa","061234567"],["test@example.com","Arrowtown","061234567"],["owner2@example.com","Bluff","061010101"])
+        #----test preconditions------
+        #before running this test case we must have following three owners, who have been register with roadmate
+        #the following unit test case test whether or not following user can view their profile after log in.
+        #
+        self.owners=(["owner1@example.com","Akaroa","061234567"],["owner3@example.com","Arrowtown","061234567"],["owner2@example.com","Bluff","061010101"])
         
     def test_owner1(self):
         self.pattern(0)
