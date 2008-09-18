@@ -44,6 +44,10 @@ The following is an outline of RoadMate's directory structure:
 
 		Template files used as starting points for most of the common files in RoadMate.
 
+--	./test
+
+		A collection of PyUnit and Selenium test cases for RoadMate.
+
 --	./openid
 
 		JanRain's Python OpenID library.
