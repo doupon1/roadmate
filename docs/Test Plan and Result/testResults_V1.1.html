@@ -1,0 +1,358 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>first prototype test cases </title>
+		<link href="styles.css" rel="stylesheet" type="text/css" /></head>
+
+	<body>
+
+		<div id="top">
+			<div id="logo"><font size="4">Test Result V1.1 </font></div>
+			<div id="slogan"><span class="slogan">RoadMate</span></div>
+		</div>
+		
+		<div id="content">
+			
+			<div id="menu">
+						
+			</div>
+
+		  <div id="bodyContent" class="normalText">
+		    <p> 
+		    <h3>Notation</h3>
+			  <table width="717" border="1" cellpadding="0" cellspacing="0">
+			    <tr>
+			      <td width="191">Condition</td>
+			      <td width="171">Pass</td>
+			      <td width="200">Fail</td>
+			      <td width="187">Not Test </td>
+		        </tr>
+                <tr>
+                  <td>Condition description </td>
+                  <td>P</td>
+                  <td>F</td>
+                  <td>NT</td>
+                </tr>
+	        </table>
+			  
+	      </p>
+			  
+			  <p> 
+			  <h3>&nbsp;</h3>
+			  <p>
+			  <h3>Test Results </h3>
+			   <h4>1. Use Case 2.1(manage profile )Test Results</h4>
+			   <table border="1" cellpadding="10" cellspacing="0">
+                 <col width="576" />
+                 <tr height="34">
+                   <td>Related Use Cases : </td>
+                   <td height="34">Test Results </td>
+                 </tr>
+                 <tr height="34">
+                   <td width="576">1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    The user accesses My Profile page and selects the Edit Profile option.</td>
+                   <td width="576" height="34">P</td>
+                 </tr>
+                 <tr height="68">
+                   <td width="576">2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    The system presents the user with the tabular form questionnaire where the    fields are already filled in with the information provided previously. All    the fields are editable. (If no information provided previously, only the    user name field is filled in.)</td>
+                   <td width="576" height="68">P</td>
+                 </tr>
+                 <tr height="17">
+                   <td width="576">3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    The user can change the information and submit the changes.</td>
+                   <td width="576" height="17">P</td>
+                 </tr>
+                 <tr height="17">
+                   <td width="576">4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    System updates the changes in the database.</td>
+                   <td width="576" height="17">NT</td>
+                 </tr>
+                 <tr height="17">
+                   <td width="576">1a. User is not logged in</td>
+                   <td width="576" height="17">&nbsp;</td>
+                 </tr>
+                 <tr height="34">
+                   <td width="576">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    System prompts the user to log in and redirects the user to the Login page.</td>
+                   <td width="576" height="34">P</td>
+                 </tr>
+                 <tr height="17">
+                   <td width="576">3a.    Mandatory Fields are not filled in</td>
+                   <td width="576" height="17">NT</td>
+                 </tr>
+                 <tr height="17">
+                   <td width="576">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    The system prompts the user to provide all mandatory information.</td>
+                   <td width="576" height="17">NT</td>
+                 </tr>
+                 <tr height="17">
+                   <td width="576">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    User fills in the required fields and resubmits the form.</td>
+                   <td width="576" height="17">NT</td>
+                 </tr>
+                 <tr height="17">
+                   <td width="576">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    Steps 1 -2 are repeated until all mandatory information is provided.</td>
+                   <td width="576" height="17">NT</td>
+                 </tr>
+                 <tr height="17">
+                   <td width="576">3b.    Information provided is incorrect (data type, data format)</td>
+                   <td width="576" height="17">NT</td>
+                 </tr>
+                 <tr height="34">
+                   <td width="576">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    The system prompts the user to correct the information providing hints.</td>
+                   <td width="576" height="34">NT</td>
+                 </tr>
+                 <tr height="17">
+                   <td width="576">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    User corrects the information and resubmits the form.</td>
+                   <td width="576" height="17">NT</td>
+                 </tr>
+                 <tr height="17">
+                   <td width="576">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    Steps 1-2 are repeated until all information provided is correct.</td>
+                   <td width="576" height="17">NT</td>
+                 </tr>
+                 <tr height="17">
+                   <td width="576">3c. The    user wishes to delete information.</td>
+                   <td width="576" height="17">NT</td>
+                 </tr>
+                 <tr height="17">
+                   <td width="576">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    All non-mandatory fields can be deleted (left empty).</td>
+                   <td width="576" height="17">NT</td>
+                 </tr>
+                 <tr height="17">
+                   <td width="576">4a.    Database can&rsquo;t be accessed or updated</td>
+                   <td width="576" height="17">NT</td>
+                 </tr>
+                 <tr height="34">
+                   <td width="576">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    System generates an error message to inform the user of the problem and asks    the user to repeat the action at a later time.</td>
+                   <td width="576" height="34">NT</td>
+                 </tr>
+               </table>
+			   <p>&nbsp; </p>
+			   <p>&nbsp;</p>
+			<h4>2. Use Case 2.2  (View User Profile) Test Results
+</h4>
+	     
+		
+		    <p>
+		    <table  border="1" cellspacing="0" cellpadding="10">
+          <col width="576" />
+          <tr height="17">
+            <td>Use Case </td>
+            <td height="17">Test Results </td>
+          </tr>
+          <tr height="17">
+            <td width="576">1.    RoadMate user accesses My Profile page</td>
+            <td width="576" height="17">p</td>
+          </tr>
+          <tr height="18">
+            <td width="576">2. The    system displays the profile information in tabular non &ndash; editable form.</td>
+            <td width="576" height="18">p</td>
+          </tr>
+          <tr height="17">
+            <td width="576">* User is not logged in</td>
+            <td width="576" height="17">&nbsp;</td>
+          </tr>
+          <tr height="34">
+            <td width="576">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1. The system prompts the user to log    in and redirects the user to the Login page.</td>
+            <td width="576" height="34"><span><font color="#FF0000">F</font></span></td>
+          </tr>
+          <tr height="17">
+            <td width="576">1a.&nbsp; User wishes to view profile information    other than his/her own.</td>
+            <td width="576" height="17">NT</td>
+          </tr>
+          <tr height="17">
+            <td width="576">1. User    clicks on a username (hyperlink) to view the other user&rsquo;s profile.</td>
+            <td width="576" height="17">NT</td>
+          </tr>
+          <tr height="35">
+            <td width="576">2.System    displays the profile information corresponding to the chosen username in    non-editable tabular form.</td>
+            <td width="576" height="35">NT</td>
+          </tr>
+        </table>
+		<p>&nbsp;</p>
+		
+		<p>&nbsp;</p>
+		</p>
+		<h4>3.  Use Case 3.1 (Create Ride Offer )Test Results </h4>
+		<p>
+		
+		<table  border="1" cellspacing="0" cellpadding="10">
+          <col width="577" />
+          <tr height="34">
+            <td>Use Cases </td>
+            <td height="34">Test Results </td>
+          </tr>
+          <tr height="34">
+            <td width="415">1. The    Driver accesses the Ride Offer page and selects the Create Ride Offer option.</td>
+            <td width="390" height="34">p</td>
+          </tr>
+          <tr height="17">
+            <td width="415">2.    System presents the Driver with a questionnaire in tabular form.</td>
+            <td width="390" height="17">p</td>
+          </tr>
+          <tr height="17">
+            <td width="415">3.The    Driver fills in the form and submits it.</td>
+            <td width="390" height="17">p</td>
+          </tr>
+          <tr height="18">
+            <td width="415">4.The    system stores the new ride offer details in the Ride Offers database.</td>
+            <td width="390" height="18">NT</td>
+          </tr>
+          <tr height="17">
+            <td width="415">* The    Driver is not logged in</td>
+            <td width="390" height="17">&nbsp;</td>
+          </tr>
+          <tr height="34">
+            <td width="415">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1. The system prompts the Driver to log    in and redirects the Driver to the Login page.</td>
+            <td width="390" height="34">p</td>
+          </tr>
+          <tr height="17">
+            <td width="415">3a. Not    all mandatory fields are filled in</td>
+            <td width="390" height="17">NT</td>
+          </tr>
+          <tr height="34">
+            <td width="415">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    The system prompts the user to fill in all mandatory fields and redisplays    the form on the screen with the required fields highlighted.</td>
+            <td width="390" height="34">NT</td>
+          </tr>
+          <tr height="17">
+            <td width="415">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    The Driver fills in the required fields and resubmits the form.</td>
+            <td width="390" height="17">NT</td>
+          </tr>
+          <tr height="17">
+            <td width="415">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    Steps 1-2 are repeated until all mandatory fields are filled in.</td>
+            <td width="390" height="17">NT</td>
+          </tr>
+          <tr height="17">
+            <td width="415">3b.    Information provided is not correct (data format, data type)</td>
+            <td width="390" height="17">NT</td>
+          </tr>
+          <tr height="34">
+            <td width="415">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    The system prompts the Driver to correct the information providing hints.</td>
+            <td width="390" height="34">NT</td>
+          </tr>
+          <tr height="17">
+            <td width="415">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    The Driver corrects the information and resubmits the form</td>
+            <td width="390" height="17">NT</td>
+          </tr>
+          <tr height="17">
+            <td width="415">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    Steps 1-2 are repeated until all information is correct.</td>
+            <td width="390" height="17">NT</td>
+          </tr>
+          <tr height="17">
+            <td width="415">4a. The    database can&rsquo;t be accessed, updated at the time</td>
+            <td width="390" height="17">NT</td>
+          </tr>
+          <tr height="35">
+            <td width="415">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1. System generates the error message    and prompts the user to repeat the action.</td>
+            <td width="390" height="35">NT</td>
+          </tr>
+        </table>
+		<p>
+			<h4>4. Use Case 3.2 (Manage Ride Offer )Test Results </h4>
+			<table  border="1" cellspacing="0" cellpadding="10">
+              <col width="577" />
+              <tr height="34">
+                <td>Use  Cases </td>
+                <td>Test Results </td>
+              </tr>
+              <tr height="34">
+                <td width="577">1. The    driver accesses Ride Offer page, selects the ride he wishes to edit&nbsp; and selects the Edit Ride Offer option.</td>
+                <td width="577">p</td>
+              </tr>
+              <tr height="34">
+                <td width="577">2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    The system presents the Driver with the form that has the fields already    filled in with the information provided earlier. All fields are editable.</td>
+                <td width="577">p</td>
+              </tr>
+              <tr height="17">
+                <td width="577">3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    The Driver changes the information as required and submits the changes.</td>
+                <td width="577">p</td>
+              </tr>
+              <tr height="17">
+                <td width="577">4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    The System updates the changes in the database.</td>
+                <td width="577">NT</td>
+              </tr>
+              <tr height="35">
+                <td width="577">5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    The system checks the database for passengers already accepted on this ride    and if any, generates an email to inform them of the changes.</td>
+                <td width="577">NT</td>
+              </tr>
+              <tr height="17">
+                <td width="577">*&nbsp; Driver is not logged in</td>
+                <td width="577">NT</td>
+              </tr>
+              <tr height="34">
+                <td width="577">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1. The system prompts the Driver to log    in and redirects him/her to the Login page</td>
+                <td width="577">NT</td>
+              </tr>
+              <tr height="17">
+                <td width="577">1a. The    Driver wishes to withdraw the Ride Offer</td>
+                <td width="577">NT</td>
+              </tr>
+              <tr height="34">
+                <td width="577">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1. The Driver selects the Ride Offer    he/she wishes to withdraw and selects the Delete Ride Offer option</td>
+                <td width="577">NT</td>
+              </tr>
+              <tr height="34">
+                <td width="577">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.&nbsp; The system prompts the Driver    to confirm he/she wishes to delete this ride.</td>
+                <td width="577">NT</td>
+              </tr>
+              <tr height="17">
+                <td width="577">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.&nbsp; The Driver confirms the    delete.</td>
+                <td width="577">NT</td>
+              </tr>
+              <tr height="34">
+                <td width="577">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4.&nbsp;The System tags the Ride Offer    as deleted and makes it not visible to the users.</td>
+                <td width="577">NT</td>
+              </tr>
+              <tr height="17">
+                <td width="577">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3a. The Driver cancels the delete.</td>
+                <td width="577">NT</td>
+              </tr>
+              <tr height="17">
+                <td width="577">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The system returns to Ride    Offer page</td>
+                <td width="577">NT</td>
+              </tr>
+              <tr height="17">
+                <td width="577">3a. Not    all mandatory fields are filled in</td>
+                <td width="577">NT</td>
+              </tr>
+              <tr height="34">
+                <td width="577">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.&nbsp;The system prompts the user to    fill in all mandatory fields and redisplays the form on the screen with the    required fields highlighted.</td>
+                <td width="577">NT</td>
+              </tr>
+              <tr height="17">
+                <td width="577">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.&nbsp;The Driver fills in the    required fields and resubmits the form.</td>
+                <td width="577">NT</td>
+              </tr>
+              <tr height="17">
+                <td width="577">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.&nbsp;Steps 1-2 are repeated until    all mandatory fields are filled in.</td>
+                <td width="577">NT</td>
+              </tr>
+              <tr height="17">
+                <td width="577">3b.    Information provided is not correct (data format, data type)</td>
+                <td width="577">NT</td>
+              </tr>
+              <tr height="17">
+                <td width="577">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.&nbsp;The system prompts the Driver    to correct the information providing hints.</td>
+                <td width="577">NT</td>
+              </tr>
+              <tr height="17">
+                <td width="577">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.&nbsp;The Driver corrects the    information and resubmits the form</td>
+                <td width="577">NT</td>
+              </tr>
+              <tr height="17">
+                <td width="577">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.&nbsp;Steps 1-2 are repeated until    all information is correct.</td>
+                <td width="577">NT</td>
+              </tr>
+              <tr height="17">
+                <td width="577">4a. The    database can&rsquo;t be accessed, updated at the time</td>
+                <td width="577">NT</td>
+              </tr>
+              <tr height="35">
+                <td width="577">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.&nbsp;System generates the error    message and prompts the user to repeat the action.</td>
+                <td width="577">NT</td>
+              </tr>
+            </table>
+			<h4></h4>
+	      </div>
+			
+	
+	<!-- Please don't delete this link -->
+	<span class="design">Design by <a href="http://www.colombiahosting.com.co" target="_blank">Colombia Hosting</a></span>
+	<!-- Please don't delete this link -->
+	</body>
+</html>

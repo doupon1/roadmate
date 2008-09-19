@@ -1,0 +1,372 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>first prototype test cases </title>
+		<link href="styles.css" rel="stylesheet" type="text/css" /></head>
+
+	<body>
+
+		<div id="top">
+			<div id="logo"><font size="4">Test Plan V1.1 </font></div>
+			<div id="slogan"><span class="slogan">RoadMate</span></div>
+		</div>
+		
+		<div id="content">
+			
+			<div id="menu">
+						
+			</div>
+
+		  <div id="bodyContent" class="normalText">
+		    <p> 
+		    <h3>Notation</h3>
+			  <table width="717" border="1" cellpadding="0" cellspacing="0">
+			    <tr>
+			      <td width="191">Condition</td>
+			      <td width="171">Pass</td>
+			      <td width="200">Fail</td>
+			      <td width="187">Not Implement </td>
+		        </tr>
+                <tr>
+                  <td>Condition description </td>
+                  <td>P</td>
+                  <td>F</td>
+                  <td>NI</td>
+                </tr>
+	        </table>
+			  
+	      </p>
+			  
+			  <p> 
+			  <h3>&nbsp;</h3>
+			  <p>
+			  <h3>Test case</h3>
+			   <h4>1. Test Use Case 2.1manage profile </h4>
+		       <ul>
+			                   <li>Testing functionalities :
+							   <ol>1.       The user accesses My Profile page and selects the Edit Profile option.</ol>
+							   <ol> 
+							     2.       The system presents the user with the tabular form questionnaire where the fields are already filled in with the information provided previously. All the fields are editable. (If no information provided previously, only the user name field is filled in.
+							     </ol>
+								 <ol>3.       The user can change the information and submit the changes.
+</ol>
+						       </li>
+							   
+							   
+			                  
+			   </ul>
+						  
+						  <table border="1" cellpadding="10" cellspacing="0">
+			          <tr>
+			            <td align="left" valign="baseline" width="63"><strong>process</strong></td>
+			            <td align="left" valign="baseline" width="149"><strong>reference pages</strong> </td>
+			            <td align="left" valign="baseline" width="283"><strong>Action or Input </strong></td>
+			            <td align="left" valign="baseline" width="336"><strong>Expected</strong></td>
+		              </tr>
+                      <tr>
+                        <td align="left" valign="baseline" height="51">1</td>
+                        <td align="left" valign="baseline">&nbsp;</td>
+                        <td align="left" valign="baseline">Open a fresh browser </td>
+                        <td align="left" valign="baseline">&nbsp;</td>
+                      </tr>
+                      <tr>
+                        <td align="left" valign="baseline" height="47">2</td>
+                        <td align="left" valign="baseline">Home page </td>
+                        <td align="left" valign="baseline">Click My Profile</td>
+                        <td align="left" valign="baseline">redirect to log in page<br /></td>
+                      </tr>
+                      <tr>
+                        <td align="left" valign="baseline">3</td>
+                        <td align="left" valign="baseline">Login page </td>
+                        <td align="left" valign="baseline"><p>Submit-login</p>                          </td>
+                        <td align="left" valign="baseline">redirect to My Profile page </td>
+                      </tr>
+                      <tr>
+                        <td align="left" valign="baseline">4</td>
+                        <td align="left" valign="baseline">My Profile page </td>
+                        <td align="left" valign="baseline"> Click edit </td>
+                        <td align="left" valign="baseline">redirect to Edit My Profile page <br />                        </td>
+                      </tr>
+                      <tr>
+                        <td align="left" valign="baseline">5</td>
+                        <td align="left" valign="baseline">Edit My Profile page </td>
+                        <td align="left" valign="baseline">Fill form </td>
+                        <td align="left" valign="baseline">&nbsp;</td>
+                      </tr>
+                      <tr>
+                        <td align="left" valign="baseline" height="52">6 </td>
+                        <td align="left" valign="baseline">Edit My Profile page </td>
+                        <td align="left" valign="baseline">Save<br /></td>
+                        <td align="left" valign="baseline">redirect to my profile page<br />                        </td>
+                      </tr>
+                      <tr>
+                        <td align="left" valign="baseline" height="52">7</td>
+                        <td align="left" valign="baseline">My Profile page </td>
+                        <td align="left" valign="baseline">NI</td>
+                        <td align="left" valign="baseline">System presents edited information </td>
+                      </tr>
+            </table>
+			<p>&nbsp;</p>
+			<h4>2. Test Use Case 2.2  View User Profile
+</h4>
+	     
+		
+		<p>Test functionalities : <ol>
+		<li>User access my profile page</li>
+		<li>The system displays the profile information in tabular non – editable form.</li>
+		<li>If User not log in, system promotes log in </li>
+		<li>If User already log in, user can click user name and view this user's profile</li>
+		
+		</ol>
+		<p>&nbsp;</p>
+		<table border="1" cellpadding="10" cellspacing="0">
+          <tr>
+            <td align="left" valign="baseline" width="63"><strong>process</strong></td>
+            <td align="left" valign="baseline" width="149"><strong>reference pages</strong> </td>
+            <td align="left" valign="baseline" width="283"><strong>Action or Input </strong></td>
+            <td align="left" valign="baseline" width="336"><strong>Expected</strong></td>
+          </tr>
+          <tr>
+            <td align="left" valign="baseline" height="51">1</td>
+            <td align="left" valign="baseline">&nbsp;</td>
+            <td align="left" valign="baseline">Open a fresh browser  and click log in            </td>
+            <td align="left" valign="baseline">redirect to log in page </td>
+          </tr>
+          <tr>
+            <td align="left" valign="baseline" height="47">2</td>
+            <td align="left" valign="baseline">Home page </td>
+            <td align="left" valign="baseline">Log in as MyRider@example.com </td>
+            <td align="left" valign="baseline">redirect to Home page </td>
+          </tr>
+
+          <tr>
+            <td align="left" valign="baseline">3</td>
+            <td align="left" valign="baseline">My Profile page </td>
+            <td align="left" valign="baseline"> Click Offer Rider </td>
+            <td align="left" valign="baseline">redirect to Offer Rider page <br />            </td>
+          </tr>
+          <tr>
+            <td align="left" valign="baseline">5</td>
+            <td align="left" valign="baseline">Creat ride offer page </td>
+            <td align="left" valign="baseline">Fill form and save</td>
+            <td align="left" valign="baseline">&nbsp;</td>
+          </tr>
+          <tr>
+            <td align="left" valign="baseline" height="52">6 </td>
+            <td align="left" valign="baseline">&nbsp;</td>
+            <td align="left" valign="baseline">Log out and click Home page</td>
+            <td align="left" valign="baseline">redirect to Home Page     </td>
+          </tr>
+          <tr>
+            <td align="left" valign="baseline" height="52">7</td>
+            <td align="left" valign="baseline">Home page</td>
+            <td align="left" valign="baseline">Click MyRider(user name) </td>
+            <td align="left" valign="baseline">redirect to My Profile page and able to see right user information</td>
+          </tr>
+          <tr>
+            <td align="left" valign="baseline" height="52">8</td>
+            <td align="left" valign="baseline">Home page </td>
+            <td align="left" valign="baseline">Click Log out </td>
+            <td align="left" valign="baseline">redirect to Home Page </td>
+          </tr>
+          <tr>
+            <td align="left" valign="baseline" height="52">9</td>
+            <td align="left" valign="baseline">Home page </td>
+            <td align="left" valign="baseline">Click MyRider (user name) </td>
+            <td align="left" valign="baseline">system promotes login</td>
+          </tr>
+        </table>
+		<p>&nbsp;</p>
+		</p>
+		<h4>3. Test Use Case 3.1 Create Ride Offer</h4>
+		<p>
+		Test functionalites:
+		<ol>
+		<li> The Driver accesses the Ride Offer page and selects the Create Ride Offer option.</li>
+		<li>System presents the Driver with a questionnaire in tabular form.</li>
+		<li>The Driver fills in the form and submits it.</li>
+		<li>If Driver not log in, the system prompts the Driver to log in and redirects the Driver to the Login page.
+</li>
+		</ol>
+		</p>
+		
+		
+		
+		  <table border="1" cellpadding="10" cellspacing="0">
+		    <tr>
+		      <td align="left" valign="baseline" width="63"><strong>process</strong></td>
+		      <td align="left" valign="baseline" width="149"><strong>reference pages</strong> </td>
+		      <td align="left" valign="baseline" width="283"><strong>Action or Input </strong></td>
+		      <td align="left" valign="baseline" width="336"><strong>Expected</strong></td>
+	        </tr>
+
+            <tr>
+              <td align="left" valign="baseline">1</td>
+              <td align="left" valign="baseline">&nbsp;</td>
+              <td align="left" valign="baseline">Close all browsers and restart a fresh browser </td>
+              <td align="left" valign="baseline">&nbsp;</td>
+            </tr>
+            <tr>
+              <td align="left" valign="baseline">2</td>
+              <td align="left" valign="baseline">Home Page </td>
+              <td align="left" valign="baseline">Click linke Offer Ride </td>
+              <td align="left" valign="baseline">Direct to log in page </td>
+            </tr>
+            <tr>
+              <td align="left" valign="baseline">3</td>
+              <td align="left" valign="baseline">Log in page </td>
+              <td align="left" valign="baseline">Type test@example.com </td>
+              <td align="left" valign="baseline">Direct to create ride offer page </td>
+            </tr>
+            <tr>
+              <td align="left" valign="baseline">4</td>
+              <td align="left" valign="baseline">Create ride offer page </td>
+              <td align="left" valign="baseline">input from Akaroa to Ashburton<br />
+                date: 11 11 2008 <br />
+                time: 12:00  	seats: 1  	commence: test </td>
+              <td align="left" valign="baseline">the drop down list boxes have all destination , date, and time <br />
+                users are able to select items<br />
+                text boxes allows users to type words .<br />              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="baseline">5</td>
+              <td align="left" valign="baseline">offer ride create page </td>
+              <td align="left" valign="baseline">click save button </td>
+              <td align="left" valign="baseline"><p>page will be redirected into view ride offer page.<br />
+                It will render following saving infomation:<br />
+                Owner test@example.com<br />
+                From Akaroa to Ashburton<br />
+                On 2008-11-11<br />
+                departing at 12:00:00<br />
+                Seats Available 1 <br />
+                Notes<br />
+                test<br />
+              </p></td>
+            </tr>
+            <tr>
+              <td align="left" valign="baseline">6</td>
+              <td align="left" valign="baseline">view rides offer page </td>
+              <td align="left" valign="baseline">click edit link </td>
+              <td align="left" valign="baseline">page will be redirected into edit page . <br />
+                shows previous input : <br />
+                from Akaroa to  Blenheim<br />
+                date: 10 11 2008 <br />
+                time: 1:00<br />
+                seats: 2<br />
+                commence: test1. </td>
+            </tr>
+            <tr>
+              <td align="left" valign="baseline" height="232">4</td>
+              <td align="left" valign="baseline">Edit  page </td>
+              <td align="left" valign="baseline">change commence to test. <br />
+                change seats number to 1. <br />
+                change date to 10 11 2008 <br />
+                change source to Akaroa <br />
+                change destination to Blenheim<br />
+                change time to 1:00<br />
+                click save<br /></td>
+              <td align="left" valign="baseline">page will be redirected to view ride offer page. The following information will be display in this page.<br />
+                Owner test@example.com<br />
+                From Akaroa to Blenheim<br />
+                On 2008-11-10 departing at 1:00:00<br />
+                Seats Available 1 <br />
+                Notes<br />
+                testing<br />              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="baseline" height="153">5</td>
+              <td align="left" valign="baseline">browse page </td>
+              <td align="left" valign="baseline">click browse rides </td>
+              <td align="left" valign="baseline">page will be redirected to browse page. <br />
+                late ride offered rides will show : <br />
+                 Akaroa-Blenheim  	2008-11-10  	1  	test.</td>
+            </tr>
+		    </table>
+			</p>
+			<p>
+			<h4>Test Use Case 3.2 Manage Ride Offer</h4>
+			Test functionalities: <ol>
+			<li> The driver accesses Ride Offer page, selects the ride he wishes to edit  and selects the Edit Ride Offer option.</li>
+			<li> The system presents the Driver with the form that has the fields already filled in with the information provided earlier. All fields are editable.</li>
+			<li>The Driver changes the information as required and submits the changes.</li>
+			
+			
+			</ol>
+			
+			</p>
+	
+			
+		    <table border="1" cellpadding="10" cellspacing="0">
+		      <tr>
+		        <td width="93"><strong>Process</strong></td>
+		        <td width="132"><strong>Reference pages</strong></td>
+		        <td width="211"><strong>Actions and Inputs</strong> </td>
+		        <td width="203"><strong>Expected</strong> </td>
+	          </tr>
+              <tr>
+                <td>1</td>
+                <td>&nbsp;</td>
+                <td>Close browser and restart browser to home page </td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Home Page </td>
+                <td>click link </td>
+                <td>browser redirect to log in page </td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>log in page </td>
+                <td>Input text: test@example.com<br />
+                  click log in button </td>
+                <td>redirect to My profile page</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>My Profile </td>
+                <td>NI</td>
+                <td><br />                </td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>My profile </td>
+                <td>Click first edit at my ride table </td>
+                <td>Redirect to Edit page               </td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>Edit Page </td>
+                <td>use following inputs to fill table:<br />
+				    From Akaroa to Christchurch<br />On 2008-10-10 <br />departing at 11:00 pm<br />Seats Available 2<br />Notes edit<br />
+				</td>
+                <td>&nbsp;
+                  </td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td>Edit Page </td>
+                <td>Save</td>
+                <td>Redirect to Ride view page<br />
+			     this page shows:<br />
+				 From Akaroa to Christchurch<br />On 2008-10-10 <br />departing at 11:00 pm<br />Seats Available 2<br />Notes edit<br />
+				 </td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td>My Profile Page</td>
+                <td>click My Profile              </td>
+                <td>Table shows: <br />Akaroa - Christchurch  2008-10-10  2  Edit<br /></td>
+              </tr>
+	        </table>
+			
+			<h4></h4>
+	      </div>
+			
+	
+	<!-- Please don't delete this link -->
+	<span class="design">Design by <a href="http://www.colombiahosting.com.co" target="_blank">Colombia Hosting</a></span>
+	<!-- Please don't delete this link -->
+	</body>
+</html>

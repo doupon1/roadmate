@@ -1,0 +1,296 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>
+		Test report page</title>
+		<link href="styles.css" rel="stylesheet" type="text/css" /></head>
+
+	<body>
+
+		<div id="top">
+			<div id="logo"><span class="title">Test Report</span> V1.0 </div>
+			<div id="slogan"><span class="slogan">RoadMate</span></div>
+		</div>
+		
+		<div id="content">
+			
+			<div id="menu">
+			
+			
+			</div>
+
+			<div id="bodyContent" class="normalText">
+			  <p>&nbsp;</p>
+			  <p>&nbsp;</p>
+			  <h4>1. navigation test result:</h4>
+			  <p>
+			  <table border="1" cellpadding="10" cellspacing="0">
+                <tr>
+                  <td align="left" valign="baseline" width="59"><strong>Case No.</strong></td>
+                  <td align="left" valign="baseline" width="112"><strong>Test Objects</strong> </td>
+                  <td align="left" valign="baseline" width="195"><strong>Expected</strong></td>
+                  <td align="left" valign="baseline" width="99">Observed same as expected (Yes/No)</td>
+                  <td align="left" valign="baseline" width="99">result</td>
+                </tr>
+                <tr>
+                  <td align="left" valign="baseline" height="51">1</td>
+                  <td align="left" valign="baseline"> link : HOME</td>
+                  <td align="left" valign="baseline">redirect to home page </td>
+                  <td align="left" valign="baseline">Yes</td>
+                  <td align="left" valign="baseline">pass</td>
+                </tr>
+                <tr>
+                  <td align="left" valign="baseline" height="47">2</td>
+                  <td align="left" valign="baseline">link : MY PROFIlE </td>
+                  <td align="left" valign="baseline">1.redirect to log in page<br />
+                    2. redirect to my profile page </td>
+                  <td align="left" valign="baseline">Yes</td>
+                  <td align="left" valign="baseline">pass</td>
+                </tr>
+                <tr>
+                  <td align="left" valign="baseline">3</td>
+                  <td align="left" valign="baseline"><p>link: offer ride </p></td>
+                  <td align="left" valign="baseline">1.redirect to log in page<br />
+                    2. redirect to offer ride page </td>
+                  <td align="left" valign="baseline">Yes</td>
+                  <td align="left" valign="baseline">pass</td>
+                </tr>
+                <tr>
+                  <td align="left" valign="baseline">4</td>
+                  <td align="left" valign="baseline">link: home </td>
+                  <td align="left" valign="baseline">redirect to home page<br />                  </td>
+                  <td align="left" valign="baseline">Yes</td>
+                  <td align="left" valign="baseline">pass</td>
+                </tr>
+                <tr>
+                  <td align="left" valign="baseline">5</td>
+                  <td align="left" valign="baseline">link: Edit</td>
+                  <td align="left" valign="baseline">redirect to edit page . </td>
+                  <td align="left" valign="baseline">Yes</td>
+                  <td align="left" valign="baseline">pass</td>
+                </tr>
+                <tr>
+                  <td align="left" valign="baseline" height="52">6 </td>
+                  <td align="left" valign="baseline">link: Edit profile</td>
+                  <td align="left" valign="baseline">redirect to my profile edit page<br />                  </td>
+                  <td align="left" valign="baseline">Yes</td>
+                  <td align="left" valign="baseline">pass</td>
+                </tr>
+                <tr>
+                  <td align="left" valign="baseline" height="52">7</td>
+                  <td align="left" valign="baseline">link: Support </td>
+                  <td align="left" valign="baseline">redirect to Support page</td>
+                  <td align="left" valign="baseline">Yes</td>
+                  <td align="left" valign="baseline">pass</td>
+                </tr>
+                <tr>
+                  <td align="left" valign="baseline" height="52">8</td>
+                  <td align="left" valign="baseline">link: About </td>
+                  <td align="left" valign="baseline">redirect to About page <br />                  </td>
+                  <td align="left" valign="baseline">Yes</td>
+                  <td align="left" valign="baseline">pass</td>
+                </tr>
+                <tr>
+                  <td align="left" valign="baseline" height="52">9</td>
+                  <td align="left" valign="baseline">link:Browse rides </td>
+                  <td align="left" valign="baseline">redirct to rides list page </td>
+                  <td align="left" valign="baseline">Yes</td>
+                  <td align="left" valign="baseline">Pass</td>
+                </tr>
+              </table>
+			  </p>
+			  <p>
+			  <h4>2.forms test result</h4>
+			  
+			    <p><b> 2.1. create ride offer form</b></p>
+			    <ul>
+			   <li>group 1 data successful</li>
+			   <li>group 2 data fail</li>
+			   
+			   </ul>
+			   </p>
+			   <p>Commence: create ride offer form  fail to validate number of seats input.<br />
+			      more details see unit test source code test_rideoffer.py. 
+			 
+		      </p>
+				<p><b>2.2. my profile edit page</b></p>
+				<ul>
+			   <li>group 1 data successful</li>
+			   <li>group 2 data fail</li>
+			   
+			   </ul>
+			   </p>
+			   <p>Commence: this form fail to validate empty input, large long text input, and wrong telephone number format.<br />
+			     
+			 
+		      </p>
+				
+				<p><b> 3. inteface integration test result </b></p>
+				<p>
+				case 1 result:				
+			    <table border="1" cellpadding="10" cellspacing="0">
+                  <tr>
+                    <td align="left" valign="baseline" width="38"><strong>Case No.</strong></td>
+                    <td align="left" valign="baseline" width="119"><strong>Test Objects</strong> </td>
+                    <td align="left" valign="baseline" width="276"><strong>Expected</strong></td>
+                    <td align="left" valign="baseline" width="154">Observed same as expected (Yes/No)</td>
+                    <td align="left" valign="baseline" width="108">result</td>
+                  </tr>
+                  <tr>
+                    <td align="left" valign="baseline">1</td>
+                    <td align="left" valign="baseline"><p>input text boxes</p>
+                        <p>drop down selection boxes </p></td>
+                    <td align="left" valign="baseline">the drop down list boxes have all destination , date, and time <br />
+                      users are able to select items<br />
+                      text boxes allows users to type words .<br />                    </td>
+                    <td align="left" valign="baseline">Yes</td>
+                    <td align="left" valign="baseline">pass</td>
+                  </tr>
+                  <tr>
+                    <td align="left" valign="baseline">2</td>
+                    <td align="left" valign="baseline">button: save </td>
+                    <td align="left" valign="baseline"><p>page will be redirected into view ride offer page.<br />
+                      It will render following saving infomation:<br />
+                      Owner test@example.com<br />
+                      From Akaroa to Christchurch<br />
+                      On 2008-08-17 <br />
+                      departing at 09:00:00<br />
+                      Seats Available 2<br />
+                      Notes<br />
+                      test1<br />
+                    </p></td>
+                    <td align="left" valign="baseline">Yes</td>
+                    <td align="left" valign="baseline">pass</td>
+                  </tr>
+                  <tr>
+                    <td align="left" valign="baseline">3</td>
+                    <td align="left" valign="baseline">link: Edit</td>
+                    <td align="left" valign="baseline">page will be redirected into edit page . <br />
+                      shows previous input : <br />
+                      from Akaroa to Christchurch <br />
+                      date: 17 08 2008 <br />
+                      time: 9:00<br />
+                      seats: 2<br />
+                      commence: test1. </td>
+                    <td align="left" valign="baseline">Yes</td>
+                    <td align="left" valign="baseline">pass</td>
+                  </tr>
+                  <tr>
+                    <td align="left" valign="baseline" height="232">4</td>
+                    <td align="left" valign="baseline">edit function </td>
+                    <td align="left" valign="baseline">page will be redirected to view ride offer page. The following information will be display in this page.<br />
+                      Owner test@example.com<br />
+                      From Christchurch to Akaroa<br />
+                      On 2008-08-15 departing at 10:00:00<br />
+                      Seats Available 3<br />
+                      Notes<br />
+                      test<br />                    </td>
+                    <td align="left" valign="baseline">Yes</td>
+                    <td align="left" valign="baseline">pass</td>
+                  </tr>
+                  <tr>
+                    <td align="left" valign="baseline" height="153">5</td>
+                    <td align="left" valign="baseline">rides browser</td>
+                    <td align="left" valign="baseline">page will be redirected to browse page. <br />
+                      late ride offered rides will show : <br />
+                      Christchurch - Akaroa  	2008-08-15  	3  	test.</td>
+                    <td align="left" valign="baseline">Yes</td>
+                    <td align="left" valign="baseline">pass</td>
+                  </tr>
+                </table></p>
+				
+				<p> case 2 test results: </p>
+				<table border="1" cellpadding="10" cellspacing="0">
+                  <tr>
+                    <td width="88"><strong>Case No.</strong> </td>
+                    <td width="154"><strong>Test Objects</strong> </td>
+                    <td width="230"><strong>Expected</strong> </td>
+                    <td align="left" valign="baseline" width="82">Observed same as expected (Yes/No)</td>
+                    <td align="left" valign="baseline" width="79">result</td>
+                  </tr>
+
+                  <tr>
+                    <td>1</td>
+                    <td>link : MY PROFILE </td>
+                    <td>browser redirect to log in page </td>
+                    <td align="left" valign="baseline">Yes</td>
+                    <td align="left" valign="baseline">pass</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>log in page </td>
+                    <td>redirect to My profile page</td>
+                    <td align="left" valign="baseline">Yes</td>
+                    <td align="left" valign="baseline">pass</td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>page contents </td>
+                    <td>my ride form shows previous records:<br />
+                      Ride  	Date  	Seats<br />
+                      Christchurch - Akaroa  	2008-08-15  	3  	Edit<br />                    </td>
+                    <td align="left" valign="baseline">Yes</td>
+                    <td align="left" valign="baseline">pass</td>
+                  </tr>
+                  <tr>
+                    <td>4</td>
+                    <td>link: Christchurch-Akaroa </td>
+                    <td>browser redirect to View page <br />
+                      View ride offer show:<br />
+                      Owner test@example.com<br />
+                      From Christchurch to Akaroa<br />
+                      On 2008-08-15 departing at 10:00:00<br />
+                      Seats Available 3<br />
+                      Notes<br />
+                      test<br />                    </td>
+                    <td align="left" valign="baseline">Yes</td>
+                    <td align="left" valign="baseline">pass</td>
+                  </tr>
+                  <tr>
+                    <td>5</td>
+                    <td>link: Edit </td>
+                    <td><p>page contents show:</p>
+                      Source: Christchurch<br />
+                      Destination: Akaroa<br />
+                      Date: 15-08-2008 <br />
+                      Time: 10:00 <br />
+                      Available seats:3<br />
+                      Notes: test<br /></td>
+                    <td align="left" valign="baseline">Yes</td>
+                    <td align="left" valign="baseline">pass</td>
+                  </tr>
+                  <tr>
+                    <td>6</td>
+                    <td>link: Edit profile </td>
+                    <td>brosewer redirects to my profile edit page<br />
+                      my profile has text boxes avaliable for edit. </td>
+                    <td align="left" valign="baseline">Yes</td>
+                    <td align="left" valign="baseline">pass</td>
+                  </tr>
+                  <tr>
+                    <td>7</td>
+                    <td>Input text boxes <br />
+                      selection box<br />
+                      button: save</td>
+                    <td>browser redirects to My Profile page<br />
+                      My Profile contents show:<br />
+                      road mate<br />
+                      Email: test@example.com<br />
+                      Hometown: Akaroa<br />
+                      Phone: 061234567 </td>
+                    <td align="left" valign="baseline">Yes</td>
+                    <td align="left" valign="baseline">pass</td>
+                  </tr>
+                </table>
+			</div>
+			
+			<div id="boxBottom"></div>
+		</div>
+	<div id="footer">
+	<a href="#">Home</a> - <a href="#">Servicios/Services</a> - <a href="#">FAQ</a> - <a href="#">Contacto/Contact US</a></div>
+	<!-- Please don't delete this link -->
+	<span class="design">Design by <a href="http://www.colombiahosting.com.co" target="_blank">Colombia Hosting</a></span>
+	<!-- Please don't delete this link -->
+	</body>
+</html>
