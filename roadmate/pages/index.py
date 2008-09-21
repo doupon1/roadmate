@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 import os
 
 from google.appengine.api import users
@@ -19,40 +18,40 @@ from roadmate.models.rideoffer import RideOfferForm
 class IndexPageHandler(BaseRequestHandler):
 	"""
 		RoadMate RequestHandler
-		
+
 		Pages:
 			/index.html
 	"""
-	
+
 	def generate_template_values(self, page_path):
 		"""
 			generate_template_values
-			
+
 			Generates a dictionary of template values required by the pages
 			served from this request handler.
-			
+
 		"""
-		
-		
+
+
 		# --------------------------------------------------------------------
 		# Generate Template Values
 		# --------------------------------------------------------------------
-		template_values = BaseRequestHandler.generate_template_values(self, 
+		template_values = BaseRequestHandler.generate_template_values(self,
 			page_path)
 
-        #10 most recently created rides
+		#10 most recently created rides
 
 		rides = db.GqlQuery("SELECT * FROM RideOffer ORDER BY creation_date DESC LIMIT 10")
-		
+
 		# --------------------------------------------------------------------
 		# Store Template Values
 		# --------------------------------------------------------------------
-		
+
 		template_values['rides'] = list(rides)
-		
+
 		return template_values
-		
-		
+
+
 	def get(self):
 		# --------------------------------------------------------------------
 		# Generate Template Values
@@ -66,13 +65,13 @@ class IndexPageHandler(BaseRequestHandler):
 		# --------------------------------------------------------------------
 		page_path = os.path.join(os.path.dirname(__file__), 'index.html')
 		self.response.out.write(template.render(page_path, template_values))
-		
+
 # ----------------------------------------------------------------------------
 #  Program Entry Point
 # ----------------------------------------------------------------------------
 
 def main():
-	
+
 	# Initialize web  application
 	application = webapp.WSGIApplication(
 		[
