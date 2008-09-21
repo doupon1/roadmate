@@ -3,11 +3,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 
-<meta name="Description" content="Information architecture, Web Design, Web Standards." />
-<meta name="Keywords" content="your, keywords" />
+<meta name="Description" content="RoadMate - Car Pooling, Ride Sharing" />
+<meta name="Keywords" content="carpool, ride, ride share, rideshare, roadmate" />
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <meta name="Distribution" content="Global" />
-<meta name="Author" content="Erwin Aligam - ealigam@gmail.com" />
+<meta name="Author" content="159.356 Software Engineering C, Group A" />
 <meta name="Robots" content="index,follow" />
 
 <link rel="stylesheet" href="stylesheets/higher_ground.css" type="text/css" />
@@ -20,65 +20,77 @@
 <div id="wrap">
 
 	<div id="top-bg"></div>
-				
+
 	<!--header -->
-	<div id="header">			
-				
-		<h1 id="logo-text"><a href="index.html" title="">Road<span>Mate</span></a></h1>		
-		<p id="version">v{{ current_version }}</p>
-			
+	<div id="header">
+
+		<h1 id="logo-text"><a href="index.html" title="">Road<span>Mate</span></a></h1>
+
 		<div id="header-links">
 		<p>
 			{% if isLoggedIn %}
 				<a href="{{ logout_url }}">Log Out</a>
 			{% else %}
-				<a href="{{ login_url }}">Log In</a> | 
+				<a href="{{ login_url }}">Log In</a> |
 				<a href="{{ login_url }}">Register</a>
-			{% endif %}			
-		</p>		
-		</div>		
-	<!--header ends-->					
+			{% endif %}
+		</p>
+		</div>
+	<!--header ends-->
 	</div>
-		
-	<div id="header-photo"></div>		
-		
-	<!-- navigation starts-->	
+
+	<div id="header-photo"></div>
+
+	<!-- navigation starts-->
 	<div  id="nav">
 		<ul>
 			<li><a href="/">Home</a></li>
-			<li><a href="/profile">My Profile</a></li>
 			<li><a href="/browse">Browse Rides</a></li>
 			<li><a href="/support">Support</a></li>
-			<li><a href="/about">About</a></li>		
+			<li><a href="/about">About</a></li>
+			<li><a href="/">Contact Us</a></li> <!-- TODO basetemplate contact page --!>
+			<li><a>Search <input type='text'/></a></li> <!-- TODO basetemplate search box --!>
 		</ul>
-	<!-- navigation ends-->	
-	</div>					
-			
+	<!-- navigation ends-->
+	</div>
+
 	<!-- content-wrap starts -->
 	<div id="content-wrap">
-	
+
 		<div id="main">
-				
+
 			{% block main %}{% endblock %}
 
-		<!-- main ends -->	
+		<!-- main ends -->
 		</div>
-				
+
 		<div id="sidebar">
-			
-					
-			<h3>Sidebar Menu</h3>
-			<ul class="sidemenu">				
+
+
+
+			<ul class="sidemenu">
 				<li><a href="/">Home</a></li>
-				<li><a href="/rideoffer_create">Offer Ride</a></li>
-				<li><a href="/browse">Browse Rides</a></li>
-				<li>Search Rides</li>
-				
-			</ul>	
-			
+
+				<li><a href="/">My Profile</a></li>
+
+				<li>
+					<a href="/rideoffer_create">Offer A Ride</a> <br/>
+					<a href="/">Manage My Rides</a> <!-- TODO basetemplate manage my rides link --!>
+				</li>
+
+				<li><a href="/">Rides I'm Taking</a> <br/>
+
+
+				<li><a href="/browse">Browse All Rides</a></li>
+				<!-- TODO basetemplate  search bar --!>
+
+				</li>
+
+			</ul>
+
 			&nbsp;
 			&nbsp;
-			
+
 			<h3>Google Ads</h3>
 			<ul class="sidemenu">
 				<li><a href="http://www.4templates.com/?aff=ealigam"><strong>4templates</strong></a> <br /> Low Cost Hi-Quality Templates</li>
@@ -88,20 +100,21 @@
 				<li><a href="http://www.dreamstime.com/res338619"><strong>Dreamstime</strong></a> <br /> Lowest Price for High Quality Stock Photos</li>
 				<li><a href="http://www.dreamhost.com/r.cgi?287326"><strong>Dreamhost</strong></a> <br /> Premium webhosting</li>
 			</ul>
-					
-					
-						
-		<!-- sidebar ends -->		
-		</div>		
-		
-		
-	<!-- content-wrap ends-->	
+
+
+
+		<!-- sidebar ends -->
+		</div>
+
+
+	<!-- content-wrap ends-->
 	</div>
-		
-	<!-- footer starts -->		
+
+	<!-- footer starts -->
 	<div id="footer-wrap">
+
 		<div id="footer-columns">
-	
+		<!--
 			<div class="col3">
 				<h3>Home</h3>
 				<ul>
@@ -124,28 +137,29 @@
 				<ul>
 					<li><a href="./support">Support</a></li>
 					<li><a href="./about">About us</a></li>
-					
+
 				</ul>
 			</div>
 
-		<!-- footer-columns ends -->
-		</div>	
-	
-		<div id="footer-bottom">		
-			
+		footer-columns ends -->
+		</div>
+
+		<div id="footer-bottom">
+
 			<p>
-			&copy; 2006 <strong>RoadMate</strong> | 
-			Design by: <a href="http://www.styleshout.com/">styleshout</a> | 
-			Valid <a href="http://validator.w3.org/check?uri=referer">XHTML</a> | 
+			&copy; 2008 <strong>RoadMate</strong> |
+			159.356 Software Engineering C [Group A]
+
+			<a href="http://www.massey.ac.nz">Massey University</a> <br/>
+			Templates by <a href="http://www.styleshout.com/">styleshout</a> |
+			Powered by <a href="http://appengine.google.com/">Google App Engine</a> |
+			Valid <a href="http://validator.w3.org/check?uri=referer">XHTML</a> |
 			<a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
-			
-   		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			
-			<a href="index.html">Home</a>&nbsp;|&nbsp;
-   		<a href="index.html">Sitemap</a>&nbsp;|&nbsp;
-   		</p>		
-			
-		</div>	
+
+
+   		</p>
+
+		</div>
 
 <!-- footer ends-->
 </div>

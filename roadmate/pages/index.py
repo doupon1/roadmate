@@ -73,7 +73,7 @@ class IndexPageHandler(BaseRequestHandler):
 
 def main():
 	
-	# Instalise web application
+	# Initialize web  application
 	application = webapp.WSGIApplication(
 		[
 		 ('/', IndexPageHandler),

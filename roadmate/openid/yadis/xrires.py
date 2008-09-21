@@ -90,7 +90,7 @@ class ProxyResolver(object):
             canonicalID = etxrd.getCanonicalID(xri, et)
             some_services = list(iterServices(et))
             services.extend(some_services)
-        # TODO:
+        ## TODO:
         #  * If we do get hits for multiple service_types, we're almost
         #    certainly going to have duplicated service entries and
         #    broken priority ordering.

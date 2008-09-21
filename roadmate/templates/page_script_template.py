@@ -80,7 +80,7 @@ class PageHandler(BaseRequestHandler):											#	<==	Rename to <page name>Page
 # ----------------------------------------------------------------------------
 
 def main():
-	# Instalise web application
+	# Initialize web  application
 	application = webapp.WSGIApplication(
 		[
 #		 ("/rideoffer_create", CreateRideOfferPageHandler),						#	<==	Replace these with the appropriate hander names

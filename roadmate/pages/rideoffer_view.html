@@ -4,30 +4,30 @@
 
 {% block main %}
 	<h2>View Ride Offer</h2>
-    <h3>{{ target_ride.source.name }} to {{ target_ride.destination.name }}, {{ target_ride.date }}</h3>
+	<p> <!-- ride offer --!>
+			<strong>Owner</strong> <a href="/profile?user={{ rideoffer.owner.key.id }}">{{ rideoffer.owner.user.email }}</a><br />
+			<strong>From</strong> <a href="/location?id={{ rideoffer.source.key.id }}">{{ rideoffer.source.name }}</a>
+			<strong> To</strong> <a href="/location?id={{ rideoffer.destination.key.id }}">{{ rideoffer.destination.name }}</a><br />
 
-	<p>
-		<code>
-			<strong>Owner</strong> <a href="/profile?user={{ target_ride.owner.key.id }}">{{ target_ride.owner.user.email }}</a><br />
-            
-            
-            
-			<strong>From</strong> {{ target_ride.source.name }}	<strong>to</strong> {{ target_ride.destination.name }}<br />
-			<strong>On</strong> {{ target_ride.date }} <strong>departing at</strong> {{ target_ride.time }}<br />
-			
-            <strong>Seats Available</strong> {{ target_ride.available_seats }}<br />
-
-			
-			{% if target_ride.notes %}
-				<strong>Notes</strong><br />
-				{{ target_ride.notes }}<br />
+			{% if rideoffer.notes %}
+				<strong>Notes</strong> {{ rideoffer.notes }}<br />
 			{% endif %}
-		</code>
+
 	</p>
-	
-	{% ifequal target_ride.owner current_user %}
-		<p class="post-footer">		
-			<a href="/rideoffer_edit?id={{ target_ride.key.id }}" class="edit">Edit</a>	
-		</p>
-	{% endifequal %}
+	<p> <!-- ride --!>
+
+	      <h3>Scheduled Rides</h3>
+	      <table>
+	      	{% for ride in rideoffer.rides %}
+			<tr class="row-a">
+			  <td><strong>Date</strong> {{ ride.date }}<br />
+			  <strong>Departs at</strong> {{ ride.departure_time }} <strong> Arrives at</strong> {{ ride.arrival_time }}</td>
+			  <td> <a href="/ride?id={{ ride.key.id }}">View Ride Details</a></td>
+			  </tr>
+			{% endfor %}
+			</table>
+
+	</p>
+
+
 {% endblock %}

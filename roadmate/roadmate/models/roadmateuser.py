@@ -7,19 +7,16 @@ from google.appengine.api.users import User
 
 from google.appengine.ext.db import djangoforms
 
-from roadmate.models.town import Town
 
 class RoadMateUser(db.Model):
 	"""
-		RoadMate Data Model
-		
-		RoadUser
+		RoadMateUser
 			Stores data about a site user.
 	"""
 	user = db.UserProperty(required=True)
 	first_name = db.StringProperty()
 	last_name = db.StringProperty()
-	town = db.ReferenceProperty(Town)
+	town = db.StringProperty()
 	phone = db.PhoneNumberProperty()
 	registration_date = db.DateTimeProperty(required=True, auto_now_add=True)
 	

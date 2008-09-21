@@ -10,55 +10,63 @@ from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 
 from roadmate.handlers.baserequesthandler import BaseRequestHandler
-from roadmate.models.rideoffer import RideOffer
-from roadmate.models.rideoffer import RideOfferSearch
-from roadmate.models.rideoffer import RideOfferSearchForm
 from roadmate.models.roadmateuser import RoadMateUser
-from roadmate.models.town import Town
+
+from roadmate.models.ride import Ride
+
 
 # ----------------------------------------------------------------------------
 #  Request Handlers
 # ----------------------------------------------------------------------------
 
-class BrowseRideOffersPageHandler(BaseRequestHandler):
+class ViewRidePageHandler(BaseRequestHandler):
 	"""
 		RoadMate RequestHandler
-		
+
 		Page:
-			"browse_rideoffers.html"
+			/ride ( = ride_view.html)
+
 		Get Arguments:
-			maxresults - Integer [Default=20]
-	"""	
-		
+			id - Integer (Ride.key.id) [Required]
+	"""
+
 	def get(self):
-		## --------------------------------------------------------------------
-		# Retrive Session Info and Request Data
+		# --------------------------------------------------------------------
+		# Retrive Session Info and GET Data
 		# --------------------------------------------------------------------
 		# Session Values
 		current_user = RoadMateUser.get_current_user()
-		
+
+
 		# Request Values
-		max_results = self.get_request_parameter('maxresults', converter=int, default=20)
-		
+		ride_id = self.get_request_parameter('id', converter=int, default=None)
+
 		# Datastore Values
-		rides = db.GqlQuery("SELECT * FROM RideOffer ORDER BY date, time LIMIT %u" % max_results)
-
-
-		
+		ride = Ride.get_by_id(ride_id)
 		# --------------------------------------------------------------------
-		# Generate Template Values
+		# Validate Request
 		# --------------------------------------------------------------------
-		template_values = super(BrowseRideOffersPageHandler, self
+		# if the target ride does not exist in the datastore, then redirect
+		# the user back to the home page.
+		if ride is None:
+			self.error(404)
+			return
+
+		# --------------------------------------------------------------------
+		# Generate and Store Template Values
+		# --------------------------------------------------------------------
+		template_values = super(ViewRidePageHandler, self
 			).generate_template_values(self.request.url)
-		
-		template_values['rides'] = list(rides)
-		
+
+		template_values['ride'] = ride
+
+
 		# --------------------------------------------------------------------
 		# Render and Serve Template
 		# --------------------------------------------------------------------
-		page_path = os.path.join(os.path.dirname(__file__), "browse_rideoffers.html")			
+		page_path = os.path.join(os.path.dirname(__file__), "ride_view.html")
 		self.response.out.write(template.render(page_path, template_values))
-		
+
 
 # ----------------------------------------------------------------------------
 #  Program Entry Point
@@ -68,14 +76,10 @@ def main():
 	# Initialize web  application
 	application = webapp.WSGIApplication(
 		[
-		 ('/browse', BrowseRideOffersPageHandler)
+		 ('/ride', ViewRidePageHandler)
 		], debug=True)
 	run_wsgi_app(application)
 
-# ----------------------------------------------------------------------------
-#  Load Custom Django Template Filters
-# ----------------------------------------------------------------------------
-webapp.template.register_template_library('roadmate.filters')
-	
+
 if __name__ == '__main__':
   main()

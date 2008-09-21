@@ -1,0 +1,16 @@
+{% extends "templates/base.html" %}
+
+{% block title%}Create Location{% endblock %}
+
+{% block main %}
+	<h2>Create Location</h2>
+	
+	<form method="post">		
+		{{ location_form }}
+		<p>
+			<input type="hidden" name="_do_create_location" value="True">
+			<input class="button" type="submit" value="Save"/>	
+		</p>		
+		<a href="/rideoffer_create">Create Ride Offer</a>
+	</form>
+{% endblock %}

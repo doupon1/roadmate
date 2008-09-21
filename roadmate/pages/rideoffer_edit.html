@@ -4,13 +4,13 @@
 
 {% block main %}
 	<h2>Edit Your Ride</h2>
-	
-	<form method="post">		
-		{{ ride_form }}
+
+	<form method="post">
+		{{ rideoffer_form }}
 		<p>
-			<input type="hidden" name="_id" value="{{ ride_form.instance.key.id }}">
+			<input type="hidden" name="_id" value="{{ rideoffer_form.instance.key.id }}">
 			<input type="hidden" name="_do_update_rideoffer" value="True">
-			<input class="button" type="submit" value="Save"/>	
-		</p>		
+			<input class="button" type="submit" value="Save"/>
+		</p>
 	</form>
 {% endblock %}

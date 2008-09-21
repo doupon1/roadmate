@@ -8,6 +8,9 @@ class BaseRequestHandler(webapp.RequestHandler):
 	"""
 		RoadMate RequestHandler
 		
+		This page defines the base template for the rest of the pages. 
+		The handlers here are inherited by the handlers for other pages
+		
 		Pages:
 			/templates/base.html
 	"""
@@ -41,7 +44,7 @@ class BaseRequestHandler(webapp.RequestHandler):
 		# Generate Template Values
 		# --------------------------------------------------------------------
 		current_user = RoadMateUser.get_current_user()
-		current_version = "0.1" ## update me
+		current_version = "0.2" ## update me
 
 		isLoggedIn = False
 		if current_user:

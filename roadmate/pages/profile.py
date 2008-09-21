@@ -196,7 +196,7 @@ class ProfilePageHandler(BaseRequestHandler):
 # ----------------------------------------------------------------------------
 
 def main():
-	# Instalise web application
+	# Initialize web  application
 	application = webapp.WSGIApplication(
 		[
 		 ('/profile', ProfilePageHandler)
