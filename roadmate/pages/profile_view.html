@@ -4,25 +4,22 @@
 
 {% block main %}
 	<h2>my profile</h2>
-	<h3>{{ target_user.first_name }} {{ target_user.last_name }}</h3>
 	
-	<p>
-		<code>
-						
-			<strong>Email:</strong> {{ target_user.user.email }}
-
-			{% if target_user.town.name %}
-				<br />
-				<strong>Hometown:</strong> {{ target_user.town.name }}
-			{% endif %}
+	{% if target_user.first_name and target_user.first_name %}
+		<h3>{{ target_user.first_name|default:"" }} {{ target_user.last_name|default:"" }}</h3>
+	{% endif %}
+	
+	<ul class="details-list">
+		<li><strong>Email:</strong> {{ target_user.user.email }}</li>
 			
-			{% if target_user.phone %}
-				<br />
-				<strong>Phone:</strong> {{ target_user.phone }}
-			{% endif %}
-			
-		</code>
-	</p>
+		{% if target_user.town %}
+			<li><strong>Hometown:</strong> {{ target_user.town }}</li>
+		{% endif %}
+				
+		{% if target_user.phone %}
+			<li><strong>Phone:</strong> {{ target_user.phone }}</li>
+		{% endif %}
+	</ul>
 	
 	{% ifequal target_user current_user %}
 		<p class="post-footer">	
