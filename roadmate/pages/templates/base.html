@@ -11,7 +11,6 @@
 <meta name="Robots" content="index,follow" />
 
 <link rel="stylesheet" href="stylesheets/higher_ground.css" type="text/css" />
-<link href="stylesheets/supportpage.css" type="text/css" rel="stylesheet"/>
 
 <title>RoadMate - {% block title %}{% endblock %}</title></head>
 
@@ -42,14 +41,12 @@
 	<div id="header-photo"></div>
 
 	<!-- navigation starts-->
-	<div  id="nav">
+	<div id="nav">
 		<ul>
 			<li><a href="/">Home</a></li>
-			<li><a href="/browse">Browse Rides</a></li>
+			<li><a href="/profile">My Profile</a></li>
 			<li><a href="/support">Support</a></li>
 			<li><a href="/about">About</a></li>
-			<li><a href="/">Contact Us</a></li> <!-- TODO basetemplate contact page --!>
-			<li><a>Search <input type='text'/></a></li> <!-- TODO basetemplate search box --!>
 		</ul>
 	<!-- navigation ends-->
 	</div>
@@ -65,43 +62,27 @@
 		</div>
 
 		<div id="sidebar">
-
-
-
+			
 			<ul class="sidemenu">
 				<li><a href="/">Home</a></li>
-
-				<li><a href="/">My Profile</a></li>
-
-				<li>
-					<a href="/rideoffer_create">Offer A Ride</a> <br/>
-					<a href="/">Manage My Rides</a> <!-- TODO basetemplate manage my rides link --!>
-				</li>
-
-				<li><a href="/">Rides I'm Taking</a> <br/>
-
-
+				<li><a href="/profile">My Profile</a></li>
+				<li><a href="/rideoffer_create">Offer A Ride</a></li>
+				<li><a href="/profile">Manage My Rides</a></li>
+				<li><a href="/profile">Rides I'm Taking</a></li>
 				<li><a href="/browse">Browse All Rides</a></li>
-				<!-- TODO basetemplate  search bar --!>
-
-				</li>
-
 			</ul>
-
-			&nbsp;
-			&nbsp;
-
-			<h3>Google Ads</h3>
-			<ul class="sidemenu">
-				<li><a href="http://www.4templates.com/?aff=ealigam"><strong>4templates</strong></a> <br /> Low Cost Hi-Quality Templates</li>
-				<li><a href="http://store.templatemonster.com?aff=ealigam"><strong>TemplateMonster</strong></a> <br /> Delivering the Best Templates on the Net!</li>
-				<li><a href="http://tinyurl.com/3cgv2m"><strong>Text Link Ads</strong></a> <br /> Monetized your website</li>
-				<li><a href="http://www.fotolia.com/partner/114283"><strong>Fotolia</strong></a> <br /> Free stock images or from $1</li>
-				<li><a href="http://www.dreamstime.com/res338619"><strong>Dreamstime</strong></a> <br /> Lowest Price for High Quality Stock Photos</li>
-				<li><a href="http://www.dreamhost.com/r.cgi?287326"><strong>Dreamhost</strong></a> <br /> Premium webhosting</li>
-			</ul>
-
-
+			
+			<div class="admenu">
+				<h3>Google Ads</h3>
+				<ul class="sidemenu">
+					<li><a href="http://www.4templates.com/?aff=ealigam"><strong>4templates</strong></a> <br /> Low Cost Hi-Quality Templates</li>
+					<li><a href="http://store.templatemonster.com?aff=ealigam"><strong>TemplateMonster</strong></a> <br /> Delivering the Best Templates on the Net!</li>
+					<li><a href="http://tinyurl.com/3cgv2m"><strong>Text Link Ads</strong></a> <br /> Monetized your website</li>
+					<li><a href="http://www.fotolia.com/partner/114283"><strong>Fotolia</strong></a> <br /> Free stock images or from $1</li>
+					<li><a href="http://www.dreamstime.com/res338619"><strong>Dreamstime</strong></a> <br /> Lowest Price for High Quality Stock Photos</li>
+					<li><a href="http://www.dreamhost.com/r.cgi?287326"><strong>Dreamhost</strong></a> <br /> Premium webhosting</li>
+				</ul>
+			</div>
 
 		<!-- sidebar ends -->
 		</div>
