@@ -1,3 +1,5 @@
+/* @override http://localhost:8082/stylesheets/higher_ground.css */
+
 /********************************************
 	AUTHOR:				Erwin Aligam
 	WEB
@@ -7,24 +9,28 @@
 	VERSION:			1.1
 	LAST MODIFIED:		9/8/08
  *******************************************/
+
  /* Slogan changed to Version 9/8/08
 
 /********************************************
    HTML ELEMENTS
 ********************************************/
 
-/* Top Elements */
+/* @group top elements */
 * { margin: 0; padding: 0; outline: 0 }
 
 body {
 	background: #CCC;
-	font: 70%/1.5em Verdana, Tahoma, arial, sans-serif;
+	font: 71%/1.5em "Lucida Grande", Lucida, Verdana, sans-serif;
 	color: #666666;
 	text-align: center;
 	margin: 15px 0;
 }
 
-/* links */
+/* @end */
+
+
+/* @group links */
 a, a:visited {
 	color: #5A93C9;
 	background: inherit;
@@ -36,7 +42,10 @@ a:hover {
 	text-decoration: underline;
 }
 
-/* headers */
+/* @end */
+
+
+/* @group headers */
 h1, h2, h3 {
 	font-family: 'Trebuchet MS', Tahoma, Sans-serif;
 	font-weight: Bold;
@@ -59,6 +68,11 @@ h1, h2, h3, p {
 	padding: 10px;
 	margin: 0;
 }
+
+/* @end */
+
+
+/* @group lists */
 ul, ol {
 	margin: 5px 20px;
 	padding: 0 20px;
@@ -66,7 +80,6 @@ ul, ol {
 ul {
 	list-style: none;
 }
-
 
 dl {
 margin-left:20%;
@@ -86,7 +99,10 @@ dd{
 margin-top:2%;
 }
 
-/* images */
+/* @end */
+
+
+/* @group images */
 img {
 	background: #FAFAFA;
    border: 1px solid #DCDCDC;
@@ -98,6 +114,9 @@ img.float-right {
 img.float-left {
   	margin: 5px 10px 10px 0px;
 }
+
+/* @end */
+
 
 code {
   	margin: 5px 0;
@@ -124,7 +143,7 @@ blockquote {
 }
 
 
-/* start - table */
+/* @group tables */
 table {
 	border-collapse: collapse;
 	margin: 10px;
@@ -160,66 +179,70 @@ tr.row-a {
 tr.row-b {
 	background: #EFEFEF;
 }
-/* end - table */
 
-/* form elements */
+/* @end */
+
+
+/* @group forms */
 form {
-	margin:10px; padding: 0 5px;
+	margin:10px; padding: 5px;
 	border: 1px solid #D5D5D5;
 	background-color: #DFDFDF;
 }
-label {
-	display:block;
+form label {
+	display: block;
+	float: left;
 	font-weight:bold;
-	margin:5px 0;
+	text-align: right;
+	padding-right: 5px;
+	width: 120px;
+}
+
+form div.inputgroup {
+	padding-bottom: 8px;
+}
+
+form div {
+	padding-bottom: 5px;
+}
+
+form a.buttonlink {
+	margin-left: 10px;
 }
 input {
 	padding:2px;
 	border:1px solid #eee;
-	font: normal 1em Verdana, sans-serif;
 	color:#777;
+	width: 280px;
 }
 textarea {
 	width:400px;
-	padding:2px;
-	font: normal 1em Verdana, sans-serif;
 	border:1px solid #eee;
 	height:100px;
 	display:block;
 	color:#777;
+	margin-left: 47px;
 }
+
 input.button {
 	font: bold 12px Arial, Sans-serif;
 	height: 24px;
-	margin: 0;
+	margin-left: 90px;
 	padding: 2px 3px;
 	color: #FFF;
 	background: #8EB50C url(higher_ground_images/nav.jpg) repeat-x 0 0;
 	border: none;
 }
 
-/* search form */
-.searchform {
-	background-color: transparent;
-	border: none;
-	margin: 0 0 0 3px; padding: 5px 0 10px 0;
-	width: 220px;
+select#id_source {
+	width: 280px;
 }
-.searchform p { margin: 0; padding: 0; }
-.searchform input.textbox {
-	width: 130px;
-	color: #777;
-	height: 18px;
-	padding: 2px;
-	border: 1px solid #E5E5E5;
-	vertical-align: top;
+
+select#id_destination {
+	width: 280px;
 }
-.searchform input. {
-	width: 60px;
-	height: 24px;
-	padding: 2px 5px;
-	vertical-align: top;
-}
+
+/* @end */
 
 /********************************************
    LAYOUT
@@ -334,6 +357,17 @@ input.button {
 	padding: 0;
 	display: inline;
 }
+
+#main ul.details-list {
+	background: url(higher_ground_images/post.jpg);
+	padding: 5px; margin: 5px 10px 10px 10px;
+	border: 1px solid #E0DBC9;
+}
+
+#main ul.details-list li {
+	list-style: none;
+}
+
 #nav ul li {
 	display: inline;
 	margin: 0; padding: 0;
@@ -353,6 +387,7 @@ input.button {
 	text-decoration: none;
 	letter-spacing: 1px;
 }
+
 #nav ul li a:hover,
 #nav ul li a:active {
 	background: url(higher_ground_images/nav-hover.jpg) repeat-x;
@@ -408,6 +443,10 @@ input.button {
 }
 * html body #sidebar ul.sidemenu li {
 	height: 1%;
+}
+
+#sidebar div.admenu {
+	margin-top: 30px;
 }
 #sidebar ul.sidemenu li a {
 	text-decoration: none;
