@@ -1,6 +1,6 @@
 {% extends "templates/base.html" %}
 
-{% block title%}Ride Offer{% endblock %}
+{% block title%}View Ride{% endblock %}
 
 {% block main %}
 	<h2>View Ride</h2>
@@ -80,7 +80,7 @@
 			</td>
 			{% ifequal current_user ride.rideoffer.owner %} <!-- only show "assign seat" if user is owner --!>
 				<td>
-					 <a href="/">Approve</a></td> <!--TODO-->
+					 <a href="/ride?id={{ride.key.id}}&prq_id={{prq.key.id}}&action=APRV">Approve</a></td>
 				</td>
 			{% endifequal %}
 		  </tr>

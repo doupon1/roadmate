@@ -45,9 +45,24 @@ class ViewRidePageHandler(BaseRequestHandler):
 
 		# Request Values
 		ride_id = self.get_request_parameter('id', converter=int, default=None)
+		prq_id = self.get_request_parameter('prq_id', converter=int, default=None)
+		action = self.get_request_parameter('action', converter=str, default=None)
 
 		# Datastore Values
 		ride = Ride.get_by_id(ride_id)
+
+##		#current user must be owner
+##		if current_user is ride.rideoffer.owner:
+		##print(action)
+
+	   	#approve a passenger request
+		if prq_id:
+			prq = PassengerRequest.get_by_id(prq_id)
+			empty_seat = ride.seats.filter('passenger=', False).get() #find an empty seat on this ride
+			print('test')
+			#empty_seat.assign(prq) #assign the seat - this handles setting the "assigned time" as well
+			#prq.delete() #delete the passenger request
+
 		# --------------------------------------------------------------------
 		# Validate Request
 		# --------------------------------------------------------------------
