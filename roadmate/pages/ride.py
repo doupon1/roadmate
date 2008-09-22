@@ -106,6 +106,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 		# --------------------------------------------------------------------
 		# Session Values
 		current_user = RoadMateUser.get_current_user()
+		key = "ABQIAAAALCi9t1naIjEhwoF3_R48QxQtrj2yXU7uUDf9MLK2OBnE3PD31hRS8GRlNBL8LAzbUwLiBPN_wWqmoQ"
 
 
 		# Request Values
@@ -125,10 +126,24 @@ class ViewRidePageHandler(BaseRequestHandler):
 		# --------------------------------------------------------------------
 		# Generate and Store Template Values
 		# --------------------------------------------------------------------
+		def get_lat_long2(location): # This method returns a string that contains (Latitude,Longitude)   
+                    output = "csv"
+                    location = urllib.quote_plus(location)
+                    url = "http://maps.google.com/maps/geo?q=%s&output=%s&key=%s" % (location, output, key)
+                    result = urlfetch.fetch(url).content
+                    dlist = result.split(',')
+                    if dlist[0] == '200':
+                        return "%s, %s" % (dlist[2], dlist[3])
+                    else:
+                        return ''
+                
 		template_values = super(ViewRidePageHandler, self
 			).generate_template_values(self.request.url)
 
 		template_values['ride'] = ride
+		template_values['lat_lng_src'] = get_lat_long2(ride.rideoffer.source.address + ride.rideoffer.source.town)
+                template_values['lat_lng_des'] = get_lat_long2(ride.rideoffer.destination.address + ride.rideoffer.destination.town)
+                template_values['key'] = key
 		#print(self.request.POST['do_request_ride'])
 		# --------------------------------------------------------------------
 		# Retrive POST Data
