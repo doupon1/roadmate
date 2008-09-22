@@ -2,10 +2,12 @@
 
 import os
 import logging
+import urllib
 
 from google.appengine.api import users
 from google.appengine.ext import db
 from google.appengine.ext import webapp
+from google.appengine.api import urlfetch
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 
@@ -14,6 +16,7 @@ from roadmate.models.roadmateuser import RoadMateUser
 from roadmate.models.passengerrequest import PassengerRequest
 
 from roadmate.models.ride import Ride
+from roadmate.models.ride import RideOffer
 
 
 # ----------------------------------------------------------------------------
@@ -37,6 +40,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 		# --------------------------------------------------------------------
 		# Session Values
 		current_user = RoadMateUser.get_current_user()
+		key = "ABQIAAAALCi9t1naIjEhwoF3_R48QxQtrj2yXU7uUDf9MLK2OBnE3PD31hRS8GRlNBL8LAzbUwLiBPN_wWqmoQ" 
 
 
 		# Request Values
@@ -56,11 +60,23 @@ class ViewRidePageHandler(BaseRequestHandler):
 		# --------------------------------------------------------------------
 		# Generate and Store Template Values
 		# --------------------------------------------------------------------
+		def get_lat_long(location): # This method returns a string that contains (Latitude,Longitude)   
+                    output = "csv"
+                    location = urllib.quote_plus(location)
+                    url = "http://maps.google.com/maps/geo?q=%s&output=%s&key=%s" % (location, output, key)
+                    result = urlfetch.fetch(url).content
+                    dlist = result.split(',')
+                    if dlist[0] == '200':
+                        return "%s, %s" % (dlist[2], dlist[3])
+                    else:
+                        return ''
+
 		template_values = super(ViewRidePageHandler, self
 			).generate_template_values(self.request.url)
 
 		template_values['ride'] = ride
-
+		template_values['lat_lng_src'] = get_lat_long(ride.rideoffer.source.address + ride.rideoffer.source.town)
+                template_values['lat_lng_des'] = get_lat_long(ride.rideoffer.destination.address + ride.rideoffer.destination.town)
 
 		# --------------------------------------------------------------------
 		# Render and Serve Template
