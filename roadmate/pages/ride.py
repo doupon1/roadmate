@@ -11,6 +11,7 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 
 from roadmate.handlers.baserequesthandler import BaseRequestHandler
 from roadmate.models.roadmateuser import RoadMateUser
+from roadmate.models.passengerrequest import PassengerRequest
 
 from roadmate.models.ride import Ride
 
@@ -29,7 +30,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 		Get Arguments:
 			id - Integer (Ride.key.id) [Required]
 	"""
-
+#GET REQUEST HANDLER
 	def get(self):
 		# --------------------------------------------------------------------
 		# Retrive Session Info and GET Data
@@ -66,6 +67,63 @@ class ViewRidePageHandler(BaseRequestHandler):
 		# --------------------------------------------------------------------
 		page_path = os.path.join(os.path.dirname(__file__), "ride_view.html")
 		self.response.out.write(template.render(page_path, template_values))
+
+#POST REQUEST HANDLER
+	def post(self):
+		# --------------------------------------------------------------------
+		# Retrive Session Info and GET Data
+		# --------------------------------------------------------------------
+		# Session Values
+		current_user = RoadMateUser.get_current_user()
+
+
+		# Request Values
+		ride_id = self.get_request_parameter('id', converter=int, default=None)
+
+		# Datastore Values
+		ride = Ride.get_by_id(ride_id)
+		# --------------------------------------------------------------------
+		# Validate Request
+		# --------------------------------------------------------------------
+		# if the target ride does not exist in the datastore, then redirect
+		# the user back to the home page.
+		if ride is None:
+			self.error(404)
+			return
+
+		# --------------------------------------------------------------------
+		# Generate and Store Template Values
+		# --------------------------------------------------------------------
+		template_values = super(ViewRidePageHandler, self
+			).generate_template_values(self.request.url)
+
+		template_values['ride'] = ride
+		#print(self.request.POST['do_request_ride'])
+		# --------------------------------------------------------------------
+		# Retrive POST Data
+		# If the request ride bit is set, create a new request
+		# --------------------------------------------------------------------
+		if self.request.POST['do_request_ride']:
+			prq = PassengerRequest(owner=current_user, ride=ride) #create a new passengerrequest
+			prq.put()
+			template_values['requested'] = True #so form can display a response
+
+
+
+		# --------------------------------------------------------------------
+		# Render and Serve Template
+		# --------------------------------------------------------------------
+		page_path = os.path.join(os.path.dirname(__file__), "ride_view.html")
+		self.response.out.write(template.render(page_path, template_values))
+
+
+
+
+
+
+
+
+
 
 
 # ----------------------------------------------------------------------------

@@ -127,19 +127,21 @@ class AssignSeatPageHandler(BaseRequestHandler):
 		# Set up the selection values dynamically
 		# --------------------------------------------------------------------
 		seat_form = SeatForm(instance=seat)
-		prq = seat.ride.passengerrequests
-		selections = tuple()
+		prq = list(seat.ride.passengerrequests)
+		selections = list()
 		for request in prq:
-				selections.__add__(request.owner.key,request.owner.key)
+			t = (request.owner.key, request.owner.user.email())
+
+			selections.append(t)
 		seat_form.fields['selection'].choices = selections
-		#print(dir(seat_form.fields['passenger'].choices))
+
 
 
   		# --------------------------------------------------------------------
 		# Add the form to the template values
 		# --------------------------------------------------------------------
 		template_values['assign_seat_form'] = seat_form
-
+		#print(dir(prq))
 		# --------------------------------------------------------------------
 		# Render and Serve Template
 		# --------------------------------------------------------------------
@@ -179,15 +181,7 @@ class AssignSeatPageHandler(BaseRequestHandler):
 			self.error(404)
 			return
 
-		# if the user is trying to edit a ride they did not create,
-		# redirect them to an error page (403: Forbidden).
-		if seat.owner != current_user:
-			logging.warning("User '%s' attempted to edit a ride offer"\
-				" belonging to user '%s'. Redirecting to an error page."  %
-				(current_user.user.email, rideoffer.owner.user.email))
-
-			self.error(403)
-			return
+		# TODO add in the logging
 
 		assign_seat_form = SeatForm(
 			data=self.request.POST,

@@ -16,32 +16,77 @@
 			{% if ride.notes %}
 				<strong>Notes</strong> {{ rideoffer.notes }}<br />
 			{% endif %}
+			<p />
 
-	</p>
-	<p> <!-- seats --!>
+	 <form method="post"><!-- show the form-->
 
-	      <h3>{{ride.seats.count }} Seats</h3>
-	      <table>
-	      	{% for seat in ride.seats %}
-				<tr class="row-a">
+      <input type="hidden" name="do_request_ride" value="True">
+	  <input class="button"  value="Request a Seat" type="submit">
 
-				<td>
-					 <a href="/seat?id={{ seat.key.id }}">View Seat</a></td>
-				</td>
-				{% ifequal current_user ride.rideoffer.owner %}
-				<td>
-					{% if seat.passenger %}
-				       {{ seat.passenger.owner.user.email }} </br>
-					{% endif %}
+	  {% if requested %} <!--if a ride has been requested this template_value will be TRUE -->
+		<code><strong>
+		   Your request for a seat on this ride has been sent
+		   and you will be notified when it is approved
+		</strong></code>
 
-					 <a href="/seat_assign?id={{ seat.key.id }}">Assign Seat</a></td>
-				</td>
-				{% endifequal %}
-			  </tr>
-			{% endfor %}
-			</table>
+		{% endif %}
+    </form>
+
 
 	</p>
 
+	<h3>{{ride.seats.count }} Seats</h3>
+
+	<p> <!-- show assigned seats --!>
+
+  <table>
+  	<h3>Passengers</h3>
+  	<tr>
+	<th>User</th>
+    <th>Date</th>
+	</tr>
+  	{% for seat in ride.seats %}
+  	  {% if seat.passenger %}
+			<tr class="row-a">
+			<td>
+				 <a href="/profile?id={{ seat.passenger.owner.key.id }}">{{seat.passenger.owner.user.email}}</a></td>
+			</td>
+			{% ifequal current_user ride.rideoffer.owner %} <!-- only show "assign seat" if user is owner --!>
+				<td>
+					 <a href="/">Remove</a></td> <!--TODO-->
+				</td>
+			{% endifequal %}
+		  	</tr>
+	  {% endif %}
+	{% endfor %}
+	</table>
+
+	</p>
+
+	<p> <!-- show passenger requests --!>
+
+	<table>
+	<h3>Open Passenger Requests for this Ride</h3>
+      	<tr>
+		<th>User</th>
+        <th>Date</th>
+		</tr>
+
+      	{% for prq in ride.passengerrequests %}
+			<tr class="row-a">
+
+			<td>
+				 <a href="/profile?id={{ prq.owner.key.id }}">{{prq.owner.user.email}}</a></td>
+			</td>
+			{% ifequal current_user ride.rideoffer.owner %} <!-- only show "assign seat" if user is owner --!>
+				<td>
+					 <a href="/">Approve</a></td> <!--TODO-->
+				</td>
+			{% endifequal %}
+		  </tr>
+		{% endfor %}
+		</table>
+
+	</p>
 
 {% endblock %}
