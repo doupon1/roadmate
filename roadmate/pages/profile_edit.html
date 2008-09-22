@@ -6,7 +6,22 @@
 	<h2>my profile</h2>
 	
 	<form method="post">	
-		{{ user_form }}
+        <div>
+            {{ user_form.first_name.label_tag }}
+            {{ user_form.first_name }}
+        </div>
+        <div>
+            {{ user_form.last_name.label_tag }}
+            {{ user_form.last_name }}
+        </div>
+        <div>
+            {{ user_form.town.label_tag }}
+            {{ user_form.town }}
+        </div>
+         <div>
+            {{ user_form.phone.label_tag }}
+            {{ user_form.phone }}
+        </div>
 		<p>
 			
 			<input type="hidden" name="_id" value="{{ user_form.instance.key.id }}"/>
