@@ -1,0 +1,28 @@
+{% extends "templates/base.html" %}
+
+{% block title%}Home{% endblock %}
+
+{% block main %}
+
+
+<table>
+	<tr>
+		<th>Ride</th>
+		<th>Owner</th>
+		<th>Date</th>
+		<th>Seats</th>
+
+	</tr>
+	{% for ride in rides %}
+	<tr class="row-a">
+		<td><a href="/ride?id={{ride.key.id}}">{{ride.rideoffer.source.name}} - {{ride.rideoffer.destination.name}}</a></td>
+		<td><a href ="/profile?user={{ride.rideoffer.owner.key.id}}">{{ride.rideoffer.owner.user.email|local_part_from_email }}</a></td>
+		<td>{{ride.date}}</td>
+		<td>{{ride.seats.count }}</td>
+	</tr>
+	{% endfor %}
+
+
+</table>
+
+{% endblock %}

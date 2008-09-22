@@ -14,7 +14,7 @@ indexes:
 - kind: Ride
   ancestor: yes
 
-# Used once in query history.
+# Used 2 times in query history.
 - kind: RideOffer
   properties:
   - name: creation_date

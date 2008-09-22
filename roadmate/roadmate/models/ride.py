@@ -29,6 +29,9 @@ class Ride(db.Model):
 		for i in range(0,number_of_seats):
 			s = Seat(ride=self)
 			s.put()
+		return
+
+
 
 
 	def __unicode__(self):

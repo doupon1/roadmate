@@ -8,7 +8,7 @@ from django import newforms as forms
 
 from roadmate.models.roadmateuser import RoadMateUser
 from roadmate.models.ride import Ride
-
+from roadmate.models.passengerrequest import PassengerRequest
 
 class Seat(db.Model):
 	"""
@@ -38,15 +38,20 @@ class Seat(db.Model):
 		"""Returns a string representation of the object."""
 		return self.name
 
+
+
 	##use this to accept a PassengerRequest
-	def accept(self, passenger_request):
+	def assign(self, passenger_request):
 		self.passenger = passenger_request.owner
 		self.accepted = db.DateTimeProperty.now()
 		passenger_request.delete()
+		return
+
+
 
 #provide a control to pick a RoadMateUser from the PassengerRequests and bind it to the Seat
 class SeatForm(djangoforms.ModelForm):
-
+	selection = forms.ChoiceField()
 	class Meta:
 	  model = Seat
-	  exclude = ['ride', 'accepted']
+	  exclude = ['ride', 'accepted', 'passenger']

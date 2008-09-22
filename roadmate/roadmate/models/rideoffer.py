@@ -42,3 +42,4 @@ class RideOfferForm(djangoforms.ModelForm):
 	class Meta:
 		  model = RideOffer
 		  exclude = ['owner', 'creation_date']
+

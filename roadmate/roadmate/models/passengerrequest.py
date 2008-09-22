@@ -20,7 +20,6 @@ class PassengerRequest(db.Model):
 	"""
 	owner = db.ReferenceProperty(RoadMateUser, required=True) ##roadmateUser making the request
 	ride = db.ReferenceProperty(Ride, required=True, collection_name="passengerrequests")
-	accepted = db.DateTimeProperty()
 	created = db.DateTimeProperty(required=True, auto_now_add=True)
 
 	def __unicode__(self):

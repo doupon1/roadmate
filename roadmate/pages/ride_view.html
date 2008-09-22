@@ -20,17 +20,21 @@
 	</p>
 	<p> <!-- seats --!>
 
-	      <h3>Seats</h3>
+	      <h3>{{ride.seats.count }} Seats</h3>
 	      <table>
 	      	{% for seat in ride.seats %}
 				<tr class="row-a">
+
 				<td>
 					 <a href="/seat?id={{ seat.key.id }}">View Seat</a></td>
 				</td>
 				{% ifequal current_user ride.rideoffer.owner %}
 				<td>
-				    <strong>Passenger</strong><br />{{ seat.passenger.owner.user.email }} <br/>
-                    <a href="/seat_assign?id={{ seat.key.id }}">Assign Seat</a></td>
+					{% if seat.passenger %}
+				       {{ seat.passenger.owner.user.email }} </br>
+					{% endif %}
+
+					 <a href="/seat_assign?id={{ seat.key.id }}">Assign Seat</a></td>
 				</td>
 				{% endifequal %}
 			  </tr>

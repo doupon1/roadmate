@@ -121,7 +121,24 @@ class AssignSeatPageHandler(BaseRequestHandler):
 			"/seat?id=%s" % seat.key().id())
 
 		template_values['seat'] = seat
-		template_values['assign_seat_form'] = SeatForm(instance=seat)
+
+
+		# --------------------------------------------------------------------
+		# Set up the selection values dynamically
+		# --------------------------------------------------------------------
+		seat_form = SeatForm(instance=seat)
+		prq = seat.ride.passengerrequests
+		selections = tuple()
+		for request in prq:
+				selections.__add__(request.owner.key,request.owner.key)
+		seat_form.fields['selection'].choices = selections
+		#print(dir(seat_form.fields['passenger'].choices))
+
+
+  		# --------------------------------------------------------------------
+		# Add the form to the template values
+		# --------------------------------------------------------------------
+		template_values['assign_seat_form'] = seat_form
 
 		# --------------------------------------------------------------------
 		# Render and Serve Template
