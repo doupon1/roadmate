@@ -2,9 +2,10 @@
 
 import os
 import logging
+import urllib
 
 from google.appengine.api import users
-
+from google.appengine.api import urlfetch
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
@@ -71,6 +72,7 @@ class CreateLocationPageHandler(BaseRequestHandler):
 		# --------------------------------------------------------------------
 		# Session Values
 		current_user = RoadMateUser.get_current_user()
+		
 
 		# --------------------------------------------------------------------
 		# Validate Sesson
@@ -99,6 +101,7 @@ class CreateLocationPageHandler(BaseRequestHandler):
 			# ----------------------------------------------------------------
 			# Generate Template Values
 			# ----------------------------------------------------------------
+
 			template_values = BaseRequestHandler.generate_template_values(self,self.request.url)
 
 			# because this page requires the user to be logged in, if they
@@ -134,6 +137,7 @@ class ViewLocationPageHandler(BaseRequestHandler):
 		# --------------------------------------------------------------------
 		# Session Values
 		current_user = RoadMateUser.get_current_user()
+		key = "ABQIAAAALCi9t1naIjEhwoF3_R48QxQtrj2yXU7uUDf9MLK2OBnE3PD31hRS8GRlNBL8LAzbUwLiBPN_wWqmoQ" 
 		
 		# Request Values
 		target_location_id = self.get_request_parameter('id', converter=int, default=None)
@@ -153,10 +157,23 @@ class ViewLocationPageHandler(BaseRequestHandler):
 		# --------------------------------------------------------------------
 		# Generate and Store Template Values
 		# --------------------------------------------------------------------
+		def get_lat_long(location): # This method returns a string that contains (Latitude,Longitude)   
+                        output = "csv"
+                        location = urllib.quote_plus(location)
+                        url = "http://maps.google.com/maps/geo?q=%s&output=%s&key=%s" % (location, output, key)
+                        result = urlfetch.fetch(url).content
+                        dlist = result.split(',')
+                        if dlist[0] == '200':
+                                return "%s, %s" % (dlist[2], dlist[3])
+                        else:
+                                return ''
+                        
 		template_values = super(ViewLocationPageHandler, self
 			).generate_template_values(self.request.url)
 		
 		template_values['target_location'] = target_location
+		template_values['lat_lng_loc'] = get_lat_long(target_location.address + target_location.town)
+		template_values['keys'] = key
  
 		# --------------------------------------------------------------------
 		# Render and Serve Template

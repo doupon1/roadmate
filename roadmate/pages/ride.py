@@ -77,7 +77,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 		template_values['ride'] = ride
 		template_values['lat_lng_src'] = get_lat_long(ride.rideoffer.source.address + ride.rideoffer.source.town)
                 template_values['lat_lng_des'] = get_lat_long(ride.rideoffer.destination.address + ride.rideoffer.destination.town)
-
+                template_values['keys'] = key
 		# --------------------------------------------------------------------
 		# Render and Serve Template
 		# --------------------------------------------------------------------
