@@ -173,7 +173,7 @@ class ViewLocationPageHandler(BaseRequestHandler):
 		
 		template_values['target_location'] = target_location
 		template_values['lat_lng_loc'] = get_lat_long(target_location.address + target_location.town)
-		template_values['keys'] = key
+		template_values['key'] = key
  
 		# --------------------------------------------------------------------
 		# Render and Serve Template
