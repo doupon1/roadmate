@@ -19,20 +19,21 @@
 
 	<p>Good luck and we hope you enjoy the experience!</p>
 
-
-<blockquote>
-    <ul>
-        <li>Create a ride offer from the side bar menu</li>
-        <li>Click on browse all rides to view all available offered rides</li>
-    </ul>
-</blockquote>
+	<h3>where to from here</h3>
+	<div class="options">
+    	<ul>
+			<li><a href="/profile">Create a profile</a> and build your online identify.</li>
+        	<li><a href="/rideoffer_create">Create a ride offer</a> and start working on your ride-sharing karma.</li>
+        	<li><a href="/browse">Browse all rides</a> and find a roadmate.</li>
+    	</ul>
+	</div>
 
 {% if rides %}
 	<h2> latest offered rides </h2>
 
     <table>
     	<tr>
-    		<th>Ride (from - to)</th>
+    		<th>Ride</th>
     		<th>Owner</th>
     		<th>Date</th>
     		<th>Seats</th>
@@ -40,7 +41,7 @@
     	</tr>
     	{% for ride in rides %}
     	<tr class="row-a">
-    		<td><a href="/ride?id={{ride.key.id}}">{{ride.rideoffer.source.address}} - {{ride.rideoffer.destination.address}}</a></td>
+    		<td><a href="/ride?id={{ride.key.id}}">{{ride.rideoffer.source.name}} - {{ride.rideoffer.destination.name}}</a></td>
     		<td><a href ="/profile?user={{ride.rideoffer.owner.key.id}}">{{ride.rideoffer.owner.user.email|local_part_from_email }}</a></td>
     		<td>{{ride.date}}</td>
     		<td>{{ride.seats.count }}</td>
