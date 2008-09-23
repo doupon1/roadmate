@@ -224,6 +224,17 @@ textarea {
 	margin-left: 47px;
 }
 
+ul.errorlist {
+	background-color: rgba(212,58,68,0.31);
+	border: 1px solid #81303f;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+form ul.errorlist li {
+	font-weight: bold;
+}
+
 input.button {
 	font: bold 12px Arial, Sans-serif;
 	height: 24px;
