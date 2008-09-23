@@ -136,7 +136,7 @@ acronym {
 blockquote {
 	margin: 10px;
  	padding: 0 0 0 25px;
-   background: url(higher_ground_images/post.jpg);
+    background: url(higher_ground_images/post.jpg);
 	border: 1px solid #E0DBC9;
 	font: bold 1.3em/1.5em 'Trebuchet MS', Tahoma, Sans-serif;
 	color: #A89A6A;
@@ -222,6 +222,10 @@ textarea {
 	display:block;
 	color:#777;
 	margin-left: 47px;
+}
+
+#main ul.options-list {
+	background: url(higher_ground_images/post.jpg);
 }
 
 #main ul.errorlist {
