@@ -8,6 +8,7 @@ from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 
 from roadmate.handlers.baserequesthandler import BaseRequestHandler
+from roadmate.models.ride import Ride
 from roadmate.models.rideoffer import RideOffer
 from roadmate.models.rideoffer import RideOfferForm
 
@@ -41,7 +42,7 @@ class IndexPageHandler(BaseRequestHandler):
 
 		#10 most recently created rides
 
-		rides = db.GqlQuery("SELECT * FROM RideOffer ORDER BY creation_date DESC LIMIT 10")
+		rides = db.GqlQuery("SELECT * FROM Ride ORDER BY created DESC LIMIT 10")
 
 		# --------------------------------------------------------------------
 		# Store Template Values
