@@ -39,7 +39,7 @@ class Location(db.Model):
 	def get_lat_loc(self):
 		try:
 			output = "csv"
-			location = urllib.quote_plus(self.name + self.address)
+			location = urllib.quote_plus(self.address)
 			url = "http://maps.google.com/maps/geo?q=%s&output=%s&key=%s" % (location, output, self.get_googlekey())
 			result = urlfetch.fetch(url).content
 			dlist = result.split(',')
