@@ -31,9 +31,9 @@
 	{% if my_rideoffers %}
 	<hr />
 		<h2>my routes</h2>
-		<p><small>These are the rides that you are currently offering.
+		<p>These are the rides that you are currently offering.
 		Click each ride to see the full details. Each route can have
-		many scheduled rides associated with it.</small></p>
+		many scheduled rides associated with it.</p>
 		<table>
 			<tr>
 				<th>Route</th>
@@ -42,7 +42,7 @@
 			{% for rideoffer in my_rideoffers %}
 				<tr class="row-a">
 					<td>
-						<a href="/rideoffer?id={{ rideoffer.key.id }}">{{ rideoffer.source.name }} - {{ rideoffer.destination.name }}</a>
+						<a href="/rideoffer?id={{ rideoffer.key.id }}">{{ rideoffer.source.get_addressname }} - {{ rideoffer.destination.get_addressname }}</a>
 					</td>
                     <td>
                         {{ rideoffer.rides.count }}
@@ -56,9 +56,9 @@
 	{% if my_booked_seats %}
 	<hr />
 		<h2>my bookings</h2>
-		<p><small>These are rides that you have requested to be a passenger on,
+		<p>These are rides that you have requested to be a passenger on,
 		and your request has been accepted. Pending requests will not show until
-		they are accepted.</small></p>
+		they are accepted.</p>
 		<table>
 			<tr>
 				<th>Ride</th>
@@ -69,7 +69,7 @@
 			{% for seat in my_booked_seats %}
 				<tr class="row-a">
 					<td>
-						<a href="/ride?id={{ seat.ride.key.id }}">{{ seat.ride.rideoffer.source.name }} - {{ seat.ride.rideoffer.destination.name }}</a>
+						<a href="/ride?id={{ seat.ride.key.id }}">{{ seat.ride.rideoffer.source.get_addressname }} - {{ seat.ride.rideoffer.destination.get_addressname }}</a>
 					</td>
 					<td>
 					 {{ seat.ride.date }}

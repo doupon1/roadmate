@@ -13,7 +13,7 @@ class Location(db.Model):
 			A named address owned by a RoadMateUser
 	"""
 	name = db.StringProperty()
-	owner = db.ReferenceProperty(RoadMateUser, required=True) #locations have a RoadMateUser owner
+	owner = db.ReferenceProperty(RoadMateUser, collection_name="locations", required=True) #locations have a RoadMateUser owner
 	address = db.StringProperty()
 	town = db.StringProperty()
 	created = db.DateTimeProperty(required=True, auto_now_add=True)
@@ -22,10 +22,10 @@ class Location(db.Model):
 	# this is the way the address will be referenced in "plain text" on the site
 	# since some addresses are not named, can return the address for these
 	def get_addressname(self):
-		if self.name:
+		if self.name is not None:
 		   return self.name
 		else:
-			return self.address + ', ' + self.town
+			return self.address
 
 	# get_googlekey
 	# The url key needed for the google map

@@ -99,8 +99,8 @@ class ProfilePageHandler(BaseRequestHandler):
 		# we redirect them back to the home page.
 		template_values['logout_url'] = users.create_logout_url('/')
 
-		template_values['my_rideoffers'] = target_user.rideoffer_set
-		template_values['my_booked_seats'] = target_user.myseats
+		template_values['my_rideoffers'] = list(target_user.rideoffers)
+		template_values['my_booked_seats'] = list(target_user.myseats)
 		template_values['target_user'] = target_user
 		template_values['user_form'] = RoadMateUserForm(instance=target_user)
 
