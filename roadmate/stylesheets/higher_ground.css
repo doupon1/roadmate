@@ -227,7 +227,8 @@ textarea {
 input.button {
 	font: bold 12px Arial, Sans-serif;
 	height: 24px;
-	margin-left: 90px;
+	width: 100px;
+	margin-left: 10px;
 	padding: 2px 3px;
 	color: #FFF;
 	background: #8EB50C url(higher_ground_images/nav.jpg) repeat-x 0 0;
