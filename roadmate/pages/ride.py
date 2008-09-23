@@ -88,10 +88,16 @@ class ViewRidePageHandler(BaseRequestHandler):
 
 		template_values = super(ViewRidePageHandler, self
 			).generate_template_values(self.request.url)
+			
 
 		template_values['ride'] = ride
-		template_values['lat_lng_src'] = get_lat_long(ride.rideoffer.source.address + ride.rideoffer.source.town)
-                template_values['lat_lng_des'] = get_lat_long(ride.rideoffer.destination.address + ride.rideoffer.destination.town)
+		
+		#TODO: these should inclide town if available
+		source_full_address = ride.rideoffer.source.address
+		destination_full_address = ride.rideoffer.destination.address
+		
+		template_values['lat_lng_src'] = get_lat_long(source_full_address)
+                template_values['lat_lng_des'] = get_lat_long(destination_full_address)
                 template_values['key'] = key
 		# --------------------------------------------------------------------
 		# Render and Serve Template
