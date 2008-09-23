@@ -97,9 +97,7 @@ class ProfilePageHandler(BaseRequestHandler):
 		# we redirect them back to the home page.
 		template_values['logout_url'] = users.create_logout_url('/')
 		
-		rides = db.GqlQuery("SELECT * FROM RideOffer WHERE owner = :1", target_user)
-		
-		template_values['rides'] = list(rides)
+		template_values['rideoffers'] = list(target_user.rideoffers)
 		template_values['target_user'] = target_user
 		template_values['user_form'] = RoadMateUserForm(instance=target_user)
 		

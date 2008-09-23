@@ -23,32 +23,28 @@
 	
 	{% ifequal target_user current_user %}
 		<p class="post-footer">	
-			<a href= "/profile?user={{ target_user.key.id }}&edit=True">Edit</a> 	
+			<a href= "/profile?user={{ target_user.key.id }}&amp;edit=True">Edit</a> 	
 		</p>
 	{% endifequal %}
 
 
-	{% if rides %}
+	{% if rideoffers %}
 		<h2>my rides</h2>
 
 		<table>
 			<tr>
 				<th>Ride</th>
 				<th>Date</th>
-				<th>Seats</th>
-				{% ifequal target_user current_user %}
-				<th></th> <!-- Edit link column -->
-				{% endifequal %}
+				<th>Total Seats</th>
 			</tr>
-			{% for ride in rides %}
-				<tr class="row-a">
-					<td><a href="/rideoffer?id={{ ride.key.id }}">{{ ride.source.name }} - {{ ride.destination.name }}</a></td>
-					<td>{{ ride.date }}</td>
-					<td>{{ ride.available_seats }}</td>
-					{% ifequal ride.owner current_user %}
-						<td><a href="/rideoffer_edit?id={{ ride.key.id }}">Edit</a> </td>
-					{% endifequal %}
-				</tr>
+			{% for rideoffer in rideoffers %}
+				{% for ride in rideoffer.rides %}
+					<tr class="row-a">
+						<td><a href="/rideoffer?id={{ rideoffer.key.id }}">{{ rideoffer.source.address }} - {{ rideoffer.destination.address }}</a></td>
+						<td>{{ ride.date }}</td>
+						<td>{{ ride.total_seats }}</td>
+					</tr>
+				{% endfor %}
 			{% endfor %}
 		</table>
 	{% endif %}
