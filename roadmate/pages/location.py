@@ -2,7 +2,6 @@
 
 import os
 import logging
-import urllib
 
 from google.appengine.api import users
 from google.appengine.api import urlfetch
@@ -23,8 +22,8 @@ class CreateLocationPageHandler(BaseRequestHandler):
 	"""
 		Handles Get and Post requests for the CreateLocation page
 		Page:
-			/location_create	
-	"""	
+			/location_create
+	"""
 	#~~~~~~~~~~~~~~~~~~~~get REQUEST~~~~~~~~~~~~~~~~~~~~
 	def get(self):
 		# --------------------------------------------------------------------
@@ -32,7 +31,7 @@ class CreateLocationPageHandler(BaseRequestHandler):
 		# --------------------------------------------------------------------
 		# Session Values
 		current_user = RoadMateUser.get_current_user()
-		
+
 		# --------------------------------------------------------------------
 		# Validate Session and Request
 		# --------------------------------------------------------------------
@@ -41,30 +40,30 @@ class CreateLocationPageHandler(BaseRequestHandler):
 		if current_user is None:
 			self.redirect(users.create_login_url(self.request.url))
 			return
-		
+
 		# --------------------------------------------------------------------
 		# Generate Template Values
 		# --------------------------------------------------------------------
 		template_values = super(CreateLocationPageHandler, self	).generate_template_values(self.request.url)
-			
-			
-		
+
+
+
 		new_location = Location(owner=current_user) # create new location instance
 		template_values['location_form'] = LocationForm(instance=new_location) #bind the form to the new location instance
-			
-			
+
+
 		# because this page requires the user to be logged in, if they logout
 		# we redirect them back to the home page.
 		template_values['logout_url'] = users.create_logout_url("/")
-		
-		
+
+
 		# --------------------------------------------------------------------
 		# Render and Serve Template
 		# --------------------------------------------------------------------
-		page_path = os.path.join(os.path.dirname(__file__), "location_create.html")			
+		page_path = os.path.join(os.path.dirname(__file__), "location_create.html")
 		self.response.out.write(template.render(page_path, template_values))
-	
-	
+
+
 	#~~~~~~~~~~~~~~~~~~~~POST REQUEST~~~~~~~~~~~~~~~~~~~~
 	def post(self):
 		# --------------------------------------------------------------------
@@ -72,7 +71,7 @@ class CreateLocationPageHandler(BaseRequestHandler):
 		# --------------------------------------------------------------------
 		# Session Values
 		current_user = RoadMateUser.get_current_user()
-		
+
 
 		# --------------------------------------------------------------------
 		# Validate Sesson
@@ -88,8 +87,8 @@ class CreateLocationPageHandler(BaseRequestHandler):
 		# --------------------------------------------------------------------
 		new_location = Location(owner=current_user) # create new location instance
 		location_form = LocationForm(data=self.request.POST, instance=new_location) #create the form, populate with form values
-		
-		
+
+
 
 
 		# --------------------------------------------------------------------
@@ -122,29 +121,28 @@ class CreateLocationPageHandler(BaseRequestHandler):
 		# --------------------------------------------------------------------
 		location_form.save()
 		self.redirect("/location?id=%s" % new_location.key().id())
- 
-	
+
+
 class ViewLocationPageHandler(BaseRequestHandler):
 	"""
 		View a Location's details
-		
+
 
 	"""
-		
+
 	def get(self):
 		# --------------------------------------------------------------------
 		# Retrive Session Info and GET Data
 		# --------------------------------------------------------------------
 		# Session Values
 		current_user = RoadMateUser.get_current_user()
-		key = "ABQIAAAALCi9t1naIjEhwoF3_R48QxQtrj2yXU7uUDf9MLK2OBnE3PD31hRS8GRlNBL8LAzbUwLiBPN_wWqmoQ" 
-		
+
 		# Request Values
 		target_location_id = self.get_request_parameter('id', converter=int, default=None)
-		
+
 		# Datastore Values
 		target_location = Location.get_by_id(target_location_id)
-		
+
 		# --------------------------------------------------------------------
 		# Validate Request
 		# --------------------------------------------------------------------
@@ -153,28 +151,19 @@ class ViewLocationPageHandler(BaseRequestHandler):
 		if target_location is None:
 			self.error(404)
 			return
-		
+
 		# --------------------------------------------------------------------
 		# Generate and Store Template Values
 		# --------------------------------------------------------------------
-		def get_lat_long(location): # This method returns a string that contains (Latitude,Longitude)   
-                        output = "csv"
-                        location = urllib.quote_plus(location)
-                        url = "http://maps.google.com/maps/geo?q=%s&output=%s&key=%s" % (location, output, key)
-                        result = urlfetch.fetch(url).content
-                        dlist = result.split(',')
-                        if dlist[0] == '200':
-                                return "%s, %s" % (dlist[2], dlist[3])
-                        else:
-                                return ''
-                        
+
 		template_values = super(ViewLocationPageHandler, self
 			).generate_template_values(self.request.url)
-		
+
 		template_values['target_location'] = target_location
-		template_values['lat_lng_loc'] = get_lat_long(target_location.address + target_location.town)
-		template_values['key'] = key
- 
+
+		template_values['lat_lng_loc'] = target_location.get_lat_loc()
+		template_values['key'] = target_location.get_googlekey()
+
 		# --------------------------------------------------------------------
 		# Render and Serve Template
 		# --------------------------------------------------------------------

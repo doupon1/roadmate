@@ -2,7 +2,6 @@
 
 import os
 import logging
-import time
 
 from google.appengine.api import users
 from google.appengine.ext import db
@@ -10,9 +9,9 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 
-from roadmate.converters import is_true
 from roadmate.handlers.baserequesthandler import BaseRequestHandler
 from roadmate.models.roadmateuser import RoadMateUser
+
 from roadmate.models.rideoffer import RideOffer
 from roadmate.models.rideoffer import RideOfferForm
 from roadmate.models.ride import Ride
@@ -25,13 +24,6 @@ from roadmate.models.location import Location
 class CreateRideOfferPageHandler(BaseRequestHandler):
 	"""
 		RoadMate RequestHandler
-		
-		Page:
-			/rideoffer_create
-			
-		Get Arguments:
-			showSourceFavorites - Boolean [Default=False]
-			showDestinationFavorites - Boolean [Default=False]
 	"""
 
 	def get(self):
@@ -40,10 +32,6 @@ class CreateRideOfferPageHandler(BaseRequestHandler):
 		# --------------------------------------------------------------------
 		# Session Values
 		current_user = RoadMateUser.get_current_user()
-		
-		# Request Values
-		show_source_favorites = self.get_request_parameter('showSourceFavorites', converter=is_true, default=False)
-		show_destination_favorites = self.get_request_parameter('showDestinationFavorites', converter=is_true, default=False)
 
 		# --------------------------------------------------------------------
 		# Validate Session and Request
@@ -64,14 +52,8 @@ class CreateRideOfferPageHandler(BaseRequestHandler):
 		# we redirect them back to the home page.
 		template_values['logout_url'] = users.create_logout_url("/")
 
-		template_values['show_source_favorites'] = show_source_favorites
-		template_values['show_destination_favorites'] = show_destination_favorites
-		
-		rideoffer_form = RideOfferForm()
-		rideoffer_form.fields['source'].query = current_user.locations
-		rideoffer_form.fields['destination'].query = current_user.locations
-		
-		template_values['rideoffer_form'] = rideoffer_form
+
+		template_values['rideoffer_form'] = RideOfferForm() #create a form for that instance
 
 		# --------------------------------------------------------------------
 		# Render and Serve Template
@@ -85,10 +67,6 @@ class CreateRideOfferPageHandler(BaseRequestHandler):
 		# --------------------------------------------------------------------
 		# Session Values
 		current_user = RoadMateUser.get_current_user()
-		
-		# Request Values
-		show_source_favorites = self.get_request_parameter('showSourceFavorites', converter=is_true, default=False)
-		show_destination_favorites = self.get_request_parameter('showDestinationFavorites', converter=is_true, default=False)
 
 		# --------------------------------------------------------------------
 		# Validate Sesson
@@ -103,12 +81,10 @@ class CreateRideOfferPageHandler(BaseRequestHandler):
 		# Retrive POST Data
 		# i.e. form has been submitted, do sth with the values
 		# --------------------------------------------------------------------
-		
-		rideoffer_data = { 'owner':current_user }
-		
+		rideoffer = RideOffer(owner=current_user) #create rideoffer instance
 		rideoffer_form = RideOfferForm(
 			data=self.request.POST,
-			initial=rideoffer_data
+			instance=rideoffer
 		) #set a form for that instance
 
 		# --------------------------------------------------------------------
@@ -123,17 +99,10 @@ class CreateRideOfferPageHandler(BaseRequestHandler):
 			template_values = BaseRequestHandler.generate_template_values(self,
 				self.request.url)
 
-
 			# because this page requires the user to be logged in, if they
 			# logout we redirect them back to the home page.
 			template_values['logout_url'] = users.create_logout_url("/")
-			
-			template_values['show_source_favorites'] = show_source_favorites
-			template_values['show_destination_favorites'] = show_destination_favorites
-			
-			rideoffer_form.fields['source'].query = current_user.locations
-			rideoffer_form.fields['destination'].query = current_user.locations
-			
+
 			template_values['rideoffer_form'] = rideoffer_form
 
 			# ----------------------------------------------------------------
@@ -142,40 +111,13 @@ class CreateRideOfferPageHandler(BaseRequestHandler):
 			page_path = os.path.join(os.path.dirname(__file__), "rideoffer_create.html")
 			self.response.out.write(template.render(page_path, template_values))
 			return
-		"""
-		rideoffer_data = {
-			'owner':current_user,
-			'source':rideoffer_form.clean_data.get('source'),
-			'destination':rideoffer_form.clean_data.get('destination'),
-			'notes':rideoffer_form.clean_data.get('notes')
-		}
 
-		# the user is not picking a location from their favourites, 
-		# then use the 'source_address' to create a new location.
-		if rideoffer_data['source'] is None:
-			source_location = Location(
-				owner=current_user,
-				address=rideoffer_form.clean_data['source_address']
-			)
-			source_location.put()
-			rideoffer_data['source'] = source_location
 
-		# the user is not picking a location from their favourites, 
-		# then use the 'destination_address' to create a new location.
-		if rideoffer_data['destination'] is None:
-			destination_location = Location(
-				owner=current_user,
-				address=rideoffer_form.clean_data['destination_address']
-			)
-			destination_location.put()
-			rideoffer_data['destination'] = destination_location
-		
-		#TODO we should have to do this manually
-		rideoffer = RideOffer(**rideoffer_data)
-		rideoffer.put()
-		"""
-		
-		rideoffer = rideoffer_form.save()
+		# --------------------------------------------------------------------
+		# Finalise POST Request
+		# --------------------------------------------------------------------
+		rideoffer_form.save()
+
 
 		#TODO extend this for the recurring-ride case; at the moment this will only create one Ride per Rideoffer
 		#create the child Ride and set its instance variables from the form
@@ -191,10 +133,11 @@ class CreateRideOfferPageHandler(BaseRequestHandler):
 		ride1.create_seats(rideoffer_form.clean_data.get('number_of_seats')) ##now create its seats
 
 
-		# --------------------------------------------------------------------
-		# Finalise POST Request
-		# --------------------------------------------------------------------
 		self.redirect("/rideoffer?id=%s" % rideoffer.key().id())
+
+
+
+
 
 
 

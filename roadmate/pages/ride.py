@@ -2,7 +2,7 @@
 
 import os
 import logging
-import urllib
+
 
 from google.appengine.api import users
 from google.appengine.ext import db
@@ -17,6 +17,7 @@ from roadmate.models.passengerrequest import PassengerRequest
 
 from roadmate.models.ride import Ride
 from roadmate.models.ride import RideOffer
+from roadmate.models.seat import Seat
 
 
 # ----------------------------------------------------------------------------
@@ -33,8 +34,6 @@ class ViewRidePageHandler(BaseRequestHandler):
 		Get Arguments:
 			id - Integer (Ride.key.id) [Required]
 	"""
-	key = "ABQIAAAALCi9t1naIjEhwoF3_R48QxQtrj2yXU7uUDf9MLK2OBnE3PD31hRS8GRlNBL8LAzbUwLiBPN_wWqmoQ"
-	
 #GET REQUEST HANDLER
 	def get(self):
 		# --------------------------------------------------------------------
@@ -42,7 +41,6 @@ class ViewRidePageHandler(BaseRequestHandler):
 		# --------------------------------------------------------------------
 		# Session Values
 		current_user = RoadMateUser.get_current_user()
-
 
 		# Request Values
 		ride_id = self.get_request_parameter('id', converter=int, default=None)
@@ -52,17 +50,32 @@ class ViewRidePageHandler(BaseRequestHandler):
 		# Datastore Values
 		ride = Ride.get_by_id(ride_id)
 
-##		#current user must be owner
-##		if current_user is ride.rideoffer.owner:
-		##print(action)
+		# --------------------------------------------------------------------
+		# Handle approving and removing passengers and seats
+		# --------------------------------------------------------------------
+		if current_user is ride.rideoffer.owner:
+		   	# Approve a passenger request
+			if prq_id and action == 'APRV':
+				prq = PassengerRequest.get_by_id(prq_id) #only proceed if there is a valid passengerrequest
+				if prq:
+					empty_seat = ride.seats.filter('passenger = ', None).get() #retrieve the empty seats on this ride
+					empty_seat.assign(prq) #assign the seat: this method of Seat handles setting the "assigned time"
+					prq.delete() #delete the passenger request
 
-	   	#approve a passenger request
-		if prq_id:
-			prq = PassengerRequest.get_by_id(prq_id)
-			empty_seat = ride.seats.filter('passenger=', False).get() #find an empty seat on this ride
-			print('test')
-			#empty_seat.assign(prq) #assign the seat - this handles setting the "assigned time" as well
-			#prq.delete() #delete the passenger request
+		   	# Remove a passenger from the seat
+			if seat_id and action == 'CLR':
+				seat = Seat.get_by_id(seat_id) #only proceed if there is a valid seat
+				if seat:
+					seat.passenger = None
+					seat.accepted = None #disassociate the seat from the user
+					#TODO notify the passenger they have been removed
+
+			# Delete a seat
+			if seat_id and action == 'DEL':
+				seat = Seat.get_by_id(seat_id) #only proceed if there is a valid seat
+				if seat:
+					seat.delete()
+					#TODO if seat has passenger, notify them
 
 		# --------------------------------------------------------------------
 		# Validate Request
@@ -76,36 +89,44 @@ class ViewRidePageHandler(BaseRequestHandler):
 		# --------------------------------------------------------------------
 		# Generate and Store Template Values
 		# --------------------------------------------------------------------
-
 		template_values = super(ViewRidePageHandler, self
 			).generate_template_values(self.request.url)
-			
 
 		template_values['ride'] = ride
-		
-		#TODO: these should inclide town if available
-		source_full_address = ride.rideoffer.source.address
-		destination_full_address = ride.rideoffer.destination.address
-		
-		template_values['lat_lng_src'] = get_lat_long(source_full_address)
-                template_values['lat_lng_des'] = get_lat_long(destination_full_address)
-                template_values['key'] = self.key
+		template_values['lat_lng_src'] = ride.rideoffer.source.get_lat_loc()
+		template_values['lat_lng_des'] = ride.rideoffer.destination.get_lat_loc()
+		template_values['key'] = ride.rideoffer.destination.get_googlekey()
+
+		# --------------------------------------------------------------------
+		# Control the display of the form element
+		# --------------------------------------------------------------------
+		#if user has already placed a request on this ride ~~appears in get and post
+		if ride.passengerrequests.filter('owner = ', current_user).get():
+			template_values['requestable'] = False #turn off the request button
+		else:
+			template_values['requestable'] = True #turn on the request button
+
+
+
 		# --------------------------------------------------------------------
 		# Render and Serve Template
 		# --------------------------------------------------------------------
 		page_path = os.path.join(os.path.dirname(__file__), "ride_view.html")
 		self.response.out.write(template.render(page_path, template_values))
 
-	
+
 
 #POST REQUEST HANDLER
-        def post(self):
+	def post(self):
 		# --------------------------------------------------------------------
 		# Retrive Session Info and GET Data
 		# --------------------------------------------------------------------
 		# Session Values
 		current_user = RoadMateUser.get_current_user()
-		
+
+		if current_user is None:
+			self.redirect(users.create_login_url(self.request.url))
+			return
 
 
 		# Request Values
@@ -122,32 +143,32 @@ class ViewRidePageHandler(BaseRequestHandler):
 			self.error(404)
 			return
 
+
 		# --------------------------------------------------------------------
 		# Generate and Store Template Values
 		# --------------------------------------------------------------------
-
-                
 		template_values = super(ViewRidePageHandler, self
 			).generate_template_values(self.request.url)
 
-		#TODO: these should inclide town if available
-		source_full_address = ride.rideoffer.source.address
-		destination_full_address = ride.rideoffer.destination.address
-		
-		template_values['lat_lng_src'] = get_lat_long(source_full_address)
-                template_values['lat_lng_des'] = get_lat_long(destination_full_address)
-                template_values['key'] = self.key
-		#print(self.request.POST['do_request_ride'])
-		# --------------------------------------------------------------------
-		# Retrive POST Data
-		# If the request ride bit is set, create a new request
-		# --------------------------------------------------------------------
-		if self.request.POST['do_request_ride']:
-			prq = PassengerRequest(owner=current_user, ride=ride) #create a new passengerrequest
-			prq.put()
-			template_values['requested'] = True #so form can display a response
+		template_values['ride'] = ride
 
+		# --------------------------------------------------------------------
+		# Control the display of the form element
+		# and handle the new request
+		# --------------------------------------------------------------------
 
+		#if user has already placed a request on this ride ~~appears in get and post
+		if ride.passengerrequests.filter('owner = ', current_user).get():
+			template_values['requestable'] = False #turn off the request button
+		else:
+			template_values['requestable'] = True #turn on the request button
+
+			#if user is placing a request
+			if self.request.POST['do_request_ride']:
+				prq = PassengerRequest(owner=current_user, ride=ride) #create a new passengerrequest
+				prq.put()
+				template_values['requestable'] = False #turn off the request button
+				self.request.POST['do_request_ride'] = False #in case of refresh/repost
 
 		# --------------------------------------------------------------------
 		# Render and Serve Template
@@ -155,24 +176,6 @@ class ViewRidePageHandler(BaseRequestHandler):
 		page_path = os.path.join(os.path.dirname(__file__), "ride_view.html")
 		self.response.out.write(template.render(page_path, template_values))
 
-
-
-
-
-
-
-
-def get_lat_long(location): # This method returns a string that contains (Latitude,Longitude)
-        key = "ABQIAAAALCi9t1naIjEhwoF3_R48QxQtrj2yXU7uUDf9MLK2OBnE3PD31hRS8GRlNBL8LAzbUwLiBPN_wWqmoQ"
-        output = "csv"
-        location = urllib.quote_plus(location)
-        url = "http://maps.google.com/maps/geo?q=%s&output=%s&key=%s" % (location, output, key)
-        result = urlfetch.fetch(url).content
-        dlist = result.split(',')
-        if dlist[0] == '200':
-                return "%s, %s" % (dlist[2], dlist[3])
-        else:
-                return ''
 
 
 # ----------------------------------------------------------------------------

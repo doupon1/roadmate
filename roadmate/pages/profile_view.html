@@ -3,58 +3,87 @@
 {% block title%}My Profile{% endblock %}
 
 {% block main %}
-	{% ifequal target_user current_user %}
-		<h2>my profile</h2>
-	{% else %}
-		<h2>user profile</h2>
-	{% endifequal %}
-	
+	<h2>my profile</h2>
+
 	{% if target_user.first_name and target_user.first_name %}
 		<h3>{{ target_user.first_name|default:"" }} {{ target_user.last_name|default:"" }}</h3>
 	{% endif %}
-	
+
 	<ul class="details-list">
 		<li><strong>Email:</strong> {{ target_user.user.email }}</li>
-			
+
 		{% if target_user.town %}
 			<li><strong>Hometown:</strong> {{ target_user.town }}</li>
 		{% endif %}
-				
+
 		{% if target_user.phone %}
 			<li><strong>Phone:</strong> {{ target_user.phone }}</li>
 		{% endif %}
 	</ul>
-	
+
 	{% ifequal target_user current_user %}
-		<p class="post-footer">	
-			<a href= "/profile?user={{ target_user.key.id }}&amp;edit=True">Edit</a> 	
+		<p class="post-footer">
+			<a href= "/profile?user={{ target_user.key.id }}&edit=True">Edit</a>
 		</p>
 	{% endifequal %}
 
 
-	{% if rideoffers %}
-		{% ifequal target_user current_user %}
-			<h2>my rides</h2>
-		{% else %}
-			<h2>their rides</h2>
-		{% endifequal %}
+	{% if my_rideoffers %}
+	<hr />
+		<h2>my routes</h2>
+		<p><small>These are the rides that you are currently offering.
+		Click each ride to see the full details. Each route can have
+		many scheduled rides associated with it.</small></p>
+		<table>
+			<tr>
+				<th>Route</th>
+				<th>Scheduled Rides</th>
+			</tr>
+			{% for rideoffer in my_rideoffers %}
+				<tr class="row-a">
+					<td>
+						<a href="/rideoffer?id={{ rideoffer.key.id }}">{{ rideoffer.source.name }} - {{ rideoffer.destination.name }}</a>
+					</td>
+                    <td>
+                        {{ rideoffer.rides.count }}
+                    </td>
+				</tr>
+			{% endfor %}
+		</table>
 
+	{% endif %}
+
+	{% if my_booked_seats %}
+	<hr />
+		<h2>my bookings</h2>
+		<p><small>These are rides that you have requested to be a passenger on,
+		and your request has been accepted. Pending requests will not show until
+		they are accepted.</small></p>
 		<table>
 			<tr>
 				<th>Ride</th>
 				<th>Date</th>
-				<th>Total Seats</th>
+				<th>Departure Time</th>
+				<th>Arrival Time</th>
 			</tr>
-			{% for rideoffer in rideoffers %}
-				{% for ride in rideoffer.rides %}
-					<tr class="row-a">
-						<td><a href="/rideoffer?id={{ rideoffer.key.id }}">{{ rideoffer.source.address }} - {{ rideoffer.destination.address }}</a></td>
-						<td>{{ ride.date }}</td>
-						<td>{{ ride.total_seats }}</td>
-					</tr>
-				{% endfor %}
+			{% for seat in my_booked_seats %}
+				<tr class="row-a">
+					<td>
+						<a href="/ride?id={{ seat.ride.key.id }}">{{ seat.ride.rideoffer.source.name }} - {{ seat.ride.rideoffer.destination.name }}</a>
+					</td>
+					<td>
+					 {{ seat.ride.date }}
+					</td>
+					<td>
+					 {{ seat.ride.departure_time }}
+					</td>
+					<td>
+					 {{ seat.ride.arrival_time }}
+					</td>
+				</tr>
 			{% endfor %}
 		</table>
+
 	{% endif %}
-	
+
 {% endblock %}

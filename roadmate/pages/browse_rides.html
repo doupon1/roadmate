@@ -15,7 +15,7 @@
 	</tr>
 	{% for ride in rides %}
 	<tr class="row-a">
-		<td><a href="/ride?id={{ride.key.id}}">{{ride.rideoffer.source.address}} - {{ride.rideoffer.destination.address}}</a></td>
+		<td><a href="/ride?id={{ride.key.id}}">{{ride.rideoffer.source.get_addressname}} - {{ride.rideoffer.destination.get_addressname}}</a></td>
 		<td><a href ="/profile?user={{ride.rideoffer.owner.key.id}}">{{ride.rideoffer.owner.user.email|local_part_from_email }}</a></td>
 		<td>{{ride.date}}</td>
 		<td>{{ride.seats.count }}</td>
