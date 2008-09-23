@@ -11,14 +11,20 @@ class Location(db.Model):
 			A named address owned by a RoadMateUser
 	"""
 	name = db.StringProperty()
-	owner = db.ReferenceProperty(RoadMateUser, required=True) #locations have a RoadMateUser owner
-	address = db.StringProperty()
+	owner = db.ReferenceProperty(RoadMateUser, collection_name="locations", required=True) #locations have a RoadMateUser owner
+	address = db.StringProperty(required=True)
 	town = db.StringProperty()
-	created = db.DateTimeProperty(required=True, auto_now_add=True)
+	creation_date = db.DateTimeProperty(required=True, auto_now_add=True)
 
 	def __unicode__(self):
 		"""Returns a string representation of the object."""
-		return self.name
+		
+		# ideally we'd like to use the location's friendly name, if this
+		# isn't available then we fallback to the location's address.
+		if self.name is not None:
+			return self.name
+		else:
+			return self.address
 
 class LocationForm(djangoforms.ModelForm):
 	"""

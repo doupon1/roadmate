@@ -44,7 +44,6 @@ class BaseRequestHandler(webapp.RequestHandler):
 		# Generate Template Values
 		# --------------------------------------------------------------------
 		current_user = RoadMateUser.get_current_user()
-		current_version = "0.2" ## update me
 
 		isLoggedIn = False
 		if current_user:
@@ -60,10 +59,10 @@ class BaseRequestHandler(webapp.RequestHandler):
 		template_values = {}
 		
 		template_values['current_user'] = current_user
-		template_values['current_version'] = current_version
 		template_values['isLoggedIn'] = isLoggedIn
 		template_values['login_url'] = login_url
 		template_values['logout_url'] = logout_url
+		template_values['page_url'] = page_url
 		
 		return template_values
 		

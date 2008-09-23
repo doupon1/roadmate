@@ -15,12 +15,11 @@ class Ride(db.Model):
 
 	"""
 	rideoffer = db.ReferenceProperty(RideOffer, collection_name="rides") ##parent rideoffer
-	date = db.DateProperty(verbose_name="Date") ##date of this ride
-	departure_time = db.TimeProperty(verbose_name="Departs") ##time of this ride departure
-	arrival_time = db.TimeProperty(verbose_name="Arrives") ##date of this ride
-	notes = db.TextProperty(verbose_name="Notes")
-	created = db.DateTimeProperty(required=True, auto_now_add=True) ##date this ride was created
-
+	date = db.DateProperty()
+	departure_time = db.TimeProperty()
+	arrival_time = db.TimeProperty()
+	notes = db.TextProperty()
+	creation_date = db.DateTimeProperty(required=True, auto_now_add=True)
 
 	##method to create a number_of_seats
 	##can only be invoked after the Ride has been saved
@@ -30,9 +29,12 @@ class Ride(db.Model):
 			s = Seat(ride=self)
 			s.put()
 		return
-
-
-
+		
+	def available_seats(self):
+		return self.seats.filter('accepted=', None).count()
+		
+	def total_seats(self):
+		return self.seats.count()
 
 	def __unicode__(self):
 		"""Returns a string representation of the object."""
