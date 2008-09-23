@@ -224,8 +224,14 @@ textarea {
 	margin-left: 47px;
 }
 
-#main ul.options-list {
+div.options {
 	background: url(higher_ground_images/post.jpg);
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+div.options a {
+	font-weight: bold;
 }
 
 #main ul.errorlist {
