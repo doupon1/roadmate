@@ -154,7 +154,11 @@ class ViewRidePageHandler(BaseRequestHandler):
 			).generate_template_values(self.request.url)
 
 		template_values['ride'] = ride
-
+		template_values['lat_lng_src'] = ride.rideoffer.source.get_lat_loc()
+		template_values['lat_lng_des'] = ride.rideoffer.destination.get_lat_loc()
+		template_values['key'] = ride.rideoffer.destination.get_googlekey()
+		template_values['has_passengers'] = (ride.count_seats() - ride.count_emptyseats()) >0
+		print(lat_lng_src)
 		# --------------------------------------------------------------------
 		# Control the display of the form element
 		# and handle the new request

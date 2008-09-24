@@ -14,8 +14,7 @@ class Location(db.Model):
 	"""
 	name = db.StringProperty()
 	owner = db.ReferenceProperty(RoadMateUser, collection_name="locations", required=True) #locations have a RoadMateUser owner
-	address = db.StringProperty()
-	town = db.StringProperty()
+	address = db.StringProperty() #address is just one text string now, town is part of this
 	created = db.DateTimeProperty(required=True, auto_now_add=True)
 
 	# get_addressname
@@ -35,7 +34,6 @@ class Location(db.Model):
 
 	# get_lat_long method
 	# Returns a string that contains (Latitude,Longitude)
-	# TODO verify it is working (moved it here offline and changed it without testing)
 	def get_lat_loc(self):
 		try:
 			output = "csv"
