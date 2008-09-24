@@ -3,15 +3,18 @@
 {% block title%}View Ride{% endblock %}
 
 {% block main %}
-	<h2>View Ride</h2>
-	<p> <!-- ride --!>
-			<strong>Owner</strong> <a href="/profile?user={{ ride.owner.key.id }}">{{ ride.rideoffer.owner.user.email }}</a><br />
-			<strong>From</strong> <a href="/location?id={{ ride.rideoffer.source.key.id }}">{{ ride.rideoffer.source.name }}</a>
-			<strong>To</strong> <a href="/location?id={{ ride.rideoffer.destination.key.id }}">{{ ride.rideoffer.destination.name }}</a><br />
-			<p />
+	<h2>view ride</h2>
+	<p> <!-- ride details--!>
 			<td><strong>Date</strong> {{ ride.date }}<br />
-			<strong>Departs at</strong> {{ ride.departure_time }} <strong> Arrives at</strong> {{ ride.arrival_time }}</td>
+			<strong>From</strong> <a href="/location?id={{ ride.rideoffer.source.key.id }}">{{ ride.rideoffer.source.get_addressname }}</a><br />
+			<strong>To</strong> <a href="/location?id={{ ride.rideoffer.destination.key.id }}">{{ ride.rideoffer.destination.get_addressname }}</a><br />
+			<strong>Seats </strong> {{ride.count_seats}} <br />
+			<p />
+			<strong>Owner</strong> <a href="/profile?user={{ ride.owner.key.id }}">{{ ride.rideoffer.owner.user.email }}</a><br />
+			<p />
 
+			<strong>Departs from </strong><a href="/location?id={{ ride.rideoffer.source.key.id }}">{{ ride.rideoffer.source.get_addressname }}</a><strong> at </strong>{{ ride.departure_time }} <br />
+			<strong>Arrives at </strong><a href="/location?id={{ ride.rideoffer.destination.key.id }}">{{ ride.rideoffer.source.get_addressname }}</a><strong> at </strong> {{ ride.arrival_time }}<br />
 
 			{% if ride.notes %}
 				<strong>Notes</strong> {{ rideoffer.notes }}<br />
@@ -19,36 +22,35 @@
 			<p />
 
 
-			{% if requestable %}<!-- show the request button-->
-				<form method="post">
+			<form method="post">
+			<h3>{{ride.count_emptyseats }} seat{% ifnotequal ride.count_emptyseats 1 %}s{% endifnotequal %} available
+			{% if ride.count_emptyseats %}<!-- show the request button-->
 				<input type="hidden" name="do_request_ride" value="True">
-				<input class="button"  value="Request a Seat" type="submit">
-				</form>
-			{% else %} <!-- show the instruction-->
-				<code><strong>
-				   Your request for a seat on this ride has been sent
-				   and you will be notified when it is approved
-				</strong></code>
-
+				<input class="button"  value="Request a Seat" type="submit"></h3>
+			{% else %}
+		        </h3>
 			{% endif %}
-
-
+			{% if not requestable %} <!-- show the instruction-->
+				<strong>
+					Your request for a seat on this ride has been recorded
+					and you will be notified when it is approved
+				</strong>
+			{% endif %}
+			</form>
 
 	</p>
 
-	<h3>{{ride.count_seats}} seat{% ifnotequal ride.count_seats 1 %}s{% endifnotequal %}, {{ride.count_emptyseats}} not assigned</h3>
-
-
-	<p> <!-- show passengers = assigned seats --!>
-
-  <table>
-  	<h3>Passengers</h3>
-  	<tr>
+{% if has_passengers %}<!-- show passengers --!>
+<p>
+<hr />
+<table>
+	<h2>passengers</h2>
+	<tr>
 	<th>User</th>
-    <th>Date</th>
+	<th>Date</th>
 	</tr>
-  	{% for seat in ride.seats %}
-  	  {% if seat.passenger %}
+	{% for seat in ride.seats %}
+	  {% if seat.passenger %}
 			<tr class="row-a">
 				<td>
 					<a href="/profile?id={{ seat.passenger.user.key.id }}">{{seat.passenger.user.email}}</a></td>
@@ -67,15 +69,17 @@
 		  	</tr>
 	  {% endif %}
 	{% endfor %}
-	</table>
+</table>
+</p>
+<!-- end if - show passengers --!>
+{% endif %}
 
-	</p>
 
-	{% ifequal current_user ride.rideoffer.owner %}
-	<p> <!-- show passenger requests --!>
-
+{% ifequal current_user ride.rideoffer.owner %}{% if ride.passengerrequests.count %} <!-- show passenger requests --!>
+<hr />
+	<p>
 	<table>
-	<h3>Open Passenger Requests for this Ride</h3>
+	<h2>passenger requests</h2>
       	<tr>
 		<th>User</th>
         <th>Date</th>
@@ -97,10 +101,16 @@
 		</table>
 
 	</p>
-	{% endifequal %}
+	<!-- end if show passenger requests --!>
+	{% endif %}
+{% endifequal %}
+
+
+{% if lat_lng_src and lat_lng_des %}
 	<p> <!-- Static Google Map -->
-	<h3>Map</h3>
-	<img src="http://maps.google.com/staticmap?&size=400x400&markers={{lat_lng_src}},reds%7C{{lat_lng_des}},blued&key={{key}}"/>
-    </p>
+		<h2>map</h2>
+		<img src="http://maps.google.com/staticmap?&size=400x400&markers={{lat_lng_src}},reds%7C{{lat_lng_des}},blued&key={{key}}"/>
+	</p>
+{% endif %}
 
 {% endblock %}

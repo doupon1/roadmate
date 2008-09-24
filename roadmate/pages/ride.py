@@ -45,6 +45,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 		# Request Values
 		ride_id = self.get_request_parameter('id', converter=int, default=None)
 		prq_id = self.get_request_parameter('prq_id', converter=int, default=None)
+		seat_id = self.get_request_parameter('seat_id', converter=int, default=None)
 		action = self.get_request_parameter('action', converter=str, default=None)
 
 		# Datastore Values
@@ -53,7 +54,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 		# --------------------------------------------------------------------
 		# Handle approving and removing passengers and seats
 		# --------------------------------------------------------------------
-		if current_user is ride.rideoffer.owner:
+		if current_user == ride.rideoffer.owner:
 		   	# Approve a passenger request
 			if prq_id and action == 'APRV':
 				prq = PassengerRequest.get_by_id(prq_id) #only proceed if there is a valid passengerrequest
@@ -63,11 +64,12 @@ class ViewRidePageHandler(BaseRequestHandler):
 					prq.delete() #delete the passenger request
 
 		   	# Remove a passenger from the seat
-			if seat_id and action == 'CLR':
+			if seat_id and action == 'RM':
 				seat = Seat.get_by_id(seat_id) #only proceed if there is a valid seat
 				if seat:
 					seat.passenger = None
 					seat.accepted = None #disassociate the seat from the user
+					seat.save()
 					#TODO notify the passenger they have been removed
 
 			# Delete a seat
@@ -96,6 +98,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 		template_values['lat_lng_src'] = ride.rideoffer.source.get_lat_loc()
 		template_values['lat_lng_des'] = ride.rideoffer.destination.get_lat_loc()
 		template_values['key'] = ride.rideoffer.destination.get_googlekey()
+		template_values['has_passengers'] = (ride.count_seats() - ride.count_emptyseats()) >0
 
 		# --------------------------------------------------------------------
 		# Control the display of the form element

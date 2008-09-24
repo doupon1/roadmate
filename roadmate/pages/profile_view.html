@@ -3,9 +3,13 @@
 {% block title%}My Profile{% endblock %}
 
 {% block main %}
-	<h2>my profile</h2>
+	{% ifequal target_user current_user %}
+		<h2>my profile</h2>
+	{% else %}
+		<h2>user profile</h2>
+	{% endifequal %}
 
-	{% if target_user.first_name and target_user.first_name %}
+	{% if target_user.first_name %}
 		<h3>{{ target_user.first_name|default:"" }} {{ target_user.last_name|default:"" }}</h3>
 	{% endif %}
 
