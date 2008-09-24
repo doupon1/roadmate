@@ -3,8 +3,8 @@
 {% block title%}Home{% endblock %}
 
 {% block main %}
-
-
+<h2>browse rides</h2>
+	{% if rides %}
 <table>
 	<tr>
 		<th>Ride</th>
@@ -13,16 +13,21 @@
 		<th>Seats</th>
 
 	</tr>
-	{% for ride in rides %}
-	<tr class="row-a">
-		<td><a href="/ride?id={{ride.key.id}}">{{ride.rideoffer.source.get_addressname}} - {{ride.rideoffer.destination.get_addressname}}</a></td>
-		<td><a href ="/profile?user={{ride.rideoffer.owner.key.id}}">{{ride.rideoffer.owner.user.email|local_part_from_email }}</a></td>
-		<td>{{ride.date}}</td>
-		<td>{{ride.seats.count }}</td>
-	</tr>
-	{% endfor %}
 
-
+		{% for ride in rides %}
+		<tr class="row-a">
+			<td><a href="/ride?id={{ride.key.id}}">{{ride.rideoffer.source.get_addressname}} - {{ride.rideoffer.destination.get_addressname}}</a></td>
+			<td><a href ="/profile?user={{ride.rideoffer.owner.key.id}}">{{ride.rideoffer.owner.user.email|local_part_from_email }}</a></td>
+			<td>{{ride.date}}</td>
+			<td>{{ride.seats.count }}</td>
+		</tr>
+		{% endfor %}
 </table>
+	{% else %}
+	   <h3>Sorry, there are currently no rides available.</h3>
+	{% endif %}
+
+
+
 
 {% endblock %}
