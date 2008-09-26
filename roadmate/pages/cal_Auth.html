@@ -1,0 +1,106 @@
+{% extends "templates/base.html" %}
+
+{% block title%}Cal_Auth{% endblock %}
+
+{% block main %}
+
+<img src="images/rss.gif" style="position:absolute; top: -1000px;" />
+	
+	
+	
+     
+	 
+	 <hr/>
+
+<div id="addeven" >
+    <!--...  stuff I want to hide -->
+	<h2>Add calendar event view </h2>
+	
+	
+	<p>
+		<code>
+			
+            
+            
+             <span id="name"> {{ rideoffer.first_name }}</span><br />
+			<strong>From</strong> <span id="from">{{ rideoffer.source.address }}</span>	<br />
+			<strong>to</strong> <span id="to">{{ rideoffer.destination.address }}</span><br />
+			<!--<strong>On</strong> <span id="date">{{ target_ride.date }} </span><strong>departing at</strong> <span id="time">{{        
+			target_ride.time }}</span><br />-->
+			
+          <!--  <strong>Seats Available</strong> <span id="seats">{{ target_ride.available_seats }}</span> <br />
+			<strong>email </strong> <span id="email"> {{ target_ride.owner.user.email }}</span><br />-->
+			
+			{% for ride in rideoffer.rides %}
+			
+			  <strong>Start Time </strong><span id="startTime">{{ ride.date }}T{{ ride.departure_time }}.00Z</span><br />
+			  <strong>End Time </strong><span id="endTime">{{ ride.date }}T{{ ride.arrival_time }}.00Z</span></br>
+			  
+			{% endfor %}
+
+			
+			
+			
+			<br />
+			<br />
+			
+			
+			
+			
+		</code>
+		
+		
+		
+	</p>
+
+	
+	
+	
+	
+	
+	
+	
+    </div>
+	
+		
+		<div id="log_in">
+		         <!--<input  id= "insert_bt" type="button" name="addevent" value="add event" onclick=" insertEvents();"/>-->
+				 
+			<!-- <input  id="log_bt" type="button" name="calendar permission " value="logIn" onclick="logMeIn();" />-->
+			 
+			 		</div>
+					
+					
+		<div id="add_event">
+		
+		        <!-- <input id="log_bt" type="button" name="add event" value="add event" onclick="insertEvents();"   />-->
+				<!-- <input id="out_bt" type="button" name="addevent" value="logout" onclick="logMeOut();refresh('cal_Authlogin?id={{ rideoffer.key.id }}');" />-->
+				 				
+		</div>
+		
+		 <input  id="ride_id" type="hidden" value="{{rideoffer.key.id }}" />
+	
+	</p>
+	
+	
+<hr/>
+
+
+
+<br />
+<br />
+
+<br />
+
+<h3> My RoadMate Calendar Events</h3>
+
+<p id='display'>
+
+
+
+
+</p>
+
+
+
+{% endblock %}

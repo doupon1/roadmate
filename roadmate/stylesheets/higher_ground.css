@@ -224,6 +224,8 @@ textarea {
 	margin-left: 47px;
 }
 
+
+
 div.options {
 	background: url(higher_ground_images/post.jpg);
 	padding-top: 3px;
@@ -257,6 +259,19 @@ input.button {
 	border: none;
 }
 
+#insert_bt,#log_bt,#out_bt{
+    
+	font: bold 12px Arial, Sans-serif;
+	height: 24px;
+	width: 60px;
+	margin-left: 10px;
+	padding: 2px 3px;
+	background: url(higher_ground_images/nav-hover.jpg) repeat-x;
+	color:#FAFAFA;
+	
+	border: none;
+
+}
 select#id_source {
 	width: 280px;
 }

@@ -12,6 +12,9 @@ handlers:
 
 - url: /stylesheets
   static_dir: stylesheets
+  
+- url: /cal
+  static_dir: cal
 
 # ----------------------------------------------------------------------------
 # Static Directories
@@ -61,3 +64,8 @@ handlers:
 
 - url: /seat_assign(.*)
   script: pages/seat.py
+ 
+- url: /cal_Authlogin(.*)
+  script: pages/cal_Auth.py
+  login: required
+ 

@@ -10,11 +10,17 @@ indexes:
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
 
+# Used 61 times in query history.
+- kind: Ride
+  properties:
+  - name: creation_date
+    direction: desc
+
 # Unused in query history -- copied from input.
 - kind: Ride
   ancestor: yes
 
-# Used 2 times in query history.
+# Unused in query history -- copied from input.
 - kind: RideOffer
   properties:
   - name: creation_date
