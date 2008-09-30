@@ -14,7 +14,7 @@ handlers:
   static_dir: stylesheets
   
 - url: /cal
-  static_dir: cal
+  static_dir: scripts/googleCalendarScripts/cal
 
 # ----------------------------------------------------------------------------
 # Static Directories
