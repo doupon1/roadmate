@@ -1,0 +1,26 @@
+{% extends "templates/base.html" %}
+
+{% block title%}View Location{% endblock %}
+
+{% block main %}
+	<h2>View Location</h2>
+    <h3>{{ target_location.source.name }}</h3>
+
+	<p>
+		<code>
+			<strong>Owner</strong> <a href="/profile?user={{ target_location.owner.key.id }}">{{ target_location.owner.user.email }}</a><br />
+
+			<strong>Name</strong> {{ target_location.name }}<br />
+			<strong>Address</strong> {{ target_location.address }}<br />
+			<strong>Town</strong> {{ target_location.town }}<br />
+			
+		</code>
+		<a href="/location_create">Create Another Location</a><br />
+		<a href="/rideoffer_create">Create Ride Offer</a>
+	</p>
+	<h3>Map</h3>
+	<img src="http://maps.google.com/staticmap?&size=400x400&markers={{lat_lng_loc}}&key={{key}}"/>
+    </p>
+
+	
+{% endblock %}

@@ -1,0 +1,63 @@
+application: roadmate
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+# ----------------------------------------------------------------------------
+# Static Directories
+# ----------------------------------------------------------------------------
+- url: /images
+  static_dir: images
+
+- url: /stylesheets
+  static_dir: stylesheets
+
+# ----------------------------------------------------------------------------
+# Static Directories
+# ----------------------------------------------------------------------------
+- url: /
+  script: pages/index.py
+
+- url: /index\.html
+  script: pages/index.py
+
+- url: /support
+  script: pages/support.py
+
+- url: /about
+  script: pages/about.py
+
+- url: /profile(.*)
+  script: pages/profile.py
+
+- url: /rideoffer_create(.*)
+  script: pages/rideoffer.py
+  login: required
+
+- url: /rideoffer_edit(.*)
+  script: pages/rideoffer.py
+  login: required
+
+- url: /rideoffer(.*)
+  script: pages/rideoffer.py
+
+- url: /browse(.*)
+  script: pages/browse.py
+
+- url: /location_create(.*)
+  script: pages/location.py
+  login: required
+
+- url: /location(.*)
+  script: pages/location.py
+  login: required
+
+- url: /ride(.*)
+  script: pages/ride.py
+
+- url: /seat(.*)
+  script: pages/seat.py
+
+- url: /seat_assign(.*)
+  script: pages/seat.py
