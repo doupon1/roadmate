@@ -121,7 +121,7 @@
 	 	
 		
 		var userid=getuserid();
-		obj2.innerHTML="<input id=\"log_bt\" type=\"button\" name=\"add event\" value=\"add event\" onclick=\"insertEvents(); refresh(\'cal_Authlogin?id="+userid+"\');\"   /><input id=\"out_bt\" type=\"button\" name=\"addevent\" value=\"logout\" onclick=\"logMeOut();refresh(\'cal_Authlogin?id="+userid+"\');\" />" ;
+		obj2.innerHTML="<input id=\"log_bt\" type=\"button\" name=\"add event\" value=\"add event\" onclick=\"insertEvents();\"  /><input id=\"out_bt\" type=\"button\" name=\"addevent\" value=\"logout\" onclick=\"logMeOut();refresh(\'cal_Authlogin?id="+userid+"\');\" />" ;
 		
 	  // obj1.style.display = 'none';
 	 
@@ -250,7 +250,7 @@ function  creat_event_list(){
 reminder.setMinutes(1440);
 
 // Set the reminder method to be all, sms pop up email.
-reminder.setMethod(google.gdata.Reminder.METHOD_ALL  );
+reminder.setMethod(google.gdata.Reminder.METHOD_EMAIL  );
 
 // Add the reminder with the When object
   when.addReminder(reminder);
