@@ -18,15 +18,15 @@ The following is an outline of RoadMate's directory structure:
 --	./pages
 
 		RoadMate's site pages and their corresponding python files.
-	
+
 --	./roadmate
 
 		Python packages containing classes used by RoadMate.
-	
+
 --	./roadmate/models
 
 		Data model classes for RoadMate.
-	
+
 --	./roadmate/models/data
 
 		A collection of line delimited text files. 
@@ -35,10 +35,14 @@ The following is an outline of RoadMate's directory structure:
 		when is it is first run on a new system.
 
 		E.g. Lists of towns, geographical data .etc.
-	
+
 --	./stylesheets
 
 		RoadMate's Cascading Style Sheets and their accompanying files.
+		
+--	./scrips
+
+		A collection of internal and 3rd party JavaScript libraries used with RoadMate.
 
 --	./templates
 
