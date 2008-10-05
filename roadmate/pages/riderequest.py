@@ -15,25 +15,23 @@ from roadmate.converters import is_true
 from roadmate.handlers.baserequesthandler import BaseRequestHandler
 
 from roadmate.models.roadmateuser import RoadMateUser
-from roadmate.models.passengerrequest import PassengerRequest
-from roadmate.models.ride import Ride
-from roadmate.models.ride import RideForm
-from roadmate.models.seat import Seat
+from roadmate.models.riderequest import RideRequest
+from roadmate.models.riderequest import RideRequestForm
 from roadmate.models.location import Location
 
 # ----------------------------------------------------------------------------
 #  Request Handlers
 # ----------------------------------------------------------------------------
 
-class ViewRidePageHandler(BaseRequestHandler):
+class ViewRideRequestPageHandler(BaseRequestHandler):
 	"""
 		RoadMate RequestHandler
 
 		Page:
-			/ride ( = ride_view.html)
+			/riderequest ( = riderequest_view.html)
 
 		Get Arguments:
-			id - Integer (Ride.key.id) [Required]
+			id - Integer (Riderequest.key.id) [Required]
 	"""
 #GET REQUEST HANDLER
 	def get(self):
@@ -44,79 +42,35 @@ class ViewRidePageHandler(BaseRequestHandler):
 		current_user = RoadMateUser.get_current_user()
 
 		# Request Values
-		ride_id = self.get_request_parameter('id', converter=int, default=None)
-		prq_id = self.get_request_parameter('prq_id', converter=int, default=None)
-		seat_id = self.get_request_parameter('seat_id', converter=int, default=None)
-		action = self.get_request_parameter('action', converter=str, default=None)
+		riderequest_id = self.get_request_parameter('id', converter=int, default=None)
 
 		# Datastore Values
-		ride = Ride.get_by_id(ride_id)
-
-		# --------------------------------------------------------------------
-		# Handle approving and removing passengers and seats
-		# --------------------------------------------------------------------
-		if current_user == ride.owner:
-		   	# Approve a passenger request
-			if prq_id and action == 'APRV':
-				prq = PassengerRequest.get_by_id(prq_id) #only proceed if there is a valid passengerrequest
-				if prq:
-					empty_seat = ride.seats.filter('passenger = ', None).get() #retrieve the empty seats on this ride
-					empty_seat.assign(prq) #assign the seat: this method of Seat handles setting the "assigned time"
-					prq.delete() #delete the passenger request
-
-		   	# Remove a passenger from the seat
-			if seat_id and action == 'RM':
-				seat = Seat.get_by_id(seat_id) #only proceed if there is a valid seat
-				if seat:
-					seat.passenger = None
-					seat.accepted = None #disassociate the seat from the user
-					seat.save()
-					#TODO notify the passenger they have been removed
-
-			# Delete a seat
-			if seat_id and action == 'DEL':
-				seat = Seat.get_by_id(seat_id) #only proceed if there is a valid seat
-				if seat:
-					seat.delete()
-					#TODO if seat has passenger, notify them
-			#TODO add a seat?
+		riderequest = RideRequest.get_by_id(riderequest_id)
 
 		# --------------------------------------------------------------------
 		# Validate Request
 		# --------------------------------------------------------------------
 		# if the target ride does not exist in the datastore, then redirect
 		# the user back to the home page.
-		if ride is None:
+		if riderequest is None:
 			self.error(404)
 			return
 
 		# --------------------------------------------------------------------
 		# Generate and Store Template Values
 		# --------------------------------------------------------------------
-		template_values = super(ViewRidePageHandler, self
+		template_values = super(ViewRideRequestPageHandler, self
 			).generate_template_values(self.request.url)
 
-		template_values['ride'] = ride
-		template_values['lat_lng_src'] = ride.source.get_lat_loc()
-		template_values['lat_lng_des'] = ride.destination.get_lat_loc()
-		template_values['key'] = ride.destination.get_googlekey()
-		template_values['has_passengers'] = (ride.count_seats() - ride.count_emptyseats()) >0
-
-		# --------------------------------------------------------------------
-		# Control the display of the form element
-		# --------------------------------------------------------------------
-		#if user has already placed a request on this ride ~~appears in get and post
-		if ride.passengerrequests.filter('owner = ', current_user).get():
-			template_values['requestable'] = False #turn off the request button
-		else:
-			template_values['requestable'] = True #turn on the request button
-
-
+		template_values['riderequest'] = riderequest
+		template_values['lat_lng_src'] = riderequest.source.get_lat_loc()
+		template_values['lat_lng_des'] = riderequest.destination.get_lat_loc()
+		template_values['key'] = riderequest.destination.get_googlekey()
 
 		# --------------------------------------------------------------------
 		# Render and Serve Template
 		# --------------------------------------------------------------------
-		page_path = os.path.join(os.path.dirname(__file__), "ride_view.html")
+		page_path = os.path.join(os.path.dirname(__file__), "riderequest_view.html")
 		self.response.out.write(template.render(page_path, template_values))
 
 
@@ -135,16 +89,16 @@ class ViewRidePageHandler(BaseRequestHandler):
 
 
 		# Request Values
-		ride_id = self.get_request_parameter('id', converter=int, default=None)
+		riderequest_id = self.get_request_parameter('id', converter=int, default=None)
 
 		# Datastore Values
-		ride = Ride.get_by_id(ride_id)
+		riderequest = RideRequest.get_by_id(riderequest_id)
 		# --------------------------------------------------------------------
 		# Validate Request
 		# --------------------------------------------------------------------
 		# if the target ride does not exist in the datastore, then redirect
 		# the user back to the home page.
-		if ride is None:
+		if riderequest is None:
 			self.error(404)
 			return
 
@@ -152,56 +106,33 @@ class ViewRidePageHandler(BaseRequestHandler):
 		# --------------------------------------------------------------------
 		# Generate and Store Template Values
 		# --------------------------------------------------------------------
-		template_values = super(ViewRidePageHandler, self
+		template_values = super(ViewRideRequestPageHandler, self
 			).generate_template_values(self.request.url)
 
-		template_values['ride'] = ride
-		template_values['lat_lng_src'] = ride.source.get_lat_loc()
-		template_values['lat_lng_des'] = ride.destination.get_lat_loc()
-		template_values['key'] = ride.destination.get_googlekey()
-		template_values['has_passengers'] = (ride.count_seats() - ride.count_emptyseats()) >0
-		# --------------------------------------------------------------------
-		# Control the display of the form element
-		# and handle the new request
-		# --------------------------------------------------------------------
-
-		#if user has already placed a request on this ride ~~appears in get and post
-		if ride.passengerrequests.filter('owner = ', current_user).get():
-			template_values['requestable'] = False #turn off the request button
-		else:
-			template_values['requestable'] = True #turn on the request button
-
-			#if user is placing a request
-			if self.request.POST['do_request_ride']:
-				prq = PassengerRequest(owner=current_user, ride=ride) #create a new passengerrequest
-				prq.put()
-				template_values['requestable'] = False #turn off the request button
-				self.request.POST['do_request_ride'] = False #in case of refresh/repost
+		template_values['riderequest'] = riderequest
+		template_values['lat_lng_src'] = riderequest.source.get_lat_loc()
+		template_values['lat_lng_des'] = riderequest.destination.get_lat_loc()
+		template_values['key'] = riderequest.destination.get_googlekey()
 
 		# --------------------------------------------------------------------
 		# Render and Serve Template
 		# --------------------------------------------------------------------
-		page_path = os.path.join(os.path.dirname(__file__), "ride_view.html")
+		page_path = os.path.join(os.path.dirname(__file__), "riderequest_view.html")
 		self.response.out.write(template.render(page_path, template_values))
 
 
 
 
-class CreateRidePageHandler(BaseRequestHandler):
+class CreateRideRequestPageHandler(BaseRequestHandler):
 	"""
-		Create Ride view
-
-		 For Prototype 3, creation of Rides is handled here
-		 instead of creating the Ride when the (now deprecated) RideOffer is created
-		 the Route is created (or a previously-created Route is reused)
-		 at the time the Ride is created
+		Create RideRequest
 
 		Page:
-			/ride_create
+			/riderequest_create (riderequest_create.html)
 
 		Get Arguments:
 			showSourceFavorites - Boolean [Default=False]
-			showDestinationFavorites - Boolean [Default=False] TODO fix these to also show favorite Routes
+			showDestinationFavorites - Boolean [Default=False]
 	"""
 
 #GET REQUEST HANDLER
@@ -211,7 +142,6 @@ class CreateRidePageHandler(BaseRequestHandler):
 		# --------------------------------------------------------------------
 		# Session Values
 		current_user = RoadMateUser.get_current_user()
-
 		# Request Values
 		show_source_favorites = self.get_request_parameter('showSourceFavorites', converter=is_true, default=False)
 		show_destination_favorites = self.get_request_parameter('showDestinationFavorites', converter=is_true, default=False)
@@ -228,7 +158,7 @@ class CreateRidePageHandler(BaseRequestHandler):
 		# --------------------------------------------------------------------
 		# Generate Template Values
 		# --------------------------------------------------------------------
-		template_values = super(CreateRidePageHandler, self
+		template_values = super(CreateRideRequestPageHandler, self
 			).generate_template_values(self.request.url)
 
 		# because this page requires the user to be logged in, if they logout
@@ -239,20 +169,21 @@ class CreateRidePageHandler(BaseRequestHandler):
 		template_values['show_source_favorites'] = show_source_favorites
 		template_values['show_destination_favorites'] = show_destination_favorites
 
-		ride_form = RideForm()
-		ride_form.fields['source'].query = current_user.locations
-		ride_form.fields['destination'].query = current_user.locations
+		riderequest_form = RideRequestForm()
+		riderequest_form.fields['source'].query = current_user.locations
+		riderequest_form.fields['destination'].query = current_user.locations
 
-		template_values['ride_form'] = ride_form
+		template_values['riderequest_form'] = riderequest_form
 
 		# --------------------------------------------------------------------
 		# Render and Serve Template
 		# --------------------------------------------------------------------
-		page_path = os.path.join(os.path.dirname(__file__), "ride_create.html")
+		page_path = os.path.join(os.path.dirname(__file__), "riderequest_create.html")
 		self.response.out.write(template.render(page_path, template_values))
 
 #POST REQUEST HANDLER
 	def post(self):
+
 		# --------------------------------------------------------------------
 		# Retrive Session Info
 		# --------------------------------------------------------------------
@@ -277,11 +208,11 @@ class CreateRidePageHandler(BaseRequestHandler):
 		# i.e. form has been submitted, do sth with the values
 		# --------------------------------------------------------------------
 
-		ride_data = { 'owner':current_user }
+		riderequest_data = { 'owner':current_user }
 
-		ride_form = RideForm(
+		riderequest_form = RideRequestForm(
 			data=self.request.POST,
-			initial=ride_data
+			initial=riderequest_data
 		) #set a form for that instance
 
 		# --------------------------------------------------------------------
@@ -289,7 +220,7 @@ class CreateRidePageHandler(BaseRequestHandler):
 		# --------------------------------------------------------------------
 		# if there are errors in the form, then re-serve the page with the
 		# error values highlighted.
-		if not ride_form.is_valid():
+		if not riderequest_form.is_valid():
 			# ----------------------------------------------------------------
 			# Generate Template Values
 			# ----------------------------------------------------------------
@@ -305,55 +236,20 @@ class CreateRidePageHandler(BaseRequestHandler):
 			template_values['show_source_favorites'] = show_source_favorites
 			template_values['show_destination_favorites'] = show_destination_favorites
 
-			ride_form.fields['source'].query = current_user.locations
-			ride_form.fields['destination'].query = current_user.locations
+			riderequest_form.fields['source'].query = current_user.locations
+			riderequest_form.fields['destination'].query = current_user.locations
 
-			template_values['ride_form'] = ride_form
+			template_values['riderequest_form'] = riderequest_form
 
 			# ----------------------------------------------------------------
 			# Render and Serve Template
 			# ----------------------------------------------------------------
-			page_path = os.path.join(os.path.dirname(__file__), "ride_create.html")
+			page_path = os.path.join(os.path.dirname(__file__), "riderequest_create.html")
 			self.response.out.write(template.render(page_path, template_values))
 			return
 
-		""" #TODO can this be deleted?
-		route_data = {
-			'owner':current_user,
-			'source':route_form.clean_data.get('source'),
-			'destination':route_form.clean_data.get('destination'),
-			'notes':route_form.clean_data.get('notes')
-		}
-
-		# the user is not picking a location from their favourites,
-		# then use the 'source_address' to create a new location.
-		if route_data['source'] is None:
-			source_location = Location(
-				owner=current_user,
-				address=route_form.clean_data['source_address']
-			)
-			source_location.put()
-			route_data['source'] = source_location
-
-		# the user is not picking a location from their favourites,
-		# then use the 'destination_address' to create a new location.
-		if route_data['destination'] is None:
-			destination_location = Location(
-				owner=current_user,
-				address=route_form.clean_data['destination_address']
-			)
-			destination_location.put()
-			route_data['destination'] = destination_location
-
-		#TODO we should have to do this manually
-		route = route(**route_data)
-		route.put()
-		"""
-
-		ride = ride_form.save() #else, the form is valid, so save it
-		ride.create_seats(ride_form.clean_data.get('number_of_seats')) # create its seats
-
-		self.redirect("/ride?id=%s" % ride.key().id()) # redirect to the view page
+		riderequest = riderequest_form.save() #else, the form is valid, so save it
+		self.redirect("/riderequest?id=%s" % riderequest.key().id()) # redirect to the view page
 
 
 
@@ -365,8 +261,8 @@ def main():
 	# Initialize web  application
 	application = webapp.WSGIApplication(
 		[
-		 ('/ride', ViewRidePageHandler),
-		 ('/ride_create', CreateRidePageHandler)
+		 ('/riderequest', ViewRideRequestPageHandler),
+		 ('/riderequest_create', CreateRideRequestPageHandler)
 		], debug=True)
 	run_wsgi_app(application)
 

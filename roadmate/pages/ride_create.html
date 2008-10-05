@@ -1,0 +1,77 @@
+{% extends "templates/base.html" %}
+
+{% block title%}Offer A Ride{% endblock %}
+
+{% block main %}
+	<h2>offer a ride</h2>
+
+	<form method="post">
+
+		{{ ride_form.non_field_errors }}
+
+		<div class="inputgroup">
+			<div>
+				{% if show_source_favorites %}
+					{{ ride_form.source.label_tag }}
+					{{ ride_form.source }}
+				{% else %}
+					{{ ride_form.source_address.label_tag }}
+					{{ ride_form.source_address }}
+
+					{% if current_user.locations.count %}
+						<a class="buttonlink" href="/ride_create?showSourceFavorites=True&amp;showDestinationFavorites={{ show_destination_favorites  }}">Favorites</a>
+					{% endif %}
+				{% endif %}
+			</div>
+
+			<div>
+				{% if show_destination_favorites %}
+					{{ ride_form.destination.label_tag }}
+					{{ ride_form.destination }}
+				{% else %}
+					{{ ride_form.destination_address.label_tag }}
+					{{ ride_form.destination_address }}
+
+					{% if current_user.locations.count %}
+						<a class="buttonlink" href="/ride_create?showSourceFavorites={{ show_source_favorites }}&amp;showDestinationFavorites=True">Favorites</a>
+					{% endif %}
+				{% endif %}
+			</div>
+		</div>
+
+		<div class="inputgroup">
+			<div>
+				{{ ride_form.date.label_tag }}
+				{{ ride_form.date }}
+			</div>
+
+			<div>
+				{{ ride_form.departure_time.label_tag }}
+				{{ ride_form.departure_time }}
+			</div>
+
+			<div>
+				{{ ride_form.arrival_time.label_tag }}
+				{{ ride_form.arrival_time }}
+			</div>
+		</div>
+
+		<div class="inputgroup">
+			<div>
+				{{ ride_form.number_of_seats.errors }}
+				{{ ride_form.number_of_seats.label_tag }}
+				{{ ride_form.number_of_seats }}
+			</div>
+
+    		<div>
+				<strong>{{ ride_form.notes.label }}</strong>
+				{{ ride_form.notes }}
+			</div>
+		</div>
+
+	<p>
+		<input type="hidden" name="_do_create_ride" value="True">
+		<input class="button" type="submit" value="Create"/>
+	</p>
+	</form>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends "templates/base.html" %}
+
+{% block title%}Request A Ride{% endblock %}
+
+{% block main %}
+	<h2>request a ride</h2>
+	<p>
+	   You can let drivers know that you want a ride by placing a ride request.<br/>
+	   Your request will show in <a href='/browse_riderequests'>Browse Ride Requests</a> and you will be notified<br/>
+	   when it is accepted
+	</p>
+	<form method="post">
+
+		{{ riderequest_form.non_field_errors }}
+
+		<div class="inputgroup">
+			<div>
+				{% if show_source_favorites %}
+					{{ riderequest_form.source.label_tag }}
+					{{ riderequest_form.source }}
+				{% else %}
+					{{ riderequest_form.source_address.label_tag }}
+					{{ riderequest_form.source_address }}
+
+					{% if current_user.locations.count %}
+						<a class="buttonlink" href="/riderequest_create?showSourceFavorites=True&amp;showDestinationFavorites={{ show_destination_favorites  }}">Favorites</a>
+					{% endif %}
+				{% endif %}
+			</div>
+
+			<div>
+				{% if show_destination_favorites %}
+					{{ riderequest_form.destination.label_tag }}
+					{{ riderequest_form.destination }}
+				{% else %}
+					{{ riderequest_form.destination_address.label_tag }}
+					{{ riderequest_form.destination_address }}
+
+					{% if current_user.locations.count %}
+						<a class="buttonlink" href="/riderequest_create?showSourceFavorites={{ show_source_favorites }}&amp;showDestinationFavorites=True">Favorites</a>
+					{% endif %}
+				{% endif %}
+			</div>
+		</div>
+
+		<div class="inputgroup">
+			<div>
+				{{ riderequest_form.date.label_tag }}
+				{{ riderequest_form.date }}
+			</div>
+
+			<div>
+				{{ riderequest_form.departure_time.label_tag }}
+				{{ riderequest_form.departure_time }}
+			</div>
+
+			<div>
+				{{ riderequest_form.arrival_time.label_tag }}
+				{{ riderequest_form.arrival_time }}
+			</div>
+		</div>
+
+    		<div>
+				<strong>{{ riderequest_form.notes.label }}<strong>
+				{{ riderequest_form.notes }}
+			</div>
+
+		<input type="hidden" name="_do_create_riderequest" value="True">
+		<input class="button" type="submit" value="Create"/>
+
+	</form>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "templates/base.html" %}
+
+{% block title%}View Profile{% endblock %}
+
+{% block main %}
+
+{% ifequal target_user current_user %} <!-- user is viewing own profile -->
+   <h2>my profile</h2>
+	<form method="post">
+ 		<div>
+ 		     <label>Email </label>{{ current_user.user.email}}
+        </div>
+        <div>
+            {{ user_form.first_name.label_tag }}
+            {{ user_form.first_name }}
+        </div>
+        <div>
+            {{ user_form.last_name.label_tag }}
+            {{ user_form.last_name }}
+        </div>
+        <div>
+            {{ user_form.town.label_tag }}
+            {{ user_form.town }}
+        </div>
+         <div>
+			{{ user_form.phone.errors }}
+            {{ user_form.phone.label_tag }}
+            {{ user_form.phone }}
+        </div>
+		<p>
+
+			<input type="hidden" name="_id" value="{{ user_form.instance.key.id }}"/>
+			<input type="hidden" name="_do_update_profile" value="True"/>
+			<input class="button" type="submit" value="Save"/>
+		</p>
+	</form>
+
+{% else %} <!-- user is viewing another user's profile, or is not logged in -->
+   <h2>view profile</h2>
+	{% if target_user.first_name %}
+		<h3>{{ target_user.first_name|default:"" }} {{ target_user.last_name|default:"" }}</h3>
+	{% endif %}
+
+	<ul class="details-list">
+		<li><strong>Email:</strong> {{ target_user.user.email }}</li>
+
+		{% if target_user.town %}
+			<li><strong>Hometown:</strong> {{ target_user.town }}</li>
+		{% endif %}
+
+		{% if target_user.phone %}
+			<li><strong>Phone:</strong> {{ target_user.phone }}</li>
+		{% endif %}
+	</ul>
+
+	{% if my_rides %}
+	<hr />
+		<h3>offered rides</h3>
+		<table>
+			<tr>
+				<th>Ride</th>
+				<th>Date</th>
+				<th>Seats</th>
+				<th>Passengers</th>
+			</tr>
+			{% for ride in my_rides %}
+				<tr class="row-a">
+					<td>
+						<a href="/ride?id={{ ride.key.id }}">{{ ride.get_name }}</a>
+					</td>
+					<td>
+						{{ ride.date }}
+					</td>
+					<td>
+						{{ ride.count_seats }}
+					</td>
+					<td>
+						{{ ride.count_passengers }}
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+
+	{% endif %}
+{% endifequal %}
+{% endblock %}

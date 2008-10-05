@@ -112,7 +112,7 @@ class CreateLocationPageHandler(BaseRequestHandler):
 			# ----------------------------------------------------------------
 			# Render and Serve Template
 			# ----------------------------------------------------------------
-			page_path = os.path.join(os.path.dirname(__file__), "rideoffer_create.html")
+			page_path = os.path.join(os.path.dirname(__file__), "route_create.html")
 			self.response.out.write(template.render(page_path, template_values))
 			return
 

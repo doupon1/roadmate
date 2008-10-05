@@ -12,9 +12,9 @@ handlers:
 
 - url: /stylesheets
   static_dir: stylesheets
-  
+
 - url: /cal
-  static_dir: scripts/google-calendar/cal
+  static_dir: cal
 
 # ----------------------------------------------------------------------------
 # Static Directories
@@ -34,38 +34,39 @@ handlers:
 - url: /profile(.*)
   script: pages/profile.py
 
-- url: /rideoffer_create(.*)
-  script: pages/rideoffer.py
-  login: required
-
-- url: /rideoffer_edit(.*)
-  script: pages/rideoffer.py
-  login: required
-
-- url: /rideoffer(.*)
-  script: pages/rideoffer.py
-
-- url: /browse(.*)
+- url: /browse_rides(.*)
   script: pages/browse.py
 
-- url: /location_create(.*)
-  script: pages/location.py
-  login: required
+- url: /browse_riderequests(.*)
+  script: pages/browse.py
 
 - url: /location(.*)
   script: pages/location.py
   login: required
 
+- url: /riderequest(.*)
+  script: pages/riderequest.py
+
+- url: /riderequest_create(.*)
+  script: pages/riderequest.py
+  login: required
+
 - url: /ride(.*)
   script: pages/ride.py
 
-- url: /seat(.*)
-  script: pages/seat.py
+- url: /ride_create(.*)
+  script: pages/ride.py
+  login: required
 
-- url: /seat_assign(.*)
-  script: pages/seat.py
- 
 - url: /cal_Authlogin(.*)
   script: pages/cal_Auth.py
   login: required
- 
+
+- url: /myrides(.*)
+  script: pages/myrides.py
+  login: required
+
+- url: /mybookings(.*)
+  script: pages/mybookings.py
+  login: required
+

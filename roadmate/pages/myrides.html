@@ -1,0 +1,57 @@
+{% extends "templates/base.html" %}
+
+{% block title%}Manage My Rides{% endblock %}
+
+{% block main %}
+	<h2>manage my rides</h2>
+		<p>These are the rides that you are currently offering.
+		Click each ride to see the full details.</p> <br/>
+		<p> #TODO add in cancel functionality<br/>
+		#TODO create a "past rides/history" page and link to it here??<br/>
+		#TODO tidy up the table below please</p>
+	{% if my_rides %}
+	<hr />
+		<h3>my rides</h3>
+		<table>
+			<tr>
+				<th>Ride</th>
+				<th>Date</th>
+				<th>Seats</th>
+				<th>Passengers</th>
+				<th>Requests</th>
+				<th></th>
+			</tr>
+			{% for ride in my_rides %}
+				<tr class="row-a">
+    			<td>
+					<a href="/ride?id={{ ride.key.id }}">{{ ride.get_name }}</a>
+     			</td>
+                 <td>
+					{{ ride.date }}
+     			</td>
+                 <td>
+					{{ ride.count_seats }}
+     			</td>
+                 <td>
+					{{ ride.count_passengers }}
+     			</td>
+     			<td>
+					{{ ride.passengerrequests.count }}
+     			</td>
+    			<td>
+					<a href="">Cancel Ride</a>
+     			</td>
+				</tr>
+			{% endfor %}
+		</table>
+
+	{% else %}
+	   <p />
+	   <h3>You currently offer no rides.</h3>
+	   <p>Would you like to host a ride? Go to <a href="/create_ride">Offer A Ride</a></p>
+
+	{% endif %}
+
+{% endblock %}
+
+

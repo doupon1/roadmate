@@ -1,0 +1,44 @@
+{% extends "templates/base.html" %}
+
+{% block title%}My Booked Rides{% endblock %}
+
+{% block main %}
+	<h2>my bookings</h2>
+       	<p>These are the rides that you are a passenger on. Rides will not be displayed until
+		you have been accepted by the driver of that ride.</p>
+
+	{% if my_booked_seats %}
+	<hr />
+		<table>
+			<tr>
+				<th>Ride</th>
+				<th>Date</th>
+				<th>Departure Time</th>
+				<th>Arrival Time</th>
+			</tr>
+			{% for seat in my_booked_seats %}
+				<tr class="row-a">
+					<td>
+						<a href="/ride?id={{ seat.ride.key.id }}">{{ seat.ride.get_name }}</a>
+					</td>
+					<td>
+					 {{ seat.ride.date }}
+					</td>
+					<td>
+					 {{ seat.ride.departure_time }}
+					</td>
+					<td>
+					 {{ seat.ride.arrival_time }}
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+
+	{% else %}
+	   <p />
+	   <h3>You have no rides booked.</h3>
+	   <p>Looking for a ride? Try <a href="/browse">Browse All Rides</a></p>
+
+	{% endif %}
+
+{% endblock %}

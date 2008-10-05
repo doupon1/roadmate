@@ -12,7 +12,6 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 from roadmate.converters import is_true
 from roadmate.handlers.baserequesthandler import BaseRequestHandler
 from roadmate.models.roadmateuser import RoadMateUser
-from roadmate.models.rideoffer import RideOffer
 from roadmate.models.ride import Ride
 from roadmate.models.seat import Seat
 from roadmate.models.roadmateuser import RoadMateUserForm
@@ -23,14 +22,14 @@ from roadmate.models.roadmateuser import RoadMateUserForm
 
 class ProfilePageHandler(BaseRequestHandler):
 	"""
-		RoadMate RequestHandler
+		Profile view
 
+			   Will be displayed in edit mode if own profile
 		Page:
 			/profile.html
 
 		Get Arguments:
 			user - Integer (RoadMateUser.key.id) [Required]
-			edit - Boolean [Default=False]
 	"""
 
 	def get(self):
@@ -42,7 +41,6 @@ class ProfilePageHandler(BaseRequestHandler):
 
 		# Request Values
 		target_user_id = self.get_request_parameter('user', converter=int, default=None)
-		is_editing = self.get_request_parameter('edit', converter=is_true, default=False)
 
 		# Datastore Values
 		target_user = None
@@ -62,32 +60,9 @@ class ProfilePageHandler(BaseRequestHandler):
 				logging.info("No target user specified. Redirecting to"\
 					" current user's profile page.")
 
-				self.redirect("/profile?user=%s&edit=%s" %
-					(current_user.key().id(), is_editing))
+				self.redirect("/profile?user=%s" % current_user.key().id())
 				return
 
-
-		if is_editing:
-			if current_user is None:
-				# if a guest is trying to view an edit profile page, then
-				# redirect them to a login page.
-				logging.warning("A guest attempted to view the edit"\
-					" profile page of user '%s'. Redirecting to login page." %
-					target_user.user.email)
-
-				self.redirect(users.create_login_url(self.request.url))
-				return
-
-			elif target_user != current_user:
-				# if the user is trying to view the edit profile page for
-				# for someone else, then redirect them to the read-only version.
-				logging.warning("User '%s' attempted to view the edit"\
-					" profile page of user '%s'. Redirecting to read-only"\
-					" version." %
-					(current_user.user.email, target_user.user.email))
-
-				self.redirect("/profile?user=%s" % target_user.key().id())
-				return
 
 		# --------------------------------------------------------------------
 		# Generate Template Values
@@ -99,20 +74,15 @@ class ProfilePageHandler(BaseRequestHandler):
 		# we redirect them back to the home page.
 		template_values['logout_url'] = users.create_logout_url('/')
 
-		template_values['my_rideoffers'] = list(target_user.rideoffers)
-		template_values['my_booked_seats'] = list(target_user.myseats)
-		template_values['target_user'] = target_user
-		template_values['user_form'] = RoadMateUserForm(instance=target_user)
+		template_values['my_rides'] = list(target_user.rides)
+		template_values['target_user'] = target_user #only used if not current user
+		template_values['user_form'] = RoadMateUserForm(instance=current_user) #only used if current user
 
 		# --------------------------------------------------------------------
 		# Render and Serve Template
 		# --------------------------------------------------------------------
 		page_path = os.path.join(os.path.dirname(__file__),
-			'profile_view.html')
-
-		if is_editing:
-			page_path = os.path.join(os.path.dirname(__file__),
-				'profile_edit.html')
+			'profile.html')
 
 		self.response.out.write(template.render(page_path, template_values))
 
@@ -182,7 +152,7 @@ class ProfilePageHandler(BaseRequestHandler):
 			# ----------------------------------------------------------------
 			# Render and Serve Template
 			# ----------------------------------------------------------------
-			page_path = os.path.join(os.path.dirname(__file__), "profile_edit.html")
+			page_path = os.path.join(os.path.dirname(__file__), "profile.html")
 			self.response.out.write(template.render(page_path, template_values))
 			return
 
@@ -190,7 +160,7 @@ class ProfilePageHandler(BaseRequestHandler):
 		# Finalise POST Request
 		# --------------------------------------------------------------------
 		user_form.save()
-		self.redirect('/profile')
+		self.redirect("/profile?user=%s" % current_user.key().id())
 
 # ----------------------------------------------------------------------------
 #  Program Entry Point

@@ -4,15 +4,15 @@
 
 {% block main %}
 
-			
+
 <blockquote>
 		<p>why drive by yourself, have some company, save on petrol for yourself and others....</p>
 </blockquote>
 
 <a name="RoadMate"></a>
 	<h2>RoadMate it!!</h2>
-		
-	<p><strong>Our</strong> aim is to provide the community with a car pooling service that will facilitate 
+
+	<p><strong>Our</strong> aim is to provide the community with a car pooling service that will facilitate
 		travelling. why not to share a ride and save yourself and others the rising costs of
 		petrol and also it's good to have some company during travel, especially if you are travelling for long
 		hours..so <a href="{{ login_url }}">Sign up</a> today for an account and join our community</p>
@@ -23,7 +23,7 @@
 	<div class="options">
     	<ul>
 			<li><a href="/profile">Create a profile</a> and build your online identify.</li>
-        	<li><a href="/rideoffer_create">Create a ride offer</a> and start working on your ride-sharing karma.</li>
+        	<li><a href="/ride_create">Create a ride offer</a> and start working on your ride-sharing karma.</li>
         	<li><a href="/browse">Browse all rides</a> and find a roadmate.</li>
     	</ul>
 	</div>
@@ -41,8 +41,8 @@
     	</tr>
     	{% for ride in rides %}
     	<tr class="row-a">
-    		<td><a href="/ride?id={{ride.key.id}}">{{ride.rideoffer.source.get_addressname}} - {{ride.rideoffer.destination.get_addressname}}</a></td>
-    		<td><a href ="/profile?user={{ride.rideoffer.owner.key.id}}">{{ride.rideoffer.owner.user.email|local_part_from_email }}</a></td>
+    		<td><a href="/ride?id={{ride.key.id}}">{{ride.route.source.get_addressname}} - {{ride.route.destination.get_addressname}}</a></td>
+    		<td><a href ="/profile?user={{ride.route.owner.key.id}}">{{ride.route.owner.user.email|local_part_from_email }}</a></td>
     		<td>{{ride.date}}</td>
     		<td>{{ride.seats.count }}</td>
     	</tr>
@@ -51,6 +51,6 @@
 
     </table>
 {% endif %}
-				
-								
+
+
 {% endblock %}

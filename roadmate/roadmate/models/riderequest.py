@@ -10,58 +10,26 @@ from roadmate.models.roadmateuser import RoadMateUser
 from roadmate.widgets.selectdatewidget import SelectDateWidget
 from roadmate.widgets.selecttimewidget import SelectTimeWidget
 
-class Ride(db.Model):
+class RideRequest(db.Model):
 	"""
-		An instance of a ride.
+		A request for a ride.
+		These objects are publicly viewable so that potential drivers can assess the demand for offering a ride.
+		In this way, it will encourage them to offer a ride they might otherwise not.
 
-		For Prototype 3 The Ride will be given
-		the ability to recur by creating itself at intervals.
-		Thus recurring rides (commutes) can be established.
-
-		Use Ride.seats to get the collection of child Seats
 	"""
 
-
-	owner = db.ReferenceProperty(RoadMateUser, collection_name="rides", required=True)
-	source = db.ReferenceProperty(Location, verbose_name="From", collection_name="rides_from", required=True) ##where the ride begins
-	destination = db.ReferenceProperty(Location, verbose_name="To", collection_name="rides_to", required=True) ##where it will end
-	date = db.DateProperty(verbose_name="Date") ##date of this ride
-	departure_time = db.TimeProperty(verbose_name="Departure time") ##time of this ride departure
-	arrival_time = db.TimeProperty(verbose_name="Arrival time") ##date of this ride
-	notes = db.TextProperty(verbose_name="Notes")##any comments the owner wants to make about this ride
-	created = db.DateTimeProperty(required=True, auto_now_add=True) ##date this ride was created
-
-	# return the number of seats
-	def count_seats(self):
-		return self.seats.count()
-
-	# return the number of unassigned seats
-	def count_emptyseats(self):
-		return self.seats.filter('passenger = ', None).count()
-
-	# return the number of assigned seats
-	def count_passengers(self):
-		return self.count_seats() - self.count_emptyseats()
-
-	# return a formatted textual description of the ride's status
-	# we could make this conditional to show some alt text (in red?) if the ride is full
-	# this saves having 2 columns "Seats" and "Passengers" - wasting half the table width on the browse pages
-	def status(self):
-		return self.count_seats().__str__() + " seats<br/>" + self.count_passengers().__str__() + " passengers"
-
-	# create_seats
-	# method to create a number_of_seats
-	# can only be invoked after the Ride has been saved
-	def create_seats(self, number_of_seats):
-		from roadmate.models.seat import Seat
-		for i in range(0,number_of_seats):
-			s = Seat(ride=self)
-			s.put()
-		return
+	owner = db.ReferenceProperty(RoadMateUser, collection_name="riderequests", required=True)
+	source = db.ReferenceProperty(Location, verbose_name="From", collection_name="riderequests_from", required=True) ##where the owner wants the ride to begin
+	destination = db.ReferenceProperty(Location, verbose_name="To", collection_name="riderequests_to", required=True) ##where the owner wants the ride to end
+	date = db.DateProperty(verbose_name="Date") ##date they want the ride for
+	departure_time = db.TimeProperty(verbose_name="Departure time") ##time they would like to depart
+	arrival_time = db.TimeProperty(verbose_name="Arrival time") ##time they would like to arrive
+	notes = db.TextProperty(verbose_name="Notes")##any comments the owner wants to make about the request
+	created = db.DateTimeProperty(required=True, auto_now_add=True) ##date/time the request was created
 
 	# get_name
 	# use this method to define a standard
-	# fornat of displaying the reference to a ride
+	# fornat of displaying the reference to a riderequest
 	def get_name(self):
 		return self.source.get_addressname() + " to <br/>" + self.destination.get_addressname()
 
@@ -70,22 +38,18 @@ class Ride(db.Model):
 		return self.get_name()
 
 
-class RideForm(djangoforms.ModelForm):
+class RideRequestForm(djangoforms.ModelForm):
 	"""
-		Form to create a Ride
-
-		This form has come from what was RideOfferForm in the RideOffer model.
-		For Prototype 3, RideOffer is now deprecated and Ride creation is handled by the Ride entity
+		Form to create a RideRequest
 
 	"""
 
 	# ------------------------------------------------------------------------
-	#  Set the widgets we want for these attributes of Ride
+	#  Set the widgets we want for these attributes of RideRequest
 	# ------------------------------------------------------------------------
 	date = forms.DateField(widget=SelectDateWidget) #TODO set defaults/initialization on these, they are null otherwise
 	departure_time = forms.TimeField(widget=SelectTimeWidget)
 	arrival_time = forms.TimeField(widget=SelectTimeWidget)
-	number_of_seats = forms.IntegerField(initial=1)
 	source = djangoforms.ModelChoiceField(Location, label="From location", required=False)
 	destination = djangoforms.ModelChoiceField(Location, label="To location", required=False)
 
@@ -95,17 +59,7 @@ class RideForm(djangoforms.ModelForm):
 	source_address = forms.CharField(label="From address", required=False)
 	destination_address = forms.CharField(label="To address", required=False)
 
-
-	def clean_number_of_seats(self):
-		number_of_seats = self.clean_data['number_of_seats']
-
-		#TODO: this shouldn't be hardcoded
-		if number_of_seats < 1:
-			raise forms.ValidationError("Number of seats must be atleast one.")
-		if number_of_seats > 80:
-			raise forms.ValidationError("Number of seats cannot be more than 80.")
-
-		return number_of_seats
+	## these clean_.. methods are all the same as Ride
 
 	def clean(self):
 		cleaned_data = self.clean_data
@@ -150,7 +104,7 @@ class RideForm(djangoforms.ModelForm):
 		return cleaned_data
 
 	class Meta:
-		  model = Ride
+		  model = RideRequest
 		  exclude = ['owner', 'created']
 
 

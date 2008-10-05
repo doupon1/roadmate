@@ -147,6 +147,7 @@ blockquote {
 table {
 	border-collapse: collapse;
 	margin: 10px;
+	font-size: 11px
 }
 th strong {
 	color: #fff;
@@ -260,7 +261,7 @@ input.button {
 }
 
 #insert_bt,#log_bt,#out_bt{
-    
+
 	font: bold 12px Arial, Sans-serif;
 	height: 24px;
 	width: 60px;
@@ -268,7 +269,7 @@ input.button {
 	padding: 2px 3px;
 	background: url(higher_ground_images/nav-hover.jpg) repeat-x;
 	color:#FAFAFA;
-	
+
 	border: none;
 
 }

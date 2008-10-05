@@ -1,0 +1,37 @@
+{% extends "templates/base.html" %}
+
+{% block title%}Browse Ride Requests{% endblock %}
+
+{% block main %}
+<h2>browse ride requests</h2>
+
+<p>#TODO description of this page goes here.</br>
+maybe we could put some controls here to limit the results
+by date occurring or date created?
+</p>
+{% if riderequests %}
+	<table>
+		<tr>
+			<th>Ride Requested</th>
+			<th>Date</th>
+			<th>User</th>
+		</tr>
+
+			{% for riderequest in riderequests %}
+			<tr class="row-a">
+				<td><a href="/riderequest?id={{riderequest.key.id}}">{{riderequest.get_name}}</a></td>
+				<td><a href ="/profile?user={{riderequest.owner.key.id}}">{{riderequest.owner.user.email|local_part_from_email}}</a></td>
+				<td>{{riderequest.date}}</td>
+			</tr>
+			{% endfor %}
+	</table>
+{% else %}
+   <h3>Sorry, there are currently no ride requests available.</h3>
+   <p>Why not <a href="/ride_create">offer a ride</a> of your own?</p>
+{% endif %}
+
+
+
+
+{% endblock %}
+
