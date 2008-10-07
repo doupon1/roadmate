@@ -4,53 +4,51 @@
 
 {% block main %}
 
-
 <blockquote>
-		<p>why drive by yourself, have some company, save on petrol for yourself and others....roadmate it</p>
+	<p>why drive by yourself, have some company, save on petrol for yourself and others....</p>
 </blockquote>
 
 <a name="RoadMate"></a>
 	<h2>RoadMate it!!</h2>
 
-	<p><strong>Our</strong> aim is to provide the community with a car pooling service that will facilitate
-		travelling. why not to share a ride and save yourself and others the rising costs of
-		petrol and also it's good to have some company during travel, especially if you are travelling for long
-		hours..so <a href="{{ login_url }}">Sign up</a> today for an account and join our community</p>
+	<p>
+		<strong>Our</strong> aim is to provide the community with a car pooling service that will facilitate
+		traveling. why not to share a ride and save yourself and others the rising costs of
+		petrol and also it's good to have some company during travel, especially if you are traveling for long
+		hours..so <a href="{{ login_url }}">Sign up</a> today for an account and join our community
+	</p>
 
 	<p>Good luck and we hope you enjoy the experience!</p>
 
 	<h3>where to from here</h3>
 	<div class="options">
-    	<ul>
+		<ul>
 			<li><a href="/profile">Create a profile</a> and build your online identify.</li>
-        	<li><a href="/ride_create">Create a ride</a> and start working on your ride-sharing karma.</li>
-        	<li><a href="/browse_rides">Browse all rides</a> and find a roadmate.</li>
-    	</ul>
+			<li><a href="/ride_create">Create a ride offer</a> and start working on your ride-sharing karma.</li>
+			<li><a href="/browse">Browse all rides</a> and find a roadmate.</li>
+		</ul>
 	</div>
 
 {% if rides %}
-	<h2> latest offered rides </h2>
+	<h2>latest offered rides</h2>
 
-    <table>
-    	<tr>
-    		<th>Ride</th>
-    		<th>Date</th>
-    		<th>Driver</th>
-    		<th>Status</th>
+	<table>
+		<tr>
+			<th>Ride</th>
+			<th>Date</th>
+			<th>Driver</th>
+			<th>Status</th>
 
-    	</tr>
-    	{% for ride in rides %}
-    	<tr class="row-a">
-    		<td><a href="/ride?id={{ride.key.id}}">{{ride.get_name}}</a></td>
-    		<td>{{ride.date}}</td>
-    		<td><a href ="/profile?user={{ride.owner.key.id}}">{{ride.owner.user.email|local_part_from_email }}</a></td>
-    		<td>{{ride.status }}</td>
-    	</tr>
-    	{% endfor %}
-
-
-    </table>
+		</tr>
+		{% for ride in rides %}
+			<tr class="row-a">
+				<td><a href="/ride?id={{ride.key.id}}">{{ride.get_name}}</a></td>
+				<td>{{ride.date}}</td>
+				<td><a href ="/profile?user={{ride.owner.key.id}}">{{ride.owner.user.email|local_part_from_email }}</a></td>
+				<td>{{ride.status }}</td>
+			</tr>
+		{% endfor %}
+	</table>
 {% endif %}
 
-
-{% endblock %}
+{% endblock %} <!-- end block main -->
