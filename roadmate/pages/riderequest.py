@@ -12,6 +12,7 @@ from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 
 from roadmate.converters import is_true
+from roadmate.google.googlemaps import GoogleMaps
 from roadmate.handlers.baserequesthandler import BaseRequestHandler
 
 from roadmate.models.roadmateuser import RoadMateUser
@@ -33,7 +34,6 @@ class ViewRideRequestPageHandler(BaseRequestHandler):
 		Get Arguments:
 			id - Integer (Riderequest.key.id) [Required]
 	"""
-#GET REQUEST HANDLER
 	def get(self):
 		# --------------------------------------------------------------------
 		# Retrive Session Info and GET Data
@@ -63,9 +63,7 @@ class ViewRideRequestPageHandler(BaseRequestHandler):
 			).generate_template_values(self.request.url)
 
 		template_values['riderequest'] = riderequest
-		template_values['lat_lng_src'] = riderequest.source.get_lat_loc()
-		template_values['lat_lng_des'] = riderequest.destination.get_lat_loc()
-		template_values['key'] = riderequest.destination.get_googlekey()
+		template_values['googlemaps_key'] = GoogleMaps.get_key()
 
 		# --------------------------------------------------------------------
 		# Render and Serve Template
@@ -74,8 +72,6 @@ class ViewRideRequestPageHandler(BaseRequestHandler):
 		self.response.out.write(template.render(page_path, template_values))
 
 
-
-#POST REQUEST HANDLER
 	def post(self):
 		# --------------------------------------------------------------------
 		# Retrive Session Info and GET Data
@@ -110,16 +106,13 @@ class ViewRideRequestPageHandler(BaseRequestHandler):
 			).generate_template_values(self.request.url)
 
 		template_values['riderequest'] = riderequest
-		template_values['lat_lng_src'] = riderequest.source.get_lat_loc()
-		template_values['lat_lng_des'] = riderequest.destination.get_lat_loc()
-		template_values['key'] = riderequest.destination.get_googlekey()
+		template_values['googlemaps_key'] = GoogleMaps.get_key()
 
 		# --------------------------------------------------------------------
 		# Render and Serve Template
 		# --------------------------------------------------------------------
 		page_path = os.path.join(os.path.dirname(__file__), "riderequest_view.html")
 		self.response.out.write(template.render(page_path, template_values))
-
 
 
 

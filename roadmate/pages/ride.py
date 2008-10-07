@@ -3,7 +3,6 @@
 import os
 import logging
 
-
 from google.appengine.api import users
 from google.appengine.ext import db
 from google.appengine.ext import webapp
@@ -12,6 +11,7 @@ from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 
 from roadmate.converters import is_true
+from roadmate.google.googlemaps import GoogleMaps
 from roadmate.handlers.baserequesthandler import BaseRequestHandler
 
 from roadmate.models.roadmateuser import RoadMateUser
@@ -107,8 +107,8 @@ class ViewRidePageHandler(BaseRequestHandler):
 		template_values['ride'] = ride
 		template_values['lat_lng_src'] = ride.source.get_lat_loc()
 		template_values['lat_lng_des'] = ride.destination.get_lat_loc()
-		template_values['key'] = ride.destination.get_googlekey()
-		template_values['has_passengers'] = (ride.count_seats() - ride.count_emptyseats()) >0
+		template_values['googlemaps_key'] = GoogleMaps.get_key()
+		template_values['has_passengers'] = (ride.count_seats() - ride.count_emptyseats()) > 0
 		template_values['message_list'] = ride.messages
 
 		# --------------------------------------------------------------------
@@ -167,7 +167,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 		template_values['ride'] = ride
 		template_values['lat_lng_src'] = ride.source.get_lat_loc()
 		template_values['lat_lng_des'] = ride.destination.get_lat_loc()
-		template_values['key'] = ride.destination.get_googlekey()
+		template_values['googlemaps_key'] = GoogleMaps.get_key()
 		template_values['has_passengers'] = (ride.count_seats() - ride.count_emptyseats()) >0
 		template_values['message_list'] = ride.messages
 

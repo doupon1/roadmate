@@ -2,6 +2,7 @@
 # encoding: utf-8
 """Support for Google Maps API."""
 
+import os
 import logging
 import urllib
 

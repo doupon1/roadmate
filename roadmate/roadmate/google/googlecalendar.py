@@ -2,7 +2,7 @@
 # encoding: utf-8
 """Support for Google Calendar API."""
 
-from os
+import os
 
 class GoogleMaps:
 	"""A class providing Google Calendar functionality."""
