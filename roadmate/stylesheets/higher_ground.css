@@ -99,24 +99,6 @@ dd{
 margin-top:2%;
 }
 
-/* @end */
-
-
-/* @group images */
-img {
-	background: #FAFAFA;
-   border: 1px solid #DCDCDC;
-	padding: 5px;
-}
-img.float-right {
-  	margin: 5px 0px 10px 10px;
-}
-img.float-left {
-  	margin: 5px 10px 10px 0px;
-}
-
-/* @end */
-
 
 code {
   	margin: 5px 0;
