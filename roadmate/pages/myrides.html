@@ -16,8 +16,7 @@
 			<tr>
 				<th>Ride</th>
 				<th>Date</th>
-				<th>Seats</th>
-				<th>Passengers</th>
+				<th>Status</th>
 				<th>Requests</th>
 				<th></th>
 			</tr>
@@ -30,10 +29,7 @@
 					{{ ride.date }}
      			</td>
                  <td>
-					{{ ride.count_seats }}
-     			</td>
-                 <td>
-					{{ ride.count_passengers }}
+					{{ ride.status }}
      			</td>
      			<td>
 					{{ ride.passengerrequests.count }}
@@ -45,10 +41,11 @@
 			{% endfor %}
 		</table>
 
+
 	{% else %}
 	   <p />
 	   <h3>You currently offer no rides.</h3>
-	   <p>Would you like to host a ride? Go to <a href="/ride_create">Offer A Ride</a></p>
+	   <p>Would you like to host a ride? Go to <a href="/create_ride">Offer A Ride</a></p>
 
 	{% endif %}
 

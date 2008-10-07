@@ -17,6 +17,11 @@ class Ride(db.Model):
 		For Prototype 3 The Ride will be given
 		the ability to recur by creating itself at intervals.
 		Thus recurring rides (commutes) can be established.
+		 _______
+		| RIDE |--|
+		|------|  | <<creates>>
+		|      |<-|
+		|______|
 
 		Use Ride.seats to get the collection of child Seats
 	"""
@@ -43,6 +48,10 @@ class Ride(db.Model):
 	def count_passengers(self):
 		return self.count_seats() - self.count_emptyseats()
 
+	# return TRUE if user is a passenger on this ride
+	def is_passenger(self,user):
+		return (self.seats.filter('passenger = ', user).count() > 0)
+
 	# return a formatted textual description of the ride's status
 	# we could make this conditional to show some alt text (in red?) if the ride is full
 	# this saves having 2 columns "Seats" and "Passengers" - wasting half the table width on the browse pages
@@ -63,7 +72,7 @@ class Ride(db.Model):
 	# use this method to define a standard
 	# fornat of displaying the reference to a ride
 	def get_name(self):
-		return self.source.get_addressname() + " to <br/>" + self.destination.get_addressname()
+		return self.source.get_addressname() + " to " + self.destination.get_addressname()
 
  	def __unicode__(self):
 		"""Returns a string representation of the object."""

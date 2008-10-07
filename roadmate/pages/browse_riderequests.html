@@ -20,8 +20,9 @@ by date occurring or date created?
 			{% for riderequest in riderequests %}
 			<tr class="row-a">
 				<td><a href="/riderequest?id={{riderequest.key.id}}">{{riderequest.get_name}}</a></td>
-				<td><a href ="/profile?user={{riderequest.owner.key.id}}">{{riderequest.owner.user.email|local_part_from_email}}</a></td>
 				<td>{{riderequest.date}}</td>
+				<td><a href ="/profile?user={{riderequest.owner.key.id}}">{{riderequest.owner.user.email|local_part_from_email}}</a></td>
+
 			</tr>
 			{% endfor %}
 	</table>

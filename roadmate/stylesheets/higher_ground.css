@@ -181,6 +181,34 @@ tr.row-b {
 	background: #EFEFEF;
 }
 
+table.messages { 
+	margin: 0;
+	width: 100%;	
+}
+tr.message-driver {
+	background: #CCCCCC;
+	width: 400px;
+	border:1px solid #D5D5D5;
+}
+tr.message-passenger {
+	background: #DFDFDF;
+	border:1px solid #D5D5D5;
+}
+tr.message-user{
+	background: #F8F8F8;
+	border:1px solid #D5D5D5;
+}
+tr.message-space{
+
+	height: 10px;
+}
+tr.message-text{
+	background: #F8F8F8;
+	border:1px solid #D5D5D5;
+}
+
+
+
 /* @end */
 
 
@@ -222,7 +250,6 @@ textarea {
 	height:100px;
 	display:block;
 	color:#777;
-	margin-left: 47px;
 }
 
 

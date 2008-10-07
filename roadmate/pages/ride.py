@@ -20,6 +20,7 @@ from roadmate.models.ride import Ride
 from roadmate.models.ride import RideForm
 from roadmate.models.seat import Seat
 from roadmate.models.location import Location
+from roadmate.models.message import Message
 
 # ----------------------------------------------------------------------------
 #  Request Handlers
@@ -48,10 +49,10 @@ class ViewRidePageHandler(BaseRequestHandler):
 		prq_id = self.get_request_parameter('prq_id', converter=int, default=None)
 		seat_id = self.get_request_parameter('seat_id', converter=int, default=None)
 		action = self.get_request_parameter('action', converter=str, default=None)
+		newseats = self.get_request_parameter('newseats', converter=int, default=None)
 
 		# Datastore Values
 		ride = Ride.get_by_id(ride_id)
-
 		# --------------------------------------------------------------------
 		# Handle approving and removing passengers and seats
 		# --------------------------------------------------------------------
@@ -79,7 +80,14 @@ class ViewRidePageHandler(BaseRequestHandler):
 				if seat:
 					seat.delete()
 					#TODO if seat has passenger, notify them
-			#TODO add a seat?
+
+			# Create additional seats
+			if newseats and action == 'NEW':
+				if ride.count_seats() + newseats < 80:
+					ride.create_seats(newseats)
+				else:
+					self.error(404) #trying to create too many seats! TODO notify the user of the error
+					return
 
 		# --------------------------------------------------------------------
 		# Validate Request
@@ -101,6 +109,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 		template_values['lat_lng_des'] = ride.destination.get_lat_loc()
 		template_values['key'] = ride.destination.get_googlekey()
 		template_values['has_passengers'] = (ride.count_seats() - ride.count_emptyseats()) >0
+		template_values['message_list'] = ride.messages
 
 		# --------------------------------------------------------------------
 		# Control the display of the form element
@@ -160,6 +169,11 @@ class ViewRidePageHandler(BaseRequestHandler):
 		template_values['lat_lng_des'] = ride.destination.get_lat_loc()
 		template_values['key'] = ride.destination.get_googlekey()
 		template_values['has_passengers'] = (ride.count_seats() - ride.count_emptyseats()) >0
+		template_values['message_list'] = ride.messages
+
+
+
+
 		# --------------------------------------------------------------------
 		# Control the display of the form element
 		# and handle the new request
@@ -171,18 +185,30 @@ class ViewRidePageHandler(BaseRequestHandler):
 		else:
 			template_values['requestable'] = True #turn on the request button
 
-			#if user is placing a request
-			if self.request.POST['do_request_ride']:
-				prq = PassengerRequest(owner=current_user, ride=ride) #create a new passengerrequest
-				prq.put()
-				template_values['requestable'] = False #turn off the request button
-				self.request.POST['do_request_ride'] = False #in case of refresh/repost
+
+		#if user is placing a request
+		if self.request.POST.has_key('do_request_ride') and self.request.POST['do_request_ride']:
+			prq = PassengerRequest(owner=current_user, ride=ride) #create a new passengerrequest
+			prq.put()
+			template_values['requestable'] = False #turn off the request button
+
+
+		#if user is posting a message
+		#TODO make this more secure! clean the title and body text and validate max/min length!
+
+		if self.request.POST.has_key('do_post_message') and self.request.POST['do_post_message']:
+			message = Message(author=current_user, ride=ride, title=self.request.POST['message_title'], text=self.request.POST['message_body'])
+			message.put()
 
 		# --------------------------------------------------------------------
 		# Render and Serve Template
 		# --------------------------------------------------------------------
 		page_path = os.path.join(os.path.dirname(__file__), "ride_view.html")
 		self.response.out.write(template.render(page_path, template_values))
+
+
+
+
 
 
 
@@ -316,39 +342,6 @@ class CreateRidePageHandler(BaseRequestHandler):
 			page_path = os.path.join(os.path.dirname(__file__), "ride_create.html")
 			self.response.out.write(template.render(page_path, template_values))
 			return
-
-		""" #TODO can this be deleted?
-		route_data = {
-			'owner':current_user,
-			'source':route_form.clean_data.get('source'),
-			'destination':route_form.clean_data.get('destination'),
-			'notes':route_form.clean_data.get('notes')
-		}
-
-		# the user is not picking a location from their favourites,
-		# then use the 'source_address' to create a new location.
-		if route_data['source'] is None:
-			source_location = Location(
-				owner=current_user,
-				address=route_form.clean_data['source_address']
-			)
-			source_location.put()
-			route_data['source'] = source_location
-
-		# the user is not picking a location from their favourites,
-		# then use the 'destination_address' to create a new location.
-		if route_data['destination'] is None:
-			destination_location = Location(
-				owner=current_user,
-				address=route_form.clean_data['destination_address']
-			)
-			destination_location.put()
-			route_data['destination'] = destination_location
-
-		#TODO we should have to do this manually
-		route = route(**route_data)
-		route.put()
-		"""
 
 		ride = ride_form.save() #else, the form is valid, so save it
 		ride.create_seats(ride_form.clean_data.get('number_of_seats')) # create its seats

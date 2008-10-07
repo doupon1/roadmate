@@ -55,13 +55,12 @@
 
 	{% if my_rides %}
 	<hr />
-		<h3>offered rides</h3>
+		<h2>offered rides</h2>
 		<table>
 			<tr>
 				<th>Ride</th>
 				<th>Date</th>
-				<th>Seats</th>
-				<th>Passengers</th>
+				<th>Status</th>
 			</tr>
 			{% for ride in my_rides %}
 				<tr class="row-a">
@@ -72,10 +71,7 @@
 						{{ ride.date }}
 					</td>
 					<td>
-						{{ ride.count_seats }}
-					</td>
-					<td>
-						{{ ride.count_passengers }}
+						{{ ride.status }}
 					</td>
 				</tr>
 			{% endfor %}
