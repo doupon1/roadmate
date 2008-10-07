@@ -1,0 +1,23 @@
+{% extends "templates/base.html" %}
+
+{% block title%}View Location{% endblock %}
+
+{% block main %}
+
+	<h2>view location</h2>
+    <h3>{{ target_location.source.name }}</h3>
+
+	<p>
+		<code>
+			<strong>Owner</strong> <a href="/profile?user={{ target_location.owner.key.id }}">{{ target_location.owner.user.email }}</a><br />
+
+			<strong>Name</strong> {{ target_location.name }}<br />
+			<strong>Address</strong> {{ target_location.address }}<br />
+			<strong>Town</strong> {{ target_location.town }}<br />
+		</code>
+	</p>
+	
+	<h3>map</h3>
+	<img src="http://maps.google.com/staticmap?&amp;size=400x400&amp;markers={{ target_location.get_lat_loc }}&amp;key={{ googlemaps_key }}"/>
+
+{% endblock %}
