@@ -40,7 +40,8 @@ type="text/javascript"></script>
 		<!-- calendar scripts field-->
 			
 			
-			
+			<input  id="from" type="hidden" value="{{ ride.source.get_addressname }}" />
+			<input  id="to" type="hidden" value="{{ ride.destination.get_addressname }}" />
 			<input  id="startTime" type="hidden" value="{{ ride.date }}T{{ ride.departure_time }}.00Z" />
 			<input  id="endTime" type="hidden" value="{{ ride.date }}T{{ ride.arrival_time }}.00Z" />
 			
@@ -57,7 +58,8 @@ type="text/javascript"></script>
 		          <strong>remind me by:</strong><br/>
 		         <input id="byEmail"  type="checkbox" name="reminder" value="email"  >Email
                  <input id="bySms" type="checkbox" name="reminder" value="sms" >SMS <br/>
-                 <a href="#" onclick="insertEvents();">add ride</a> <br/><a href="#" onclick="logMeOut();">logout</a>
+                 <span id="addcalendar"><a href="#" onclick="insertEvents();">add ride</a> <br/></span>
+				 <!--<a href="#" onclick="logMeOut();">logout</a>-->
 				  
 
 		       

@@ -142,17 +142,16 @@
 	 // create current event
 
     function  creat_event_list(){
-	      var eventset=["name","from","to"];
+	      var eventset=["name","from","to","startTime","endTime"];
 	      var temp=new Array();
 	      for(var i in eventset){
 		  if (document.getElementById(eventset[i]) != undefined) {
-			 temp[eventset[i]] = document.getElementById(eventset[i]).innerHTML;
+			 temp[eventset[i]] = document.getElementById(eventset[i]).value;
 		  }
 	
 	    };
 		
-		temp["startTime"]=document.getElementById("startTime").value;
-		temp["endTime"]=document.getElementById("endTime").value;
+		
 	
 	  return temp;
 	
@@ -251,7 +250,7 @@
  
            // The callback method that will be called after a successful insertion from insertEntry()
              var callback = function(result) {
-             alert('event created!');
+             addInnerText('addcalendar','ride has been successfully add into google calendar');
              }
 
              // Error handler will be invoked if there is an error from insertEntry()
