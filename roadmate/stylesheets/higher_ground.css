@@ -269,19 +269,13 @@ input.button {
 	border: none;
 }
 
-#insert_bt,#log_bt,#out_bt{
-
-	font: bold 12px Arial, Sans-serif;
-	height: 24px;
-	width: 60px;
-	margin-left: 10px;
-	padding: 2px 3px;
-	background: url(higher_ground_images/nav-hover.jpg) repeat-x;
-	color:#FAFAFA;
-
-	border: none;
-
+input.checkbox
+{
+	width: 30px;
+	height: 10px;
 }
+
+
 select#id_source {
 	width: 280px;
 }

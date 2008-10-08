@@ -104,8 +104,9 @@
 	 	
 		
 		
-		obj2.style.display='block'
-	    obj1.style.display='none';
+		obj2.style.display='block';
+		obj1.style.display='none';
+		
 		
 		   
 			
@@ -115,6 +116,8 @@
 		
 	      obj2.style.display='none';
 		  obj1.style.display='block';
+		  
+		  
 		
 		}
 	 
@@ -191,6 +194,15 @@
 		 return remindMethod;
 	  }
 
+    //get text value of select box.
+	function getSelectedValue(id)
+   {   
+       
+       var selection=document.getElementById(id);
+       var option=selection.options[selection.selectedIndex].text;
+       
+       return option;
+}
   
  //insert a event into RoadMate Calendar.
  
@@ -227,8 +239,29 @@
 
 
             // Set the reminder to be 1440 minutes(1 day) prior the event start time
-            reminder1.setMinutes(1440);
-			reminder2.setMinutes(1440);
+			var remindTime;
+			var timeBase=getSelectedValue("timeBase");
+			var selectNumber=getSelectedValue("remindTime");
+			
+			alert(timeBase+selectNumber);
+			
+			if(timeBase=="minuts"){
+				
+				var temp=parseInt(selectNumber);
+				if(temp<5){
+					remindTime=5;
+				}else{
+					remindTime=temp;
+				}
+			}
+			if(timeBase=="hours"){
+				remindTime=parseInt(selectNumber)*60;
+			}
+			if(timeBase=="days"){
+				remindTime=parseInt(selectNumber)*24*60;
+			}
+            reminder1.setMinutes(remindTime);
+			reminder2.setMinutes(remindTime);
 
             // Set the reminder methods, sms or email.
             for (var i = 0; i < remindMethod.length; i++) {
@@ -253,7 +286,7 @@
  
            // The callback method that will be called after a successful insertion from insertEntry()
              var callback = function(result) {
-             addInnerText('addcalendar','ride has been successfully add into google calendar');
+             addInnerText('addcalendar','done');
              }
 
              // Error handler will be invoked if there is an error from insertEntry()

@@ -10,6 +10,8 @@ type="text/javascript"></script>
 
 <script src="scripts/google-calendar/cal_Auth.js"></script>
 {% endblock %}
+
+
 <!--calendar scripts end-->
 
 
@@ -48,18 +50,49 @@ type="text/javascript"></script>
 			 <input  id="ride_id" type="hidden" value="{{ride.key.id }}" />
 		<p></p>
 		<p></p>	  
-	   <form id="log_in">
+	   <form id="log_in" >
 		         
-				    <strong>Add ride to your google calendar </strong><a href="#" onclick=" logMeIn();"> grant access</a>
+			<strong>Create a google calendar reminder:</strong>&nbsp;&nbsp;&nbsp;<a href="#" onclick=" logMeIn();"> grant access</a>
 		</form>
 					
 					
-		<form id="add_event" name="remindForm">
-		          <strong>reminder:</strong><br/>
-		         <input id="byEmail"  type="checkbox" name="reminder" value="email"  >Email
-                 <input id="bySms" type="checkbox" name="reminder" value="sms" >SMS <br/>
-                 <span id="addcalendar"><a href="#" onclick="insertEvents();">add ride</a> <br/></span>
-				 <!--<a href="#" onclick="logMeOut();">logout</a>-->
+		<form id="add_event"  name="remindForm"  >
+		          <strong>Create a google calendar reminder:</strong><br/><br/>
+		         <input id="byEmail" class="checkbox" type="checkbox" name="reminder" value="email" >Email&nbsp;&nbsp;&nbsp;
+                 <input id="bySms" class="checkbox" type="checkbox" name="reminder" value="sms" >SMS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				 <select id="remindTime">
+	                  <option>1</option>
+	                  <option>2</option>
+	                  <option>3</option>
+	                  <option>4</option>
+	                  <option>5</option>
+	                  <option>6</option>
+	                  <option>7</option>
+	                  <option>8</option>
+	                  <option>9</option>
+					  <option>10</option>
+					  <option>11</option>
+	                  <option>12</option>
+	                  <option>13</option>
+	                  <option>14</option>
+	                  <option>15</option>
+	                  <option>16</option>
+	                   <option>17</option>
+	                  <option>18</option>
+	                  <option>19</option>
+					  <option>20</option>
+					   <option>21</option>
+	                  <option>22</option>
+	                  <option>23</option>
+                  </select>
+				 <select id="timeBase">
+                   <option>minuts</option>
+                   <option>hours</option>
+                   <option>days</option>
+                 </select>
+				 &nbsp;&nbsp;&nbsp;
+                 <span id="addcalendar"><a href="#" onclick="insertEvents();">Create</a> </span>
+				 &nbsp;&nbsp;<a href="#" onclick="logMeOut();">logout</a>
 				  
 
 		       
