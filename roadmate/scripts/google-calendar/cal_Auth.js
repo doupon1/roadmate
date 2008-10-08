@@ -106,7 +106,7 @@
 		
 		obj2.style.display='block'
 	    obj1.style.display='none';
-		getDatedEvents();
+		
 		   
 			
 			
