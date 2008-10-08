@@ -103,10 +103,9 @@
 	   if (islogin()) {
 	 	
 		
-		var userid=getuserid();
-		obj2.innerHTML="<input id=\"log_bt\" type=\"button\" name=\"add event\" value=\"add event\" onclick=\"insertEvents();\"  /><input id=\"out_bt\" type=\"button\" name=\"addevent\" value=\"logout\" onclick=\"logMeOut();refresh(\'cal_Authlogin?id="+userid+"\');\" />" ;
 		
-	 
+		obj2.style.display='block'
+	    obj1.style.display='none';
 		getDatedEvents();
 		   
 			
@@ -114,7 +113,8 @@
 		}
 		else {
 		
-	      obj1.innerHTML="Because of using your Google account authentication, you'll need to grant access to it by clicking the \"Login\" button. <input  id=\"log_bt\" type=\"button\" name=\"calendar permission\" value=\"logIn\" onclick=\"logMeIn();\" />";
+	      obj2.style.display='none';
+		  obj1.style.display='block';
 		
 		}
 	 
@@ -142,7 +142,7 @@
 	 // create current event
 
     function  creat_event_list(){
-	      var eventset=["name","from","to","startTime","endTime"];
+	      var eventset=["name","from","to"];
 	      var temp=new Array();
 	      for(var i in eventset){
 		  if (document.getElementById(eventset[i]) != undefined) {
@@ -150,10 +150,14 @@
 		  }
 	
 	    };
+		
+		temp["startTime"]=document.getElementById("startTime").value;
+		temp["endTime"]=document.getElementById("endTime").value;
 	
 	  return temp;
 	
 	}
+
   //event Id generator
   
      function idgenerate(){
@@ -169,6 +173,25 @@
 		}
 		return idString;
 	 }
+	 
+	 
+	  //get check box value
+      function getRemindtype(){
+	  	 var remindMethod=new Array();
+		 var j=0;
+		 for(var i=0; i < document.remindForm.reminder.length; i++){
+             if (document.remindForm.reminder[i].checked) {
+			 	remindMethod[j] = document.remindForm.reminder[i].value;
+			 	j++;
+			 }
+			 	
+           }
+		 if(remindMethod.length==0){
+		 	remindMethod[0]="email";
+		 }
+		 return remindMethod;
+	  }
+
   
  //insert a event into RoadMate Calendar.
  
@@ -199,12 +222,26 @@
              when.setEndTime(endTime);
   
              var reminder = new google.gdata.Reminder();
+			 //user can choose remind method
+			 var remindMethod=getRemindtype();
+
 
             // Set the reminder to be 1440 minutes(1 day) prior the event start time
             reminder.setMinutes(1440);
 
-            // Set the reminder method to be all, sms pop up email.
-            reminder.setMethod(google.gdata.Reminder.METHOD_EMAIL  );
+            // Set the reminder methods, sms or email.
+            for (var i = 0; i < remindMethod.length; i++) {
+				if (remindMethod[i]=="email") {
+					reminder.setMethod(google.gdata.Reminder.METHOD_EMAIL  );
+					
+					
+				}
+				if(remindMethod[i]=="sms"){
+					reminder.setMethod(google.gdata.Reminder.METHOD_SMS );
+					
+				}
+				
+			}
 
             // Add the reminder with the When object
              when.addReminder(reminder);
@@ -312,7 +349,7 @@
 	   	
 		                  output=output+temp[st];
 	                     }
-	                     document.getElementById('display').innerHTML=output;
+	                    // document.getElementById('display').innerHTML=output;
 	                             }, 
 	
                          handleError);  

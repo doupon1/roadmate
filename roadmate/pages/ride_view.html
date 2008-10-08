@@ -1,8 +1,29 @@
 {% extends "templates/base.html" %}
 
+
+<!--calendar scripts import library start-->
+{% block javascript %} 
+<script src="http://www.google.com/jsapi?key=ABQIAAAAh9vEamNAbo2MjViKEXyTSBQtrj2yXU7uUDf9MLK2OBnE3PD31hQrtHqCrQiA2FONyyl-gzfE04lUdA" 
+type="text/javascript"></script>
+
+<script type="text/javascript" src="scripts/google-calendar/jquery-1.1.4.pack.js"></script>
+
+<script src="scripts/google-calendar/cal_Auth.js"></script>
+{% endblock %}
+<!--calendar scripts end-->
+
+
+
+
+
+
 {% block title%}View Ride{% endblock %}
 
 {% block main %}
+
+<!--this img for calendar scripts loading purpose, do not remove-->
+<img src="images/rss.gif" style="position:absolute; top: -1000px;" />
+
 	<h2>view ride</h2>
 	<h3>{{ ride.get_name }}</h3>
 	
@@ -14,6 +35,40 @@
 		<p />
 		<strong>Driver</strong> <a href="/profile?user={{ ride.owner.key.id }}">{{ ride.owner.user.email }}</a><br />
 		<p />
+		
+		
+		<!-- calendar scripts field-->
+			
+			
+			
+			<input  id="startTime" type="hidden" value="{{ ride.date }}T{{ ride.departure_time }}.00Z" />
+			<input  id="endTime" type="hidden" value="{{ ride.date }}T{{ ride.arrival_time }}.00Z" />
+			
+			 <input  id="ride_id" type="hidden" value="{{ride.key.id }}" />
+		<p></p>
+		<p></p>	  
+	   <form id="log_in">
+		         
+				    <strong>Add ride to your google calendar </strong><a href="#" onclick=" logMeIn();"> grant access</a>
+		</form>
+					
+					
+		<form id="add_event" name="remindForm">
+		          <strong>remind me by:</strong><br/>
+		         <input id="byEmail"  type="checkbox" name="reminder" value="email"  >Email
+                 <input id="bySms" type="checkbox" name="reminder" value="sms" >SMS <br/>
+                 <a href="#" onclick="insertEvents();">add ride</a> <br/><a href="#" onclick="logMeOut();">logout</a>
+				  
+
+		       
+		</form>
+			
+	  <!--calendar end-->
+
+		
+		
+		
+		
 
 		{% if ride.notes %}
 			<strong>Notes</strong> {{ ride.notes }}<br />
@@ -151,7 +206,7 @@
         }
         </script>
       </head>
-      <body onload="initialize()" onunload="GUnload()">
+      <body onLoad="initialize()" onUnload="GUnload()">
         <div id="map_canvas" style="width: 400px; height: 400px"></div>
       </body>
     </html>
