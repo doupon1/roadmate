@@ -23,6 +23,8 @@
     
 	
 	
+	
+	
 	// set up google Authsub log in and log out function
 	
 	function logMeIn() {
@@ -85,6 +87,8 @@
 	 return document.getElementById('ride_id').value;
 	
    }
+   
+      
    
    /*
     * if user already login to google account
@@ -243,7 +247,7 @@
 			var timeBase=getSelectedValue("timeBase");
 			var selectNumber=getSelectedValue("remindTime");
 			
-			alert(timeBase+selectNumber);
+			
 			
 			if(timeBase=="minuts"){
 				
