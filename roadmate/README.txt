@@ -27,22 +27,13 @@ The following is an outline of RoadMate's directory structure:
 
 		Data model classes for RoadMate.
 
---	./roadmate/models/data
-
-		A collection of line delimited text files. 
-
-		These contain static data, which is loaded into RoadMate's database
-		when is it is first run on a new system.
-
-		E.g. Lists of towns, geographical data .etc.
-
 --	./stylesheets
 
 		RoadMate's Cascading Style Sheets and their accompanying files.
 		
 --	./scrips
 
-		A collection of internal and 3rd party JavaScript libraries used with RoadMate.
+		A collection of internal and 3rd party JavaScript libraries used by RoadMate.
 
 --	./templates
 
@@ -52,6 +43,6 @@ The following is an outline of RoadMate's directory structure:
 
 		A collection of PyUnit and Selenium test cases for RoadMate.
 
---	./openid
+--	./libraries
 
-		JanRain's Python OpenID library.
+		A collection 3rd party Python libraries used by RoadMate.
