@@ -3,42 +3,32 @@
 {% block title%}View Ride Request{% endblock %}
 
 {% block main %}
+
+<script src="/scripts/scriptaculous/1.8.1/prototype.js" type="text/javascript"></script>
+<script src="/scripts/scriptaculous/1.8.1/scriptaculous.js" type="text/javascript"></script>
+<script src="/scripts/roadmate/edit.js" type="text/javascript"></script>
+
 	<h2>view ride request</h2>
 	<h3>{{ riderequest.get_name }}</h3>
-	
+
 	<p> <!-- Ride Request Details -->
 		<strong>Date</strong> {{ riderequest.date }}<br />
 		<strong>From </strong><a href="/location?id={{ riderequest.source.key.id }}">{{ riderequest.source.get_addressname }}</a><br />
 		<strong>To </strong><a href="/location?id={{ riderequest.destination.key.id }}">{{ riderequest.destination.get_addressname }}</a><br />
 		<p />
-			
-		<strong>User</strong> <a href="/profile?user={{ riderequest.owner.key.id }}">{{ riderequest.owner.user.email }}</a><br />	
+
+		<strong>User</strong> <a href="/profile?user={{ riderequest.owner.key.id }}">{{ riderequest.owner.user.email }}</a><br />
 		<p />
-		
+
+
+
+		</li>
 		{% if riderequest.notes %}
-			<strong>Notes</strong> {{ riderequest.notes }}<br />
+			<strong>Notes </strong><editvalue id='notes'> {{ riderequest.notes }}</editvalue>
+			{% ifequal current_user riderequest.owner %}<script>editTextControl('notes', '/edit_riderequest?id=' + {{riderequest.key.id}})</script>{% endifequal %}
+
 		{% endif %}
 		<p />
-
-		This is a request for a ride. By accepting the ride request<br/>
-		you can easily set up a ride and notify the user that has placed this request.
-		<p />
-
-				<p />
-				<strong>User</strong> <a href="/profile?user={{ riderequest.owner.key.id }}">{{ riderequest.owner.user.email }}</a><br />
-				<p />
-				{% if riderequest.notes %}
-					<strong>Notes</strong> {{ riderequest.notes }}<br />
-				{% endif %}
-				<p />
-
-
-				<p/>
-			   <input class="button" type="button" value="Accept Request"/>
-
-			   This is a request for a ride. By accepting the ride request<br/>
-			   you can easily set up a ride and notify the user that has placed this request.
-			   <p />
 
 	</p>
 

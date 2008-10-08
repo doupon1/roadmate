@@ -1,6 +1,7 @@
 import os
 import logging
 
+
 from google.appengine.api import users
 from google.appengine.ext import db
 from google.appengine.ext import webapp
@@ -10,6 +11,7 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 from roadmate.converters import is_true
 from roadmate.handlers.baserequesthandler import BaseRequestHandler
 from roadmate.models.roadmateuser import RoadMateUser
+from roadmate.models.riderequest import RideRequest
 
 
 
