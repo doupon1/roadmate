@@ -16,6 +16,9 @@ handlers:
 - url: /cal
   static_dir: cal
 
+- url: /scripts
+  static_dir: scripts
+
 # ----------------------------------------------------------------------------
 # Static Directories
 # ----------------------------------------------------------------------------
@@ -34,6 +37,9 @@ handlers:
 - url: /profile(.*)
   script: pages/profile.py
 
+- url: /edit_profile(.*)
+  script: ajax/edit_handlers.py
+
 - url: /browse_rides(.*)
   script: pages/browse.py
 
@@ -46,6 +52,9 @@ handlers:
 
 - url: /riderequest(.*)
   script: pages/riderequest.py
+
+- url: /edit_riderequest(.*)
+  script: ajax/edit_handlers.py
 
 - url: /riderequest_create(.*)
   script: pages/riderequest.py

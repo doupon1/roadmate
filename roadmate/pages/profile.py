@@ -76,14 +76,12 @@ class ProfilePageHandler(BaseRequestHandler):
 
 		template_values['my_rides'] = list(target_user.rides)
 		template_values['target_user'] = target_user #only used if not current user
-		template_values['user_form'] = RoadMateUserForm(instance=current_user) #only used if current user
 
 		# --------------------------------------------------------------------
 		# Render and Serve Template
 		# --------------------------------------------------------------------
 		page_path = os.path.join(os.path.dirname(__file__),
 			'profile.html')
-
 		self.response.out.write(template.render(page_path, template_values))
 
 	def post(self):
@@ -130,37 +128,12 @@ class ProfilePageHandler(BaseRequestHandler):
 			self.error(403)
 			return
 
-		user_form = RoadMateUserForm(data=self.request.POST,
-			instance=target_user)
-
-		# if there are errors in the form, then re-serve the page with the
-		# error values highlighted.
-		if not user_form.is_valid():
-			# ----------------------------------------------------------------
-			# Generate Template Values
-			# ----------------------------------------------------------------
-			template_values = super(ProfilePageHandler, self
-				).generate_template_values(self.request.url)
-
-			# because this page requires the user to be logged in, if they
-			# logout we redirect them back to the home page.
-			template_values['logout_url'] = users.create_logout_url("/")
-
-			template_values['target_user'] = target_user
-			template_values['user_form'] = user_form
-
-			# ----------------------------------------------------------------
-			# Render and Serve Template
-			# ----------------------------------------------------------------
-			page_path = os.path.join(os.path.dirname(__file__), "profile.html")
-			self.response.out.write(template.render(page_path, template_values))
-			return
-
 		# --------------------------------------------------------------------
 		# Finalise POST Request
 		# --------------------------------------------------------------------
-		user_form.save()
 		self.redirect("/profile?user=%s" % current_user.key().id())
+
+
 
 # ----------------------------------------------------------------------------
 #  Program Entry Point

@@ -163,9 +163,9 @@ tr.row-b {
 	background: #EFEFEF;
 }
 
-table.messages { 
+table.messages {
 	margin: 0;
-	width: 100%;	
+	width: 100%;
 }
 tr.message-driver {
 	background: #CCCCCC;
@@ -571,6 +571,31 @@ select#id_destination {
 	width: 820px;
 	padding: 10px 0;
 	text-align: center;
+}
+
+/* edit controls */
+form.inplaceeditor-form { /* The form */
+	background-color: transparent;
+	border: none;
+	margin: none;
+	padding: none;
+	display:inline;
+}
+
+form.inplaceeditor-form input[type="text"] { /* Input box */
+}
+
+form.inplaceeditor-form textarea { /* Textarea, if multiple columns */
+}
+
+form.inplaceeditor-form input[type="submit"] { /* The submit button */
+  margin-left:1em;
+}
+
+form.inplaceeditor-form a { /* The cancel link */
+  margin-left:1em;
+}
+editvalue { /* The value in non-edit */
 }
 
 /* postmeta */

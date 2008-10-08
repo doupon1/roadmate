@@ -24,7 +24,22 @@
 		you can easily set up a ride and notify the user that has placed this request.
 		<p />
 
-		<input class="button" type="button" value="Accept Request"/>
+				<p />
+				<strong>User</strong> <a href="/profile?user={{ riderequest.owner.key.id }}">{{ riderequest.owner.user.email }}</a><br />
+				<p />
+				{% if riderequest.notes %}
+					<strong>Notes</strong> {{ riderequest.notes }}<br />
+				{% endif %}
+				<p />
+
+
+				<p/>
+			   <input class="button" type="button" value="Accept Request"/>
+
+			   This is a request for a ride. By accepting the ride request<br/>
+			   you can easily set up a ride and notify the user that has placed this request.
+			   <p />
+
 	</p>
 
 
