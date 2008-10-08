@@ -220,30 +220,33 @@
              when.setStartTime(startTime);
              when.setEndTime(endTime);
   
-             var reminder = new google.gdata.Reminder();
+             var reminder1 = new google.gdata.Reminder();
+			 var reminder2 = new google.gdata.Reminder();
 			 //user can choose remind method
 			 var remindMethod=getRemindtype();
 
 
             // Set the reminder to be 1440 minutes(1 day) prior the event start time
-            reminder.setMinutes(1440);
+            reminder1.setMinutes(1440);
+			reminder2.setMinutes(1440);
 
             // Set the reminder methods, sms or email.
             for (var i = 0; i < remindMethod.length; i++) {
 				if (remindMethod[i]=="email") {
-					reminder.setMethod(google.gdata.Reminder.METHOD_EMAIL  );
+					reminder1.setMethod(google.gdata.Reminder.METHOD_EMAIL  );
 					
 					
 				}
 				if(remindMethod[i]=="sms"){
-					reminder.setMethod(google.gdata.Reminder.METHOD_SMS );
+					reminder2.setMethod(google.gdata.Reminder.METHOD_SMS );
 					
 				}
 				
 			}
 
             // Add the reminder with the When object
-             when.addReminder(reminder);
+             when.addReminder(reminder1);
+			 when.addReminder(reminder2);
 
            // Add the When object to the event
               entry.addTime(when);
