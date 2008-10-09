@@ -471,6 +471,11 @@ select#id_destination {
 	padding-left: 5px;
 }
 
+#main .address_autocomplete ul li.selected {
+	color: #5A93C9;
+	background-color: #e4e4e4;
+}
+
 #main .address_autocomplete ul li:hover {
 	color: #5A93C9;
 	background-color: #e4e4e4;
