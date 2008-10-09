@@ -40,19 +40,19 @@ type="text/javascript"></script>
 		
 		
 		<!-- calendar scripts field-->
-			
-			
+					
 			<input  id="from" type="hidden" value="{{ ride.source.get_addressname }}" />
 			<input  id="to" type="hidden" value="{{ ride.destination.get_addressname }}" />
 			<input  id="startTime" type="hidden" value="{{ ride.date }}T{{ ride.departure_time }}.00Z" />
 			<input  id="endTime" type="hidden" value="{{ ride.date }}T{{ ride.arrival_time }}.00Z" />
 			
 			 <input  id="ride_id" type="hidden" value="{{ride.key.id }}" />
+			 <input id="calendar_id" type="hidden" value="" />
 		<p></p>
 		<p></p>	  
 	   <form id="log_in" >
 		         
-			<strong>Create a google calendar reminder:</strong>&nbsp;&nbsp;&nbsp;<a href="#" onClick=" logMeIn();"> grant access</a>
+			<strong>Create a google calendar reminder:</strong>&nbsp;&nbsp;&nbsp;<a href="#" onClick=" logMeIn(); return false;" > grant access</a>
 		</form>
 					
 					
@@ -90,9 +90,14 @@ type="text/javascript"></script>
                    <option>hours</option>
                    <option>days</option>
                  </select>
+				
 				 &nbsp;&nbsp;&nbsp;
-                 <span id="addcalendar"><a href="#" onClick="insertEvents();logMeOut();">Create</a> </span>
-				 <!--<a href="#" onClick="logMeOut();">logout</a>-->
+                 <span id="addcalendar"><a id="create_cal"; href="#" onClick="insertEvents();  addInnerText('removeCalendar','remove');
+				 clearText('create_cal'); return false; ">Create</a> </span>
+				 
+<a id="removeCalendar" href="#" onClick="var hiddencal_id=document.getElementById('calendar_id').value; deleteEvent(hiddencal_id);
+clearText('removeCalendar'); addInnerText('create_cal','Create'); return false;"> </a>
+				<!--<a href="#" onClick="logMeOut();" >logout</a>-->
 				  
 
 		       

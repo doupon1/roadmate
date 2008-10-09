@@ -126,6 +126,8 @@
    	
      var obj1 = document.getElementById("log_in");
 	 var obj2=document.getElementById("add_event");
+	 
+	 
 	  
 	
 	   if (isTokenRedirect()|islogin()) {
@@ -150,6 +152,10 @@
 		}
 	 
    }
+   
+   
+  
+   
    
    
       function addInnerText(id,words){
@@ -231,6 +237,9 @@
        
        return option;
 }
+
+
+
   
  //insert a event into RoadMate Calendar.
  
@@ -242,7 +251,12 @@
 			  var feedUri = 'http://www.google.com/calendar/feeds/default/private/full';
               var entry = new google.gdata.calendar.CalendarEventEntry();
               var eventList=creat_event_list();
-              entry.setTitle(google.gdata.Text.create('road mate ride offer'+" id "+idgenerate()));
+			  var calendar_id='road mate ride offer'+' id '+idgenerate();
+              entry.setTitle(google.gdata.Text.create(calendar_id));
+			  
+			  //set hindden field for search title
+			  
+			 // document.getElementById("calendar_id").value=eventTilte;
 			  
 			  
    
@@ -266,7 +280,7 @@
 			 var remindMethod=getRemindtype();
 
 
-            // Set the reminder to be 1440 minutes(1 day) prior the event start time
+            // Set the reminder time prior the event start time
 			var remindTime;
 			var timeBase=getSelectedValue("timeBase");
 			var selectNumber=getSelectedValue("remindTime");
@@ -314,7 +328,11 @@
  
            // The callback method that will be called after a successful insertion from insertEntry()
              var callback = function(result) {
-             addInnerText('addcalendar','done');
+			 	
+			 document.getElementById('calendar_id').value= calendar_id;
+			 //alert(hiddencal_id);
+			 //var removelink="<a href=\"#\" onClick=\"deleteEvent("+hiddencal_id+"); alert(hiddencal_id);return false;\" > remove </a>"
+             //addInnerText('addcalendar',removelink);
              }
 
              // Error handler will be invoked if there is an error from insertEntry()
@@ -427,7 +445,7 @@
 	  	       
 
                     // Create the calendar service object
-              var calendarService = new google.gdata.calendar.CalendarService('GoogleInc-jsguide-1.0');
+              var calendarService = new google.gdata.calendar.CalendarService('roadmate-App-1');
 
                // The default "private/full" feed is used to delete existing event from the
                // primary calendar of the authenticated user
@@ -455,19 +473,19 @@
                   var event = entries[0];
                  event.deleteEntry(
                  function(result) {
-                      alert('event deleted!');
+                      //alert('event deleted!');
                    },
                      handleError);
                  } else {
                      // No match is found for the full text query
-                     alert('Cannot find event(s) with text: ' + searchText);
+                     //alert('Cannot find event(s) with text: ' + searchText);
                   }
                }
 
                // Error handler to be invoked when getEventsFeed() or updateEntry()
                 // produces an error
                var handleError = function(error) {
-                     alert(error);
+                    // alert(error);
                   }
 
                // Submit the request using the calendar service object
