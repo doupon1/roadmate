@@ -75,5 +75,5 @@ handlers:
 - url: /ajax/location-completer(.*)
   script: ajax/location-completer.py
 
-- url: /ajax/edit_riderequest(.*)
+- url: /ajax/edit_(.*)
   script: ajax/edit_handlers.py

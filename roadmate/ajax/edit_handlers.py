@@ -1,6 +1,8 @@
+#!/usr/bin/env python
+# encoding: utf-8
+
 import os
 import logging
-
 
 from google.appengine.api import users
 from google.appengine.ext import db
@@ -13,8 +15,9 @@ from roadmate.handlers.baserequesthandler import BaseRequestHandler
 from roadmate.models.roadmateuser import RoadMateUser
 from roadmate.models.riderequest import RideRequest
 
-
-
+# ----------------------------------------------------------------------------
+#  Request Handlers
+# ----------------------------------------------------------------------------
 
 class EditProfileHandler(BaseRequestHandler):
 	"""
@@ -84,9 +87,6 @@ class EditProfileHandler(BaseRequestHandler):
 				self.response.out.write("None")
 		else: # values are missing
 			self.error(403)
-
-
-
 
 
 class EditRideRequestHandler(BaseRequestHandler):
@@ -160,13 +160,6 @@ class EditRideRequestHandler(BaseRequestHandler):
 			self.error(403)
 
 
-
-
-
-
-
-
-
 # ----------------------------------------------------------------------------
 #  Program Entry Point
 # ----------------------------------------------------------------------------
@@ -175,8 +168,8 @@ def main():
 	# Initialize web  application
 	application = webapp.WSGIApplication(
 		[
-		 ('/edit_profile', EditProfileHandler),
-		 ('/edit_riderequest', EditRideRequestHandler)
+		 ('/ajax/edit_profile', EditProfileHandler),
+		 ('/ajax/edit_riderequest', EditRideRequestHandler)
 		], debug=True)
 	run_wsgi_app(application)
 
