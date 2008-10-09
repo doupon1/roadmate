@@ -17,7 +17,7 @@ handlers:
   static_dir: scripts
 
 # ----------------------------------------------------------------------------
-# Static Directories
+# Dynamic Pages
 # ----------------------------------------------------------------------------
 - url: /
   script: pages/index.py
@@ -50,9 +50,6 @@ handlers:
 - url: /riderequest(.*)
   script: pages/riderequest.py
 
-- url: /edit_riderequest(.*)
-  script: ajax/edit_handlers.py
-
 - url: /riderequest_create(.*)
   script: pages/riderequest.py
   login: required
@@ -64,10 +61,6 @@ handlers:
   script: pages/ride.py
   login: required
 
-- url: /cal_Authlogin(.*)
-  script: pages/cal_Auth.py
-  login: required
-
 - url: /myrides(.*)
   script: pages/myrides.py
   login: required
@@ -76,3 +69,11 @@ handlers:
   script: pages/mybookings.py
   login: required
 
+# ----------------------------------------------------------------------------
+# AJAX Request Handlers
+# ----------------------------------------------------------------------------
+- url: /ajax/location-completer(.*)
+  script: ajax/location-completer.py
+
+- url: /ajax/edit_riderequest(.*)
+  script: ajax/edit_handlers.py

@@ -16,17 +16,17 @@
 	    <br/>
 		<li>
 		<strong>First Name </strong><editvalue id='first_name'> {{ target_user.first_name }}</editvalue>
-		{% ifequal current_user target_user %}<script>editTextControl('first_name', '/edit_profile?user=' + {{target_user.key.id}})</script>{% endifequal %}
+		{% ifequal current_user target_user %}<script>editTextControl('first_name', '/ajax/edit_profile?user=' + {{target_user.key.id}})</script>{% endifequal %}
 		</li>
 		<li><strong>Last Name </strong><editvalue id='last_name'> {{ target_user.last_name }}</editvalue>
-        {% ifequal current_user target_user %}<script>editTextControl('last_name', '/edit_profile?user=' + {{target_user.key.id}})</script>{% endifequal %}
+        {% ifequal current_user target_user %}<script>editTextControl('last_name', '/ajax/edit_profile?user=' + {{target_user.key.id}})</script>{% endifequal %}
 		</li>
 		<br/>
 		<li><strong>Hometown </strong><editvalue id='town'>{{ target_user.town }}</editvalue>
-        {% ifequal current_user target_user %}<script>editTextControl('town', '/edit_profile?user=' + {{target_user.key.id}})</script>{% endifequal %}
+        {% ifequal current_user target_user %}<script>editTextControl('town', '/ajax/edit_profile?user=' + {{target_user.key.id}})</script>{% endifequal %}
 		</li>
 		<li><strong>Phone </strong><editvalue id='phone'>{{ target_user.phone }}</editvalue>
-        {% ifequal current_user target_user %}<script>editTextControl('phone', '/edit_profile?user=' + {{target_user.key.id}})</script>{% endifequal %}
+        {% ifequal current_user target_user %}<script>editTextControl('phone', '/ajax/edit_profile?user=' + {{target_user.key.id}})</script>{% endifequal %}
 		</li>
 
 

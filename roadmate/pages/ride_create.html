@@ -2,6 +2,33 @@
 
 {% block title%}Offer A Ride{% endblock %}
 
+{% block javascript %}
+<script src="/scripts/scriptaculous/1.8.1/prototype.js" type="text/javascript"></script>
+<script src="/scripts/scriptaculous/1.8.1/scriptaculous.js" type="text/javascript"></script>
+
+<script type="text/javascript" language="javascript">
+	// <![CDATA[
+	
+	document.observe('dom:loaded', function() {
+		// add autocomplete functionaliy to source address field
+		new Ajax.Autocompleter('id_source_address', 'id_source_address_choices', '/ajax/location-completer', {
+			paramName: 'current_value'
+		});
+		
+		// add autocomplete functionality to destiination field
+		new Ajax.Autocompleter('id_destination_address', 'id_destination_address_choices', '/ajax/location-completer', {
+			paramName: 'current_value'
+		});
+		
+		// hide favorite links
+		$('show_source_favorites').hide();
+		$('show_destination_favorites').hide();
+	});
+
+	// ]]>
+</script>	
+{% endblock %}
+
 {% block main %}
 	<h2>offer a ride</h2>
 
@@ -17,12 +44,13 @@
 				{% else %}
 					{{ ride_form.source_address.label_tag }}
 					{{ ride_form.source_address }}
-
+					
 					{% if current_user.locations.count %}
-						<a class="buttonlink" href="/ride_create?showSourceFavorites=True&amp;showDestinationFavorites={{ show_destination_favorites  }}">Favorites</a>
+						<a id="show_source_favorites" class="buttonlink" href="/ride_create?showSourceFavorites=True&amp;showDestinationFavorites={{ show_destination_favorites  }}">Favorites</a>
 					{% endif %}
 				{% endif %}
 			</div>
+			<div id="id_source_address_choices" class="address_autocomplete" style="display: none;"></div>
 
 			<div>
 				{% if show_destination_favorites %}
@@ -33,11 +61,12 @@
 					{{ ride_form.destination_address }}
 
 					{% if current_user.locations.count %}
-						<a class="buttonlink" href="/ride_create?showSourceFavorites={{ show_source_favorites }}&amp;showDestinationFavorites=True">Favorites</a>
+						<a id="show_destination_favorites" class="buttonlink" href="/ride_create?showSourceFavorites={{ show_source_favorites }}&amp;showDestinationFavorites=True">Favorites</a>
 					{% endif %}
 				{% endif %}
 			</div>
 		</div>
+		<div id="id_destination_address_choices" class="address_autocomplete" style="display: none;"></div>
 
 		<div class="inputgroup">
 			<div>

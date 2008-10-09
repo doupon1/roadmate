@@ -1,4 +1,6 @@
-/* @override http://localhost:8082/stylesheets/higher_ground.css */
+/* @override 
+	http://localhost:8080/stylesheets/higher_ground.css
+*/
 
 /********************************************
 	AUTHOR:				Erwin Aligam
@@ -222,8 +224,6 @@ form a.buttonlink {
 }
 input {
 	padding:2px;
-	border:1px solid #eee;
-	color:#777;
 	width: 280px;
 }
 textarea {
@@ -232,6 +232,8 @@ textarea {
 	height:100px;
 	display:block;
 	color:#777;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 
@@ -260,13 +262,8 @@ div.options a {
 
 input.button {
 	font: bold 12px Arial, Sans-serif;
-	height: 24px;
-	width: 100px;
 	margin-left: 10px;
-	padding: 2px 3px;
-	color: #FFF;
-	background: #8EB50C url(higher_ground_images/nav.jpg) repeat-x 0 0;
-	border: none;
+	width: 125px;
 }
 
 input.checkbox
@@ -274,7 +271,6 @@ input.checkbox
 	width: 30px;
 	height: 10px;
 }
-
 
 select#id_source {
 	width: 280px;
@@ -457,6 +453,27 @@ select#id_destination {
 }
 #main ul li {
 	list-style-image: url(higher_ground_images/bullet.gif);
+}
+
+#main .address_autocomplete {
+	background-color: rgba(243,243,243,0.9);
+}
+
+#main .address_autocomplete ul {
+	margin: 0;
+	padding: 0;
+}
+
+#main .address_autocomplete ul li {
+	list-style-image: none;
+	padding-right: 5px;
+	padding-top: 1px;
+	padding-left: 5px;
+}
+
+#main .address_autocomplete ul li:hover {
+	color: #5A93C9;
+	background-color: #e4e4e4;
 }
 
 /* Sidebar */
