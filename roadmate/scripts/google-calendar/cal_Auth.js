@@ -54,6 +54,30 @@
 	}
 	
 	
+	/**
+ * Detect whether the current session is a token redirect
+ * @return {Boolean} True/false to whether this is a redirect session
+ */  
+    function isTokenRedirect() {
+
+         var status = false;
+
+         var url = location.href;
+
+          var matchArr = url.match(/#2/);
+  
+        if (matchArr != null) {
+           status = true;
+         }
+
+  return status;
+}
+	
+	
+	
+	
+	
+	
 	 // user add event or log in 
 	 function log_or_add(){
 		if (islogin()) {
@@ -104,7 +128,7 @@
 	 var obj2=document.getElementById("add_event");
 	  
 	
-	   if (islogin()) {
+	   if (isTokenRedirect()|islogin()) {
 	 	
 		
 		
