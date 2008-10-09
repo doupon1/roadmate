@@ -260,6 +260,10 @@ div.options a {
 	list-style-image: url(higher_ground_images/bullet_error.gif);
 }
 
+input[type="text"] {
+	border:1px solid #eee;
+}
+
 input.button {
 	font: bold 12px Arial, Sans-serif;
 	margin-left: 10px;
