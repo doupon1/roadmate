@@ -42,8 +42,8 @@ type="text/javascript"></script>
 		{% endif %}
 		<p />
 		
-		
-		<!-- calendar scripts begin-->
+		   
+				<!-- calendar scripts begin-->
 				<!--hidden field use to insert into calendar-->	
 			<input  id="from" type="hidden" value="{{ ride.source.get_addressname }}" />
 			<input  id="to" type="hidden" value="{{ ride.destination.get_addressname }}" />
@@ -57,15 +57,20 @@ type="text/javascript"></script>
 		<br/> 
 	   <form id="log_in" >
 		         <!--if no google calendar Token show following field-->
-			<strong>Create a google calendar reminder:</strong>&nbsp;&nbsp;&nbsp;<a href="#" onClick=" logMeIn(); return false;" > grant access</a>
+			<strong>Create a google calendar reminder:</strong>&nbsp;&nbsp;&nbsp;<input type="button" class="button" value="grant access" onClick=" logMeIn(); return false;" > 
 		</form>
 					
 				<!--if has google calendar Token show following field-->	
 		<form id="add_event"  name="remindForm"  >
-		          <strong>Create a google calendar reminder:</strong><br/><br/>
+		       
+		          <strong>Create a google calendar reminder:</strong>
+				  <table>
+				  <tr>
+				    <td>
 		         <input id="byEmail" class="checkbox" type="checkbox" name="reminder" value="email" >Email&nbsp;&nbsp;&nbsp;
-                 <input id="bySms" class="checkbox" type="checkbox" name="reminder" value="sms" >SMS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				 <select id="remindTime">
+				 </td>
+				 <td>
+				  <select id="remindTime1">
 	                  <option>1</option>
 	                  <option>2</option>
 	                  <option>3</option>
@@ -90,23 +95,64 @@ type="text/javascript"></script>
 	                  <option>22</option>
 	                  <option>23</option>
                   </select>
-				 <select id="timeBase">
+				  
+				 <select id="timeBase1">
                    <option>minutes</option>
                    <option>hours</option>
                    <option>days</option>
                  </select> 
+				    </td>
+				 </tr>
+				 <tr>
+				    <td>
+                 <input id="bySms" class="checkbox" type="checkbox" name="reminder" value="sms" >SMS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				    </td>
+					<td>
+				 <select id="remindTime2">
+	                  <option>1</option>
+	                  <option>2</option>
+	                  <option>3</option>
+	                  <option>4</option>
+	                  <option>5</option>
+	                  <option>6</option>
+	                  <option>7</option>
+	                  <option>8</option>
+	                  <option>9</option>
+					  <option>10</option>
+					  <option>11</option>
+	                  <option>12</option>
+	                  <option>13</option>
+	                  <option>14</option>
+	                  <option>15</option>
+	                  <option>16</option>
+	                   <option>17</option>
+	                  <option>18</option>
+	                  <option>19</option>
+					  <option>20</option>
+					   <option>21</option>
+	                  <option>22</option>
+	                  <option>23</option>
+                  </select>
+				 <select id="timeBase2">
+                   <option>minutes</option>
+                   <option>hours</option>
+                   <option>days</option>
+                 </select> 
+				</td>
 				
-				 &nbsp;&nbsp;&nbsp; before ride
+                </tr>
                 
-                
-                 <br/>
+            
+  
+	<!--use for debug --> <!--<a href="#" onClick=" logMeOut();return false;">logout</a>-->
+	</table>
+	
+	    
 				 <br/>
   <span id="addcalendar">
       <input id="create" class="button" type="button" value="Create" onClick="insertEvents(); setTimeout('showRemoveBt()', 3000); return false; "/>
   
   </span>
-  
-	<!--use for debug  <a href="#" onClick=" logMeOut();return false;"></a>-->
 		</form>
 		
 		<br/>

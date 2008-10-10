@@ -162,8 +162,9 @@
 	   if (isTokenRedirect()|islogin()) {
 	 	
 		
-		
-		obj2.style.display='block';
+		obj2.style.display='none';
+		//obj2.style.display='block';
+		setTimeout('blockCreate()', 3000);
 		obj1.style.display='none';
 		
 		
@@ -181,8 +182,12 @@
 		}
 	 
    }
-   
-   
+   //block create field
+   function blockCreate(){
+   	var obj2=document.getElementById("add_event");
+   	obj2.style.display='block';
+	
+   }
   
    
    
@@ -246,9 +251,9 @@
 			 }
 			 	
            }
-		 if(remindMethod.length==0){
+		 /*if(remindMethod.length==0){
 		 	remindMethod[0]="email";
-		 }
+		 }*/
 		 return remindMethod;
 	  }
 
@@ -260,9 +265,38 @@
        var option=selection.options[selection.selectedIndex].text;
        
        return option;
-}
+   }
 
 
+    //get email or sms reminde time
+      function getRiminderTime(timeBase, remindTime ){
+		   	
+			    // Set the reminder time prior the event start time
+			var remindTime;
+			var timeBase=getSelectedValue(timeBase);
+			var selectNumber=getSelectedValue(remindTime);
+			
+			
+			
+			if(timeBase=="minutes"){
+				
+				var temp=parseInt(selectNumber);
+				if(temp<5){
+					remindTime=5;
+				}else{
+					remindTime=temp;
+				}
+			}
+			if(timeBase=="hours"){
+				remindTime=parseInt(selectNumber)*60;
+			}
+			if(timeBase=="days"){
+				remindTime=parseInt(selectNumber)*24*60;
+			}
+		   	
+			return remindTime;
+			
+		 }
 
   
  //insert a event into RoadMate Calendar.
@@ -304,48 +338,59 @@
 			 var remindMethod=getRemindtype();
 
 
-            // Set the reminder time prior the event start time
-			var remindTime;
-			var timeBase=getSelectedValue("timeBase");
-			var selectNumber=getSelectedValue("remindTime");
+            //get switch value
+            var switchvalue=0;
 			
-			
-			
-			if(timeBase=="minutes"){
+			if(remindMethod.length==0){
+				switchvalue=0;
 				
-				var temp=parseInt(selectNumber);
-				if(temp<5){
-					remindTime=5;
-				}else{
-					remindTime=temp;
-				}
 			}
-			if(timeBase=="hours"){
-				remindTime=parseInt(selectNumber)*60;
-			}
-			if(timeBase=="days"){
-				remindTime=parseInt(selectNumber)*24*60;
-			}
-            reminder1.setMinutes(remindTime);
-			reminder2.setMinutes(remindTime);
+			
+			
 
-            // Set the reminder methods, sms or email.
-            for (var i = 0; i < remindMethod.length; i++) {
-				if (remindMethod[i]=="email") {
-					reminder1.setMethod(google.gdata.Reminder.METHOD_EMAIL  );
-					
+            for(var i=0;i<remindMethod.length;i++) {
+			
+				if (remindMethod[i] == "email") {
+				
+					var time1 = getRiminderTime('timeBase1', 'remindTime1');
+					reminder1.setMinutes(time1);
+					reminder1.setMethod(google.gdata.Reminder.METHOD_EMAIL);
+					switchvalue=1;
 					
 				}
-				if(remindMethod[i]=="sms"){
-					reminder2.setMethod(google.gdata.Reminder.METHOD_SMS );
-					
+				if (remindMethod[i] == "sms") {
+					var time2 = getRiminderTime('timeBase2', 'remindTime2');
+					reminder2.setMinutes(time2);
+					reminder2.setMethod(google.gdata.Reminder.METHOD_SMS);
+					switchvalue=2;
 				}
 				
 			}
-
-            // Add the reminder with the When object
-             when.addReminder(reminder1);
-			 when.addReminder(reminder2);
+              if(remindMethod.length==2){
+				switchvalue=3;
+			}
+			  
+			  // Add the reminder with the When object
+			  switch(switchvalue)
+              {
+                   case 0:
+				     reminder1.setMethod(google.gdata.Reminder.METHOD_NONE);
+					 when.addReminder(reminder1);
+					break; 
+                   case 1:
+                    when.addReminder(reminder1);
+                     break;
+                   case 2:
+                    when.addReminder(reminder2);
+                     break;
+				   case 3:
+                     when.addReminder(reminder1);
+			         when.addReminder(reminder2);
+					 break;
+  
+               }
+            
+             
 
            // Add the When object to the event
               entry.addTime(when);
@@ -367,7 +412,7 @@
              // Submit the request using the calendar service object
              myService.insertEntry(feedUrl, entry, callback,
               handleError, google.gdata.calendar.CalendarEventEntry);
-	          }
+	         }
    
    
    
