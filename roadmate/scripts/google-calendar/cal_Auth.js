@@ -8,8 +8,13 @@
 	
 	var myService;
 	var scope= "http://www.google.com/calendar/feeds/";
-     var feedUrl = 'http://www.google.com/calendar/feeds/default/private/full';
-
+    var feedUrl = 'http://www.google.com/calendar/feeds/default/private/full';
+	
+	
+	// before change to another button google server need 1 or 2 seconds process create or remove request; so set a timeout  3 seconds; 
+   var createbutton="<input id=\"create\" class=\"button\" type=\"button\" value=\"Create\" onClick=\"insertEvents(); setTimeout('showRemoveBt()', 3000);return false; \"/>";
+   var removebutton="<input id=\"remove\" class=\"button\" type=\"button\" value=\"Remove\" onClick=\"var hiddencal_id=document.getElementById('calendar_id').value; deleteEvent(hiddencal_id);setTimeout('showCreateBt()', 3000); return false;\"/> ";
+    
     /*
      * loading gdata library
      */
@@ -104,6 +109,29 @@
 	
    }
    
+   //add text to a field
+     function addInnerText(id,words){
+	  	
+		
+			document.getElementById(id).innerHTML = words;
+		
+	  }
+	  
+	  //display romove button
+	  
+	  function showRemoveBt(){
+	  	  
+		  clearText('addcalendar'); 
+		  addInnerText('addcalendar',removebutton);
+		
+		
+	  }
+	  
+	  function showCreateBt(){
+	  	
+		clearText('addcalendar'); 
+		addInnerText('addcalendar',createbutton);
+	  }
  
     //get use id from html page hidden field
      function getuserid(){
@@ -126,6 +154,7 @@
    	
      var obj1 = document.getElementById("log_in");
 	 var obj2=document.getElementById("add_event");
+	 
 	 
 	 
 	  
@@ -158,12 +187,7 @@
    
    
    
-      function addInnerText(id,words){
-	  	
-		
-			document.getElementById(id).innerHTML = words;
-		
-	  }
+    
    
    
   
@@ -287,7 +311,7 @@
 			
 			
 			
-			if(timeBase=="minuts"){
+			if(timeBase=="minutes"){
 				
 				var temp=parseInt(selectNumber);
 				if(temp<5){
