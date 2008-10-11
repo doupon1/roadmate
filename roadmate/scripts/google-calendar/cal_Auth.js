@@ -154,32 +154,39 @@
    	
      var obj1 = document.getElementById("log_in");
 	 var obj2=document.getElementById("add_event");
+	 var obj3=document.getElementById("wait");
 	 
-	 
-	 
-	  
-	
-	   if (isTokenRedirect()|islogin()) {
-	 	
-		
-		obj2.style.display='none';
-		//obj2.style.display='block';
-		setTimeout('blockCreate()', 3000);
-		obj1.style.display='none';
-		
-		
-		   
-			
-			
-		}
-		else {
-		
-	      obj2.style.display='none';
-		  obj1.style.display='block';
-		  
-		  
-		
-		}
+	   if (isTokenRedirect()) {
+	   	     obj1.style.display = 'none';
+		     obj2.style.display = 'none';
+			 obj3.style.display ='block';
+	   
+	   }
+	   
+	   
+	   else {
+	     	if (islogin()) {
+	   	
+	   	
+	   	
+	   		   obj2.style.display = 'block';
+	   		   obj1.style.display = 'none';
+			    obj3.style.display = 'none';
+	   		
+	   		
+	   		
+	   		
+	   		
+	   	    }
+	   	    else {
+	   	
+	   		   obj2.style.display = 'none';
+	   		   obj1.style.display = 'block';
+	   		   obj3.style.display = 'none';
+	   		
+	   		
+	   	    }
+	   }
 	 
    }
    //block create field

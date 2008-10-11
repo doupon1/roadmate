@@ -57,9 +57,11 @@ type="text/javascript"></script>
 		<br/> 
 	   <form id="log_in" >
 		         <!--if no google calendar Token show following field-->
-			<strong>Create a google calendar reminder:</strong>&nbsp;&nbsp;&nbsp;<input type="button" class="button" value="grant access" onClick=" logMeIn(); return false;" > 
+			<strong>Create a google calendar reminder:</strong>&nbsp;&nbsp;&nbsp;<input type="button" class="button" value="Grant access" onClick=" logMeIn(); return false;" > 
 		</form>
-					
+		<form id="wait">
+		    <strong>Please wait.</strong>
+		</form>			
 				<!--if has google calendar Token show following field-->	
 		<form id="add_event"  name="remindForm"  >
 		       

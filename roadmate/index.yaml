@@ -16,7 +16,7 @@ indexes:
   - name: created
     direction: desc
 
-# Used 3 times in query history.
+# Used 2 times in query history.
 - kind: Ride
   properties:
   - name: creation_date
