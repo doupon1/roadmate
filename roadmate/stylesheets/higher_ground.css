@@ -211,10 +211,6 @@ form label {
 	width: 120px;
 }
 
-form div.inputgroup {
-	padding-bottom: 8px;
-}
-
 form div {
 	padding-bottom: 5px;
 }
@@ -249,10 +245,15 @@ div.options a {
 }
 
 #main ul.errorlist {
-	background-color: rgba(212,58,68,0.31);
+	background-color: #dbabae;
 	border: 1px solid #81303f;
 	padding-top: 3px;
 	padding-bottom: 3px;
+}
+
+input.editor_field {
+	padding: 0;
+	margin: 0;
 }
 
 #main form ul.errorlist li {
@@ -597,8 +598,8 @@ select#id_destination {
 form.inplaceeditor-form { /* The form */
 	background-color: transparent;
 	border: none;
-	margin: none;
-	padding: none;
+	margin: 0;
+	padding: 0;
 	display:inline;
 }
 
@@ -615,7 +616,11 @@ form.inplaceeditor-form input[type="submit"] { /* The submit button */
 form.inplaceeditor-form a { /* The cancel link */
   margin-left:1em;
 }
-editvalue { /* The value in non-edit */
+
+.inplaceeditor-text {
+	padding: 0;
+	width: 280px;
+	display: inline-block;
 }
 
 /* postmeta */
@@ -629,6 +634,8 @@ editvalue { /* The value in non-edit */
 .post-footer .date{ margin: 0 10px 0 5px;	}
 .post-footer a.comments { margin: 0 10px 0 5px;	}
 .post-footer a.readmore { margin: 0 10px 0 5px;	}
+
+
 .post-info { font-size: .95em; padding: 0 10px; margin-left: 2px; color: #888; }
 
 /* alignment classes */
@@ -639,5 +646,4 @@ editvalue { /* The value in non-edit */
 
 /* display and additional classes */
 .clear { clear: both; }
-
 
