@@ -1,9 +1,10 @@
 {% extends "templates/base.html" %}
 
 
+
 <!--calendar scripts import library start-->
-{% block javascript %}
-<script src="http://www.google.com/jsapi?key=ABQIAAAAh9vEamNAbo2MjViKEXyTSBQtrj2yXU7uUDf9MLK2OBnE3PD31hQrtHqCrQiA2FONyyl-gzfE04lUdA"
+{% block javascript %} 
+<script src="http://www.google.com/jsapi?key={{ google_calendar_key }}" 
 type="text/javascript"></script>
 
 <script type="text/javascript" src="scripts/google-calendar/jquery-1.1.4.pack.js"></script>

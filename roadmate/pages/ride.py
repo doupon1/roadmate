@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env  python
 
 import os
 import logging
@@ -12,6 +12,7 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 
 from roadmate.converters import is_true
 from roadmate.google.googlemaps import GoogleMaps
+from roadmate.google.googlecalendar import GoogleCalendar
 from roadmate.handlers.baserequesthandler import BaseRequestHandler
 
 from roadmate.models.roadmateuser import RoadMateUser
@@ -108,6 +109,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 		template_values['lat_lng_src'] = ride.source.get_lat_loc()
 		template_values['lat_lng_des'] = ride.destination.get_lat_loc()
 		template_values['googlemaps_key'] = GoogleMaps.get_key()
+		template_values['google_calendar_key'] = GoogleCalendar.get_key()
 		template_values['has_passengers'] = (ride.count_seats() - ride.count_emptyseats()) > 0
 		template_values['message_list'] = ride.ridemessages
 		template_values['has_occurred'] = (ride.date < ride.date.today())
@@ -169,6 +171,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 		template_values['lat_lng_src'] = ride.source.get_lat_loc()
 		template_values['lat_lng_des'] = ride.destination.get_lat_loc()
 		template_values['googlemaps_key'] = GoogleMaps.get_key()
+		template_values['google_calendar_key'] = GoogleCalendar.get_key()
 		template_values['has_passengers'] = (ride.count_seats() - ride.count_emptyseats()) >0
 		template_values['message_list'] = ride.ridemessages
 
