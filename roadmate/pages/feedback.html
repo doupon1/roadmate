@@ -1,0 +1,52 @@
+{% extends "templates/base.html" %}
+
+{% block title%}feedback{% endblock %}
+
+{% block main %}
+	<h2>feedback</h2>
+	<h3>{{target_user.get_name_tag}}</h3>
+
+	{% if feedback_list %}
+	<p>
+	     <strong>Positive Feedback</strong> {{count_positive}} <br/>
+	     <strong>Neutral Feedback</strong> {{count_neutral}} <br/>
+ 	     <strong>Negative Feedback</strong> {{count_negative}} <br/>
+	</p>
+
+		<table>
+			{% for feedback in feedback_list %}
+				<tr class="message-feedback">
+	    			<td>
+						{{feedback.icon}}
+	     			</td>
+	     			<td>
+						{{feedback.author.get_name_tag}}
+	     			</td>
+	                 <td>
+	                     {{ feedback.role }}
+					</td>
+	     			<td>
+						{{ feedback.created|date_for_table }}
+	     			</td>
+				</tr>
+				<tr class="message-feedback">
+				    <td colspan=4>
+					<a href="/ride?id={{ feedback.ride.key.id }}">{{ feedback.ride.get_name }}</a>
+					</td>
+				</tr>
+				<tr class="message-text">
+					<td colspan=5>
+						{{feedback.text}}
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+	{% else %}
+	   <h3>Sorry, this user has no feedback at the moment</h3>
+	{% endif %}
+
+<p /><hr /><p />
+
+{% endblock %}
+
+

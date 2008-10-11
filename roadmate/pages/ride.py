@@ -20,7 +20,8 @@ from roadmate.models.ride import Ride
 from roadmate.models.ride import RideForm
 from roadmate.models.seat import Seat
 from roadmate.models.location import Location
-from roadmate.models.message import Message
+from roadmate.models.message import RideMessage
+
 
 # ----------------------------------------------------------------------------
 #  Request Handlers
@@ -97,7 +98,6 @@ class ViewRidePageHandler(BaseRequestHandler):
 		if ride is None:
 			self.error(404)
 			return
-
 		# --------------------------------------------------------------------
 		# Generate and Store Template Values
 		# --------------------------------------------------------------------
@@ -109,7 +109,8 @@ class ViewRidePageHandler(BaseRequestHandler):
 		template_values['lat_lng_des'] = ride.destination.get_lat_loc()
 		template_values['googlemaps_key'] = GoogleMaps.get_key()
 		template_values['has_passengers'] = (ride.count_seats() - ride.count_emptyseats()) > 0
-		template_values['message_list'] = ride.messages
+		template_values['message_list'] = ride.ridemessages
+		template_values['has_occurred'] = (ride.date < ride.date.today())
 
 		# --------------------------------------------------------------------
 		# Control the display of the form element
@@ -169,7 +170,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 		template_values['lat_lng_des'] = ride.destination.get_lat_loc()
 		template_values['googlemaps_key'] = GoogleMaps.get_key()
 		template_values['has_passengers'] = (ride.count_seats() - ride.count_emptyseats()) >0
-		template_values['message_list'] = ride.messages
+		template_values['message_list'] = ride.ridemessages
 
 
 
@@ -197,7 +198,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 		#TODO make this more secure! clean the title and body text and validate max/min length!
 
 		if self.request.POST.has_key('do_post_message') and self.request.POST['do_post_message']:
-			message = Message(author=current_user, ride=ride, title=self.request.POST['message_title'], text=self.request.POST['message_body'])
+			message = RideMessage(author=current_user, ride=ride, title=self.request.POST['message_title'], text=self.request.POST['message_body'])
 			message.put()
 
 		# --------------------------------------------------------------------
@@ -309,7 +310,7 @@ class CreateRidePageHandler(BaseRequestHandler):
 			data=self.request.POST,
 			initial=ride_data
 		) #set a form for that instance
-
+		print(ride_form['owner'].data)
 		# --------------------------------------------------------------------
 		# Validate POST Data
 		# --------------------------------------------------------------------

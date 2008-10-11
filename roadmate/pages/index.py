@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import os
-
 from google.appengine.api import users
 from google.appengine.ext import db
 from google.appengine.ext import webapp
@@ -80,10 +79,6 @@ def main():
 		], debug=True)
 	run_wsgi_app(application)
 
-# ----------------------------------------------------------------------------
-#  Load Custom Django Template Filters
-# ----------------------------------------------------------------------------
-webapp.template.register_template_library('roadmate.filters')
 
 if __name__ == '__main__':
   main()

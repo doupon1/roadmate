@@ -2,8 +2,8 @@
 
 
 <!--calendar scripts import library start-->
-{% block javascript %} 
-<script src="http://www.google.com/jsapi?key=ABQIAAAAh9vEamNAbo2MjViKEXyTSBQtrj2yXU7uUDf9MLK2OBnE3PD31hQrtHqCrQiA2FONyyl-gzfE04lUdA" 
+{% block javascript %}
+<script src="http://www.google.com/jsapi?key=ABQIAAAAh9vEamNAbo2MjViKEXyTSBQtrj2yXU7uUDf9MLK2OBnE3PD31hQrtHqCrQiA2FONyyl-gzfE04lUdA"
 type="text/javascript"></script>
 
 <script type="text/javascript" src="scripts/google-calendar/jquery-1.1.4.pack.js"></script>
@@ -15,10 +15,6 @@ type="text/javascript"></script>
 <!--calendar scripts end-->
 
 
-
-
-
-
 {% block title%}View Ride{% endblock %}
 
 {% block main %}
@@ -28,7 +24,7 @@ type="text/javascript"></script>
 
 	<h2>view ride</h2>
 	<h3>{{ ride.get_name }}</h3>
-	
+
 	<p> <!-- ride details -->
 		<strong>Date</strong> {{ ride.date }}<br />
 		<strong>Departs from </strong><a href="/location?id={{ ride.source.key.id }}">{{ ride.source.get_addressname }}</a><strong> at </strong>{{ ride.departure_time }} <br />
@@ -49,11 +45,11 @@ type="text/javascript"></script>
 			<input  id="to" type="hidden" value="{{ ride.destination.get_addressname }}" />
 			<input  id="startTime" type="hidden" value="{{ ride.date }}T{{ ride.departure_time }}.00Z" />
 			<input  id="endTime" type="hidden" value="{{ ride.date }}T{{ ride.arrival_time }}.00Z" />
-			
+
 			 <input  id="ride_id" type="hidden" value="{{ride.key.id }}" />
-			 <input id="calendar_id" type="hidden" value="" />
-		<br/>
-		<br/> 
+
+
+
 		<br/> 
 	   <form id="log_in" >
 		         <!--if no google calendar Token show following field-->
@@ -163,10 +159,6 @@ type="text/javascript"></script>
 			
 	  <!--calendar scripts end-->
 
-		
-		
-		
-		
 
 		
 
@@ -188,7 +180,7 @@ type="text/javascript"></script>
 		</form>
 
 	</p>
-	
+
 {% if has_passengers %}<!-- show passengers -->
 <p>
 <hr />
@@ -202,18 +194,23 @@ type="text/javascript"></script>
 	  {% if seat.passenger %}
 			<tr class="row-a">
 				<td>
-					<a href="/profile?id={{ seat.passenger.user.key.id }}">{{seat.passenger.user.email}}</a></td>
+					<a href="/profile?user={{ seat.passenger.key.id }}">{{seat.passenger.user.email}}</a></td>
 				</td>
 				<td>
 					{{seat.accepted}}
 				</td>
 			{% ifequal current_user ride.owner %} <!-- only show "assign seat" if user is owner -->
 				<td>
-					 <a href="/ride?id={{ride.key.id}}&amp;seat_id={{seat.key.id}}&amp;action=RM">Remove User</a></td> <!--TODO-->
+					 <a href="/ride?id={{ride.key.id}}&amp;seat_id={{seat.key.id}}&amp;action=RM">Remove User</a></td>
 				</td>
 				<td>
-					 <a href="/ride?id={{ride.key.id}}&amp;seat_id={{seat.key.id}}&amp;action=DEL">Delete Seat</a></td> <!--TODO-->
+					 <a href="/ride?id={{ride.key.id}}&amp;seat_id={{seat.key.id}}&amp;action=DEL">Delete Seat</a></td>
 				</td>
+                {% if has_occurred %}
+	                <td>
+						 <a href="/feedback_create?ride={{ride.key.id}}&amp;on={{seat.passenger.key.id}}">Feedback</a></td>
+					</td>
+				{% endif %}
 			{% endifequal %}
 		  	</tr>
 	  {% endif %}
@@ -238,7 +235,7 @@ type="text/javascript"></script>
 			<tr class="row-a">
 
 			<td>
-				 <a href="/profile?id={{ prq.owner.key.id }}">{{prq.owner.user.email}}</a></td>
+				 <a href="/profile?user={{ prq.owner.key.id }}">{{prq.owner.user.email}}</a></td>
 			</td>
 			{% ifequal current_user ride.owner %} <!-- only show "assign seat" if user is owner -->
 				<td>
@@ -312,13 +309,13 @@ type="text/javascript"></script>
 
 
 
-{% if message_list%}  <!-- messages -->
+{% if message_list%}  <!-- ride messages -->
 <p />
 <table class="messages">
 	{% for message in message_list %}
        <tr class="message-{{ message.style }}"> <td>
         <strong>{{message.title}}</strong><br/>
-		<a href="/profile?id={{ message.author.key.id }}">{{message.author.user.email}}</a>{% ifequal message.style "user" %} {% else %} ({{ message.style }}) {% endifequal %}<br/>
+		<a href="/profile?id={{ message.author.key.id }}">{{message.author.user.email}}</a>{% ifequal message.style "user" %} {% else %} ({{ message.style }}) {% endifequal %}  {{message.created}} <br/>
     </td></tr>
     <tr class="message-text" ><td>
     {{message.text}}

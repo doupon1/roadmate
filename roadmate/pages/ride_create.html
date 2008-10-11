@@ -1,5 +1,6 @@
 {% extends "templates/base.html" %}
 
+
 {% block title%}Offer A Ride{% endblock %}
 
 {% block javascript %}
@@ -34,7 +35,7 @@
 
 	<form method="post">
 
-		{{ ride_form.non_field_errors }}
+		{{ ride_form.errors }}
 
 		<div class="inputgroup">
 			<div>

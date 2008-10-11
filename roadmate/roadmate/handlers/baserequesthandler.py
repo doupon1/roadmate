@@ -4,6 +4,7 @@ from google.appengine.ext import webapp
 
 from roadmate.models.roadmateuser import RoadMateUser
 
+
 class BaseRequestHandler(webapp.RequestHandler):
 	"""
 		RoadMate RequestHandler

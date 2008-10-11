@@ -21,6 +21,19 @@ class RoadMateUser(db.Model):
 	phone = db.PhoneNumberProperty()
 	registration_date = db.DateTimeProperty(required=True, auto_now_add=True)
 
+	def feedback_score(self):
+		from roadmate.models.message import FeedbackMessage
+		result = 0
+		if self.feedback_received.count() > 0:
+			for feedback in self.feedback_received:
+				result += feedback.value
+		else:
+			result = "new"
+		return result
+
+	def get_name_tag(self):
+		return '<a href="/profile?user=' + self.key().id().__str__() + '">' + self.user.email().__str__() + '</a> <a href="/feedback?id=' + self.key().id().__str__() + '">(' + self.feedback_score().__str__() + ')</a>'
+
 	def __eq__(self, other):
 		"""Overloaded equality operator."""
 		try:
@@ -35,6 +48,7 @@ class RoadMateUser(db.Model):
 			return NotImplemented
 		else:
 			return not equality_result
+
 
 	@classmethod
 	def get_current_user(cls):
@@ -84,6 +98,7 @@ class RoadMateUser(db.Model):
 			roadmate_user.put()
 
 		return roadmate_user
+
 
 
 class RoadMateUserForm(djangoforms.ModelForm):

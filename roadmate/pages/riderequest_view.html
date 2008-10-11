@@ -4,6 +4,7 @@
 
 {% block main %}
 
+
 <script src="/scripts/scriptaculous/1.8.1/prototype.js" type="text/javascript"></script>
 <script src="/scripts/scriptaculous/1.8.1/scriptaculous.js" type="text/javascript"></script>
 <script src="/scripts/roadmate/edit.js" type="text/javascript"></script>
@@ -40,5 +41,42 @@
 	</p>
 {% endif %}
 
-<p /> <hr />
+{% if message_list%}  <!-- riderequest messages -->
+<p />
+<table class="messages">
+	{% for message in message_list %}
+       <tr class="message-{{ message.style }}"> <td>
+        <strong>{{message.title}}</strong><br/>
+		<a href="/profile?id={{ message.author.key.id }}">{{message.author.user.email}}</a>{% ifequal message.style "user" %} {% else %} ({{ message.style }}) {% endifequal %}  {{message.created}} <br/>
+    </td></tr>
+    <tr class="message-text" ><td>
+    {{message.text}}
+    </td></tr>
+    <tr class="message-space"></tr>
+	{% endfor %}
+</table>
+
+{% endif %}
+
+<form method="post"> <!-- message form -->
+	<div class="inputgroup">
+		 <div>
+	        <strong>Title </strong><input type="text" name="message_title" />
+	      </div>
+
+			<div>
+			<strong>Type your message here</strong>
+			<textarea name="message_body"></textarea>
+
+			<input type="hidden" name="do_post_message" value="True"/>
+			<input class="button" value="Submit" type="submit"/>
+		</div>
+	</div>
+</form>
+
+</p>
+
+
+<p /><hr />
+<p />
 {% endblock %}

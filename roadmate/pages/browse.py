@@ -17,6 +17,7 @@ from roadmate.models.seat import Seat
 from roadmate.models.roadmateuser import RoadMateUser
 from roadmate.models.location import Location
 
+
 # ----------------------------------------------------------------------------
 #  Request Handlers
 # ----------------------------------------------------------------------------
@@ -110,10 +111,6 @@ def main():
 		], debug=True)
 	run_wsgi_app(application)
 
-# ----------------------------------------------------------------------------
-#  Load Custom Django Template Filters
-# ----------------------------------------------------------------------------
-webapp.template.register_template_library('roadmate.filters')
 
 if __name__ == '__main__':
   main()

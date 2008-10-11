@@ -1,0 +1,41 @@
+{% extends "templates/base.html" %}
+
+{% block title%}Place Feedback{% endblock %}
+
+{% block main %}
+
+	<h2>place feedback on {{target_user_role}}</h2>
+
+	<h3>{{ target_user.user.email }}</h3>
+	<h3><a href="/ride?id={{ ride.key.id }}">{{ ride.get_name }}</a></h3>
+	{{ feedback_form.non_field_errors }}
+	<form method="post">
+		<div class="inputgroup">
+
+
+		    <strong>Date </strong>{{ ride.date|date_for_table }}</strong><br/>
+
+			<strong>User </strong><a href ="/profile?user={{target_user.key.id}}">{{ target_user.user.email }}</a> <br/>
+			{{feedback_form.value}}<br/>
+
+			<strong>Enter your feedback</strong><br/>
+			{{ feedback_form.text }}<br/>
+		</div>
+
+		<input type="hidden" name="_do_post_feedback" value="True">
+		<input class="button" type="submit" value="Submit"/>
+
+	</form>
+	<p>
+	   This is a chance to tell other RoadMate users what you thought of the driver and the ride.
+	   Your comments will be visible on the public profile of the driver and the rating you assign
+	   them will contribute to their feedback score.
+	</p>
+	<p>
+	Please try and keep your comments constructive, and refrain from using
+	 inappropriate or offensive language.
+    </p>
+
+<p /><hr /><p />
+
+{% endblock %}

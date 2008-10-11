@@ -3,6 +3,7 @@ version: 1
 runtime: python
 api_version: 1
 
+
 handlers:
 # ----------------------------------------------------------------------------
 # Static Directories
@@ -68,6 +69,14 @@ handlers:
 - url: /mybookings(.*)
   script: pages/mybookings.py
   login: required
+
+- url: /feedback_create(.*)
+  script: pages/feedback.py
+  login: required
+
+- url: /feedback(.*)
+  script: pages/feedback.py
+
 
 # ----------------------------------------------------------------------------
 # AJAX Request Handlers

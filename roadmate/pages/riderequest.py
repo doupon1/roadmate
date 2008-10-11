@@ -3,7 +3,6 @@
 import os
 import logging
 
-
 from google.appengine.api import users
 from google.appengine.ext import db
 from google.appengine.ext import webapp
@@ -19,6 +18,7 @@ from roadmate.models.roadmateuser import RoadMateUser
 from roadmate.models.riderequest import RideRequest
 from roadmate.models.riderequest import RideRequestForm
 from roadmate.models.location import Location
+from roadmate.models.message import RideRequestMessage
 
 # ----------------------------------------------------------------------------
 #  Request Handlers
@@ -64,6 +64,7 @@ class ViewRideRequestPageHandler(BaseRequestHandler):
 
 		template_values['riderequest'] = riderequest
 		template_values['googlemaps_key'] = GoogleMaps.get_key()
+		template_values['message_list'] = riderequest.messages
 
 		# --------------------------------------------------------------------
 		# Render and Serve Template
@@ -89,6 +90,9 @@ class ViewRideRequestPageHandler(BaseRequestHandler):
 
 		# Datastore Values
 		riderequest = RideRequest.get_by_id(riderequest_id)
+
+
+
 		# --------------------------------------------------------------------
 		# Validate Request
 		# --------------------------------------------------------------------
@@ -99,6 +103,13 @@ class ViewRideRequestPageHandler(BaseRequestHandler):
 			return
 
 
+        #if user is posting a message
+		#TODO make this more secure! clean the title and body text and validate max/min length!
+
+		if self.request.POST.has_key('do_post_message') and self.request.POST['do_post_message']:
+			message = RideRequestMessage(author=current_user, riderequest=riderequest, title=self.request.POST['message_title'], text=self.request.POST['message_body'])
+			message.put()
+
 		# --------------------------------------------------------------------
 		# Generate and Store Template Values
 		# --------------------------------------------------------------------
@@ -107,6 +118,7 @@ class ViewRideRequestPageHandler(BaseRequestHandler):
 
 		template_values['riderequest'] = riderequest
 		template_values['googlemaps_key'] = GoogleMaps.get_key()
+		template_values['message_list'] = riderequest.messages
 
 		# --------------------------------------------------------------------
 		# Render and Serve Template
