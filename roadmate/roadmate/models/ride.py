@@ -1,3 +1,5 @@
+from datetime import date
+
 from google.appengine.ext import db
 from google.appengine.ext.webapp import template
 from google.appengine.ext.db import djangoforms
@@ -115,6 +117,16 @@ class RideForm(djangoforms.ModelForm):
 			raise forms.ValidationError("Number of seats cannot be more than 80.")
 
 		return number_of_seats
+		
+	def clean_date(self):
+		departure_date = self.clean_data['date']
+		
+		# only allow rides in the future
+		if departure_date < date.today():
+			raise forms.ValidationError("Depature time cannot be in the past.")
+		
+		return departure_date
+			
 
 	def clean(self):
 		cleaned_data = self.clean_data
