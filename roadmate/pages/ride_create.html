@@ -70,16 +70,19 @@
 
 		<div class="inputgroup">
 			<div>
+				{{ ride_form.date.errors }}
 				{{ ride_form.date.label_tag }}
 				{{ ride_form.date }}
 			</div>
 
 			<div>
+				{{ ride_form.departure_time.errors }}
 				{{ ride_form.departure_time.label_tag }}
 				{{ ride_form.departure_time }}
 			</div>
 
 			<div>
+				{{ ride_form.arrival_time.errors }}
 				{{ ride_form.arrival_time.label_tag }}
 				{{ ride_form.arrival_time }}
 			</div>
