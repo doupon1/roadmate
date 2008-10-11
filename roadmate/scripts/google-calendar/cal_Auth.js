@@ -140,7 +140,8 @@
 	
    }
    
-      
+    
+	
    
    /*
     * if user already login to google account
@@ -156,10 +157,17 @@
 	 var obj2=document.getElementById("add_event");
 	 var obj3=document.getElementById("wait");
 	 
+
+	 
 	   if (isTokenRedirect()) {
-	   	     obj1.style.display = 'none';
-		     obj2.style.display = 'none';
-			 obj3.style.display ='block';
+	   	     
+			 	obj1.style.display = 'none';
+			 	obj2.style.display = 'none';
+			 	obj3.style.display = 'block';
+				
+			    setTimeout('showcreatefiled()',8000);
+			 
+			 
 	   
 	   }
 	   
@@ -196,7 +204,18 @@
 	
    }
   
+   //show create filed
    
+   function showcreatefiled(){
+   	   var obj1 = document.getElementById("log_in");
+	   var obj2=document.getElementById("add_event");
+	   var obj3=document.getElementById("wait");
+	            obj2.style.display = 'block';
+	   		    obj1.style.display = 'none';
+			    obj3.style.display = 'none';
+	
+	
+   }
    
    
     
