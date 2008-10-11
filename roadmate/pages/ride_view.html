@@ -46,9 +46,9 @@ type="text/javascript"></script>
 			<input  id="to" type="hidden" value="{{ ride.destination.get_addressname }}" />
 			<input  id="startTime" type="hidden" value="{{ ride.date }}T{{ ride.departure_time }}.00Z" />
 			<input  id="endTime" type="hidden" value="{{ ride.date }}T{{ ride.arrival_time }}.00Z" />
-
+             
 			 <input  id="ride_id" type="hidden" value="{{ride.key.id }}" />
-
+               <input id="calendar_id" type="hidden" value="" />
 
 
 		<br/> 

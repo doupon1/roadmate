@@ -313,7 +313,7 @@ class CreateRidePageHandler(BaseRequestHandler):
 			data=self.request.POST,
 			initial=ride_data
 		) #set a form for that instance
-		print(ride_form['owner'].data)
+		
 		# --------------------------------------------------------------------
 		# Validate POST Data
 		# --------------------------------------------------------------------
