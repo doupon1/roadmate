@@ -161,8 +161,6 @@ tr {
 td {
 	padding-left: 11px;
 	padding-right: 11px;
-	border-left: 1px solid #DFDFDF;
-	border-bottom: 1px solid #DFDFDF;
 }
 td.first,th.first {
 	border-left: 0px;
