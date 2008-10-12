@@ -365,7 +365,7 @@
 		   
 		  
 		  if(isEmailChecked){
-		  	  if( isNaN(tN1)){
+		  	  if( isNaN(tN1)|tN1==""){
 			  
 			  	 return false;
 			  }else{
@@ -377,7 +377,7 @@
 			
 		  }
 		  if(isSmsChecked){
-		  	   if( isNaN(tN2)){
+		  	   if( isNaN(tN2)|tN2==""){
 			   	
 			  	 return false;
 			  }else{
