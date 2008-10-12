@@ -1,40 +1,60 @@
 {% extends "templates/base.html" %}
 
-{% block title%}View Profile{% endblock %} <!-- just to test the script.aculo.us edit method -->
+{% block title%}View Profile{% endblock %}
 
-{% block main %}
-
-
+{% block javascript %}
 <script src="/scripts/scriptaculous/1.8.1/prototype.js" type="text/javascript"></script>
 <script src="/scripts/scriptaculous/1.8.1/scriptaculous.js" type="text/javascript"></script>
 <script src="/scripts/roadmate/edit.js" type="text/javascript"></script>
 
+<script type="text/javascript" language="javascript">
+	// <![CDATA[
+	
+	document.observe('dom:loaded', function() {
+		{% ifequal current_user target_user %}
+			editTextControl('first_name', '/ajax/edit_profile?user=' + {{ target_user.key.id }})
+			editTextControl('last_name', '/ajax/edit_profile?user=' + {{ target_user.key.id }})
+			editTextControl('hometown', '/ajax/edit_profile?user=' + {{ target_user.key.id }})
+			editTextControl('phone', '/ajax/edit_profile?user=' + {{ target_user.key.id }})
+		{% endifequal %}
+	});
+
+	// ]]>
+</script>
+{% endblock %}
+
+{% block main %}
 
    <h2>view profile</h2>
-   <h3>{{target_user.get_name_tag}}</h3>
 
-	<ul class="details-list">
-	    <li><strong>Email </strong>{{ target_user.user.email }}</li>
+	<form>
+	<div class="inputgroup">
+		<div>
+			<label>Email</label>
+			{{ target_user.user.email }}
+		</div>
 	    <br/>
-		<li>
-		<strong>First Name </strong><editvalue id='first_name'> {{ target_user.first_name }}</editvalue>
-		{% ifequal current_user target_user %}<script>editTextControl('first_name', '/ajax/edit_profile?user=' + {{target_user.key.id}})</script>{% endifequal %}
-		</li>
-		<li><strong>Last Name </strong><editvalue id='last_name'> {{ target_user.last_name }}</editvalue>
-        {% ifequal current_user target_user %}<script>editTextControl('last_name', '/ajax/edit_profile?user=' + {{target_user.key.id}})</script>{% endifequal %}
-		</li>
+	
+		<div>
+			<label for="first_name">First Name</label>
+			<p id="first_name" class="inplaceeditor-text">{{ target_user.first_name }}</p>
+		</div>
+		<div>
+			<label for="last_name">Last Name</label>
+			<p id="last_name" class="inplaceeditor-text">{{ target_user.last_name }}</p>
+		</div>
 		<br/>
-		<li><strong>Hometown </strong><editvalue id='town'>{{ target_user.town }}</editvalue>
-        {% ifequal current_user target_user %}<script>editTextControl('town', '/ajax/edit_profile?user=' + {{target_user.key.id}})</script>{% endifequal %}
-		</li>
-		<li><strong>Phone </strong><editvalue id='phone'>{{ target_user.phone }}</editvalue>
-        {% ifequal current_user target_user %}<script>editTextControl('phone', '/ajax/edit_profile?user=' + {{target_user.key.id}})</script>{% endifequal %}
-		</li>
-        <br/>
-		<li>
-			<strong><a href="/feedback?id={{target_user.key.id}}">View Feedback</a></strong>
-		</li>
-	</ul>
+		
+		<div>
+			<label for="hometown">Hometown</label>
+			<p id="hometown" class="inplaceeditor-text">{{ target_user.town }}</p>
+		</div>
+		<div>
+			<label for="phone">Phone</label>
+			<p id="phone" class="inplaceeditor-text">{{ target_user.phone }}</p>
+		</div>
+	</div>
+	</form>
 
 	{% if my_rides %}
 	<hr />
