@@ -14,7 +14,7 @@
 		{% ifequal current_user target_user %}
 			editTextControl('first_name', '/ajax/edit_profile?user=' + {{ target_user.key.id }})
 			editTextControl('last_name', '/ajax/edit_profile?user=' + {{ target_user.key.id }})
-			editTextControl('hometown', '/ajax/edit_profile?user=' + {{ target_user.key.id }})
+			editTextControl('town', '/ajax/edit_profile?user=' + {{ target_user.key.id }})
 			editTextControl('phone', '/ajax/edit_profile?user=' + {{ target_user.key.id }})
 		{% endifequal %}
 	});
@@ -46,8 +46,8 @@
 		<br/>
 		
 		<div>
-			<label for="hometown">Hometown</label>
-			<p id="hometown" class="inplaceeditor-text">{{ target_user.town }}</p>
+			<label for="town">Hometown</label>
+			<p id="town" class="inplaceeditor-text">{{ target_user.town }}</p>
 		</div>
 		<div>
 			<label for="phone">Phone</label>
