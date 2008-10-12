@@ -5,11 +5,8 @@
 
 <!--calendar scripts import library start-->
 {% block javascript %} 
-<script src="http://www.google.com/jsapi?key={{ google_calendar_key }}" 
-type="text/javascript"></script>
-
+<script src="http://www.google.com/jsapi?key={{ google_calendar_key }}" type="text/javascript"></script>
 <script type="text/javascript" src="scripts/google-calendar/jquery-1.1.4.pack.js"></script>
-
 <script src="scripts/google-calendar/cal_Auth.js"></script>
 {% endblock %}
 
@@ -167,13 +164,13 @@ type="text/javascript"></script>
 
 
 		<form method="post">
-			<h3>{{ride.count_emptyseats }} seat{% ifnotequal ride.count_emptyseats 1 %}s{% endifnotequal %} available
+			<h3>{{ ride.count_emptyseats }} seat{{ ride.count_emptyseats|pluralize }} available
 			{% if ride.count_emptyseats %}<!-- show the request button-->
 				<input type="hidden" name="do_request_ride" value="True"/>
-				<input class="button"  value="Request a Seat" type="submit"></h3>
-			{% else %}
-		        </h3>
+				<input class="button"  value="Request a Seat" type="submit">
 			{% endif %}
+			</h3>
+			
 			{% if not requestable %} <!-- show the instruction-->
 				<strong>
 					Your request for a seat on this ride has been recorded
@@ -281,14 +278,6 @@ type="text/javascript"></script>
             var topRight = new GControlPosition(G_ANCHOR_TOP_RIGHT, new GSize(10,10));
             var bottomRight = new GControlPosition(G_ANCHOR_BOTTOM_RIGHT, new GSize(10,10));
             map.addControl(new GSmallMapControl());
-
-            var source = new GMarker(new GLatLng({{lat_lng_src}}));
-            map.addOverlay(source);
-            bounds.extend(source.getPoint());
-
-            var destination = new GMarker(new GLatLng({{lat_lng_des}}));
-            map.addOverlay(destination);
-            bounds.extend(destination.getPoint());
 
           //Shows the route between destination and source
             directionsPanel = document.getElementById("route");
