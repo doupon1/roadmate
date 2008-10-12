@@ -541,6 +541,7 @@ select#id_destination {
 	margin: 7px 4px 8px 0; padding: 0;
 	text-decoration: none;
 	background: url(higher_ground_images/dots.jpg) repeat-x left top;
+
 }
 #sidebar ul.sidemenu li {
 	list-style: none;
@@ -560,9 +561,11 @@ select#id_destination {
 	text-decoration: none;
 	background-image: none;
 	color: #666666;
+	font-weight: bold;
 }
 #sidebar ul.sidemenu li a:hover {
 	color: #1773BC;
+
 }
 #sidebar ul.sidemenu ul { margin: 0 0 0 5px; padding: 0; }
 #sidebar ul.sidemenu ul li { background: none; }

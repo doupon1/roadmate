@@ -3,7 +3,6 @@
 import os
 import logging
 
-
 from google.appengine.api import users
 from google.appengine.ext import db
 from google.appengine.ext import webapp
@@ -272,7 +271,7 @@ class CreateFeedbackPageHandler(BaseRequestHandler):
 						 recipient=target_user,
 						 role=target_user_role,
 				   		 value=int(self.request.POST['value']),
-				   		 text=self.request.POST['text']
+				   		 text=escape(self.request.POST['text'])
 						 ) # not validated
 
 		feedback_message.put() # save the new Message
@@ -296,3 +295,4 @@ def main():
 
 if __name__ == '__main__':
   main()
+

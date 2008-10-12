@@ -56,50 +56,55 @@ class RideRequestForm(djangoforms.ModelForm):
 
 	source_address = forms.CharField(label="From address", required=False)
 	destination_address = forms.CharField(label="To address", required=False)
+	notes = forms.CharField(label="Notes", required=False)
 
 	## these clean_.. methods are all the same as Ride
-		
+
+	def clean_notes(self):
+		notes = self.clean_data['notes']
+		return notes
+
 	def clean_date(self):
 		departure_date = self.clean_data['date']
-		
+
 		# only allow rides in the future
 		if departure_date < date.today():
 			raise forms.ValidationError("Depature date cannot be in the past.")
-		
+
 		return departure_date
-		
+
 	def clean_source_address(self):
 		source_address = self.clean_data['source_address']
-		
+
 		if not GoogleMaps.is_valid_address(source_address):
 			raise forms.ValidationError("Please enter a valid address.")
-			
+
 		return source_address
-		
+
 	def get_source(self):
 		source_address = self.clean_data['source_address']
-		
+
 		if GoogleMaps.is_valid_address(source_address):
 			return Location.get_by_address(source_address, create=True)
 		else:
 			return None
-		
+
 	def clean_destination_address(self):
 		destination_address = self.clean_data['destination_address']
-		
+
 		if not GoogleMaps.is_valid_address(destination_address):
 			raise forms.ValidationError("Please enter a valid address.")
-			
+
 		return destination_address
-		
+
 	def get_destination(self):
 		destination_address = self.clean_data['destination_address']
-		
+
 		if GoogleMaps.is_valid_address(destination_address):
 			return Location.get_by_address(destination_address, create=True)
 		else:
 			return None
-			
+
 	def clean(self):
 		cleaned_data = self.clean_data
 
@@ -107,7 +112,7 @@ class RideRequestForm(djangoforms.ModelForm):
 
 		cleaned_data['source'] = self.get_source()
 		cleaned_data['destination'] = self.get_destination()
-		
+
 		errors = ErrorList()
 
 		# validate times

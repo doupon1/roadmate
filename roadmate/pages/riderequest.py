@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-
 import os
 import logging
 
@@ -10,6 +9,8 @@ from google.appengine.ext import webapp
 from google.appengine.api import urlfetch
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
+
+
 
 from roadmate.converters import is_true
 from roadmate.google.googlemaps import GoogleMaps
@@ -108,7 +109,7 @@ class ViewRideRequestPageHandler(BaseRequestHandler):
 		#TODO make this more secure! clean the title and body text and validate max/min length!
 
 		if self.request.POST.has_key('do_post_message') and self.request.POST['do_post_message']:
-			message = RideRequestMessage(author=current_user, riderequest=riderequest, title=self.request.POST['message_title'], text=self.request.POST['message_body'])
+			message = RideRequestMessage(author=current_user, riderequest=riderequest, title=escape(self.request.POST['message_title']), text=escape(self.request.POST['message_body']))
 			message.put()
 
 		# --------------------------------------------------------------------

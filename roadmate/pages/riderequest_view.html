@@ -1,5 +1,6 @@
 {% extends "templates/base.html" %}
 
+
 {% block title%}View Ride Request{% endblock %}
 
 {% block main %}
@@ -24,7 +25,7 @@
 
 		</li>
 		{% if riderequest.notes %}
-			<strong>Notes </strong><editvalue id='notes'> {{ riderequest.notes }}</editvalue>
+			<strong>Notes </strong><editvalue id='notes'> {{ riderequest.notes|escape }}</editvalue>
 			{% ifequal current_user riderequest.owner %}<script>editTextControl('notes', '/edit_riderequest?id=' + {{riderequest.key.id}})</script>{% endifequal %}
 
 		{% endif %}
@@ -46,11 +47,11 @@
 	{% for message in message_list %}
 	<tr class="list-item">
 	    <tr class="message-{{ message.style }}"> <td>
-	        <strong>{{message.title}}</strong><br/>
+	        <strong>{{message.title|escape}}</strong><br/>
 			<a href="/profile?id={{ message.author.key.id }}">{{message.author.user.email}}</a>{% ifequal message.style "user" %} {% else %} ({{ message.style }}) {% endifequal %}  {{message.created}} <br/>
 	    </td></tr>
 	    <tr class="message-text" ><td>
-	    {{message.text}}
+	    {{message.text|escape}}
 	    </td></tr>
     </tr> <!-- end list item -->
 	{% endfor %}

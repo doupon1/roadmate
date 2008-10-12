@@ -1,5 +1,6 @@
 {% extends "templates/base.html" %}
 
+
 {% block title%}View Profile{% endblock %}
 
 {% block javascript %}
@@ -27,7 +28,7 @@
 
    <h2>view profile</h2>
 
-	<h3>{{ target_user.get_name_tag }}</h3>
+	<h3>{{ target_user.get_name_tag}}</h3>
 {% ifequal target_user current_user %} <!-- display instruction for the edit fields -->
 <p>
 <strong>Since this is your own profile, you can edit some of the information.</strong><br/>
@@ -39,27 +40,27 @@
 	<div class="inputgroup">
 		<div>
 			<label>Email</label>
-			{{ target_user.user.email }} <a href="http://localhost:8080/feedback?id={{ target_user.key.id}}">View Feedback</a>
+			{{ target_user.user.email }} <a href="http://localhost:8080/feedback?id={{ target_user.key.id}}">View Feedback</a></br>
 		</div>
 	    <br/>
 
 		<div>
-			<label for="first_name">First Name</label>
-			<p id="first_name" class="inplaceeditor-text">{{ target_user.first_name }}</p>
+			<label for="first_name">First Name
+			<p id="first_name" class="inplaceeditor-text">{{ target_user.first_name|escape }}</p></label>
 		</div>
 		<div>
 			<label for="last_name">Last Name</label>
-			<p id="last_name" class="inplaceeditor-text">{{ target_user.last_name }}</p>
+			<p id="last_name" class="inplaceeditor-text">{{ target_user.last_name|escape}}</p></label>
 		</div>
 		<br/>
 
 		<div>
 			<label for="town">Hometown</label>
-			<p id="town" class="inplaceeditor-text">{{ target_user.town }}</p>
+			<p id="town" class="inplaceeditor-text">{{ target_user.town|escape }}</p></br>
 		</div>
 		<div>
 			<label for="phone">Phone</label>
-			<p id="phone" class="inplaceeditor-text">{{ target_user.phone }}</p>
+			<p id="phone" class="inplaceeditor-text">{{ target_user.phone|escape }}</p></br>
 		</div>
 	</div>
 	</form>

@@ -14,7 +14,7 @@ from roadmate.converters import is_true
 from roadmate.handlers.baserequesthandler import BaseRequestHandler
 from roadmate.models.roadmateuser import RoadMateUser
 from roadmate.models.riderequest import RideRequest
-
+from django.template.defaultfilters import escape
 # ----------------------------------------------------------------------------
 #  Request Handlers
 # ----------------------------------------------------------------------------
@@ -82,7 +82,7 @@ class EditProfileHandler(BaseRequestHandler):
 			if not self.request.POST['value'] == "" and not self.request.POST['value'] == "None" and not self.request.POST['editorId'].startswith('_'):
 				setattr(target_user, self.request.POST['editorId'], self.request.POST['value'])# update that attribute
 				target_user.save() # save the record
-				self.response.out.write(getattr(target_user, self.request.POST['editorId'])) # print that value to the page
+				self.response.out.write(escape(getattr(target_user, self.request.POST['editorId']))) # print that value to the page
 			else: # input text is "None" or empty string, return "None"
 				self.response.out.write("None")
 		else: # values are missing
@@ -153,7 +153,7 @@ class EditRideRequestHandler(BaseRequestHandler):
 			if not self.request.POST['value'] == "None" and not self.request.POST['editorId'].startswith('_'):
 				setattr(riderequest, self.request.POST['editorId'], self.request.POST['value'])# update that attribute
 				riderequest.save() # save the record
-				self.response.out.write(getattr(riderequest, self.request.POST['editorId'])) # print that value to the page
+				self.response.out.write(escape(getattr(riderequest, self.request.POST['editorId']))) # print that value to the page
 			else: # input text is "None", return the same
 				self.response.out.write("None")
 		else: # values are missing
@@ -176,3 +176,4 @@ def main():
 
 if __name__ == '__main__':
   main()
+

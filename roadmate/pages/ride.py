@@ -24,7 +24,6 @@ from roadmate.models.seat import Seat
 from roadmate.models.location import Location
 from roadmate.models.message import RideMessage
 
-
 # ----------------------------------------------------------------------------
 #  Request Handlers
 # ----------------------------------------------------------------------------
@@ -56,7 +55,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 
 		# Datastore Values
 		ride = Ride.get_by_id(ride_id)
-		
+
 		# --------------------------------------------------------------------
 		# Validate Request
 		# --------------------------------------------------------------------
@@ -65,7 +64,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 		if ride is None:
 			self.error(404)
 			return
-		
+
 		# --------------------------------------------------------------------
 		# Handle approving and removing passengers and seats
 		# --------------------------------------------------------------------
@@ -101,13 +100,13 @@ class ViewRidePageHandler(BaseRequestHandler):
 				else:
 					self.error(404) #trying to create too many seats! TODO notify the user of the error
 					return
-					
+
 		# --------------------------------------------------------------------
 		# Generate and Store Template Values
 		# --------------------------------------------------------------------
 		template_values = super(ViewRidePageHandler, self
 			).generate_template_values(self.request.url)
-
+		print(ride.source.get_lat_loc() + " " + ride.destination.get_lat_loc())
 		template_values['ride'] = ride
 		template_values['lat_lng_src'] = ride.source.get_lat_loc()
 		template_values['lat_lng_des'] = ride.destination.get_lat_loc()
@@ -301,7 +300,7 @@ class CreateRidePageHandler(BaseRequestHandler):
 			data=self.request.POST,
 			initial=ride_data
 		) #set a form for that instance
-		
+
 		# --------------------------------------------------------------------
 		# Validate POST Data
 		# --------------------------------------------------------------------

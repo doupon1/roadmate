@@ -120,6 +120,11 @@ class RideForm(djangoforms.ModelForm):
 
 	source_address = forms.CharField(label="From address", required=False)
 	destination_address = forms.CharField(label="To address", required=False)
+	notes = forms.CharField(label="Notes", required=False)
+
+	def clean_notes(self):
+		number_of_seats = self.clean_data['notes']
+		return number_of_seats
 
 	def clean_number_of_seats(self):
 		number_of_seats = self.clean_data['number_of_seats']
