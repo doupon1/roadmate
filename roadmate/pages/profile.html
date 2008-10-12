@@ -9,7 +9,7 @@
 
 <script type="text/javascript" language="javascript">
 	// <![CDATA[
-	
+
 	document.observe('dom:loaded', function() {
 		{% ifequal current_user target_user %}
 			editTextControl('first_name', '/ajax/edit_profile?user=' + {{ target_user.key.id }})
@@ -27,14 +27,22 @@
 
    <h2>view profile</h2>
 
+	<h3>{{ target_user.get_name_tag }}</h3>
+{% ifequal target_user current_user %} <!-- display instruction for the edit fields -->
+<p>
+<strong>Since this is your own profile, you can edit some of the information.</strong><br/>
+	If you move your mouse over a field and it turns green, you can click on it, change the value, click 'save',
+	and your profile information will be updated. This information is visible to other RoadMate users.
+</p>
+{% endifequal %}
 	<form>
 	<div class="inputgroup">
 		<div>
 			<label>Email</label>
-			{{ target_user.user.email }}
+			{{ target_user.user.email }} <a href="http://localhost:8080/feedback?id={{ target_user.key.id}}">View Feedback</a>
 		</div>
 	    <br/>
-	
+
 		<div>
 			<label for="first_name">First Name</label>
 			<p id="first_name" class="inplaceeditor-text">{{ target_user.first_name }}</p>
@@ -44,7 +52,7 @@
 			<p id="last_name" class="inplaceeditor-text">{{ target_user.last_name }}</p>
 		</div>
 		<br/>
-		
+
 		<div>
 			<label for="town">Hometown</label>
 			<p id="town" class="inplaceeditor-text">{{ target_user.town }}</p>
