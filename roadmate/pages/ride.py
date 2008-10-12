@@ -244,10 +244,6 @@ class CreateRidePageHandler(BaseRequestHandler):
 		# Session Values
 		current_user = RoadMateUser.get_current_user()
 
-		# Request Values
-		show_source_favorites = self.get_request_parameter('showSourceFavorites', converter=is_true, default=False)
-		show_destination_favorites = self.get_request_parameter('showDestinationFavorites', converter=is_true, default=False)
-
 		# --------------------------------------------------------------------
 		# Validate Session and Request
 		# --------------------------------------------------------------------
@@ -268,14 +264,7 @@ class CreateRidePageHandler(BaseRequestHandler):
 		template_values['logout_url'] = users.create_logout_url("/")
 		template_values['owner'] = current_user
 
-		template_values['show_source_favorites'] = show_source_favorites
-		template_values['show_destination_favorites'] = show_destination_favorites
-
-		ride_form = RideForm()
-		ride_form.fields['source'].query = current_user.locations
-		ride_form.fields['destination'].query = current_user.locations
-
-		template_values['ride_form'] = ride_form
+		template_values['ride_form'] = RideForm()
 
 		# --------------------------------------------------------------------
 		# Render and Serve Template
@@ -290,10 +279,6 @@ class CreateRidePageHandler(BaseRequestHandler):
 		# --------------------------------------------------------------------
 		# Session Values
 		current_user = RoadMateUser.get_current_user()
-
-		# Request Values
-		show_source_favorites = self.get_request_parameter('showSourceFavorites', converter=is_true, default=False)
-		show_destination_favorites = self.get_request_parameter('showDestinationFavorites', converter=is_true, default=False)
 
 		# --------------------------------------------------------------------
 		# Validate Sesson
@@ -333,12 +318,6 @@ class CreateRidePageHandler(BaseRequestHandler):
 			# logout we redirect them back to the home page.
 			template_values['logout_url'] = users.create_logout_url("/")
 			template_values['owner'] = current_user
-
-			template_values['show_source_favorites'] = show_source_favorites
-			template_values['show_destination_favorites'] = show_destination_favorites
-
-			ride_form.fields['source'].query = current_user.locations
-			ride_form.fields['destination'].query = current_user.locations
 
 			template_values['ride_form'] = ride_form
 

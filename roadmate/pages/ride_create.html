@@ -21,9 +21,6 @@
 			paramName: 'current_value'
 		});
 		
-		// hide favorite links
-		$('show_source_favorites').hide();
-		$('show_destination_favorites').hide();
 	});
 
 	// ]]>
@@ -35,36 +32,20 @@
 
 	<form method="post">
 
-		{{ ride_form.errors }}
+		{{ ride_form.non_field_errors }}
 
 		<div class="inputgroup">
 			<div>
-				{% if show_source_favorites %}
-					{{ ride_form.source.label_tag }}
-					{{ ride_form.source }}
-				{% else %}
-					{{ ride_form.source_address.label_tag }}
-					{{ ride_form.source_address }}
-					
-					{% if current_user.locations.count %}
-						<a id="show_source_favorites" class="buttonlink" href="/ride_create?showSourceFavorites=True&amp;showDestinationFavorites={{ show_destination_favorites  }}">Favorites</a>
-					{% endif %}
-				{% endif %}
+				{{ ride_form.destination_address.errors }}
+				{{ ride_form.source_address.label_tag }}
+				{{ ride_form.source_address }}
 			</div>
 			<div id="id_source_address_choices" class="address_autocomplete" style="display: none;"></div>
 
 			<div>
-				{% if show_destination_favorites %}
-					{{ ride_form.destination.label_tag }}
-					{{ ride_form.destination }}
-				{% else %}
-					{{ ride_form.destination_address.label_tag }}
-					{{ ride_form.destination_address }}
-
-					{% if current_user.locations.count %}
-						<a id="show_destination_favorites" class="buttonlink" href="/ride_create?showSourceFavorites={{ show_source_favorites }}&amp;showDestinationFavorites=True">Favorites</a>
-					{% endif %}
-				{% endif %}
+				{{ ride_form.destination_address.errors }}
+				{{ ride_form.destination_address.label_tag }}
+				{{ ride_form.destination_address }}
 			</div>
 		</div>
 		<div id="id_destination_address_choices" class="address_autocomplete" style="display: none;"></div>

@@ -7,6 +7,7 @@ import logging
 import urllib
 
 from google.appengine.api import urlfetch
+from google.appengine.ext.db import GeoPt
 
 class GoogleMaps:
 	"""A class providing Google Maps functionality."""
@@ -36,6 +37,19 @@ class GoogleMaps:
 				"The current host '%s' does not have a Google Maps key" %
 				(realm)
 			)
+			
+	@classmethod
+	def is_valid_address(cls, address):
+		"""Returns True if the given address exists in the Google Maps 
+		database.
+		
+		@type  address: unicode
+		@param address: A string containing the address to validate.
+		
+		@rtype:   bool
+		@returns: True if the address is valid.
+		"""
+		return GoogleMaps.get_lat_loc(address) != ''
 		
 	@classmethod
 	def get_lat_loc(cls, address):
@@ -73,3 +87,16 @@ class GoogleMaps:
 				(address)
 			)
 			return ''
+			
+	@classmethod
+	def get_geo_point(cls, address):
+		"""Returns a GeoPt for the given address. None if it does not exist.
+		"""
+		lat_long = GoogleMaps.get_lat_loc(address)
+		
+		if lat_long != '':
+			address_lat, address_long = lat_long.split(', ')
+			return GeoPt(float(address_lat), float(address_long))
+		else:
+			return None
+		

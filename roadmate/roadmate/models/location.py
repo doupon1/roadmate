@@ -11,32 +11,35 @@ from roadmate.models.roadmateuser import RoadMateUser
 
 class Location(db.Model):
 	"""A named address owned by a RoadMateUser."""
-	name = db.StringProperty()
-	owner = db.ReferenceProperty(RoadMateUser, collection_name="locations", required=True)
-	address = db.StringProperty()
-	created = db.DateTimeProperty(required=True, auto_now_add=True)
+	address = db.StringProperty(required=True)
+	geo_point = db.GeoPtProperty(required=True)
+	creation_date = db.DateTimeProperty(required=True, auto_now_add=True)
 
 	def get_addressname(self):
 		"""Returns the address in a human friendly form.
 		"""
-		if self.name is not None:
-		   return self.name
-		else:
-			return self.address
+		return self.address
 
 	def get_lat_loc(self):
 		"""Returns a string that contains the latitude and longitude of the
 		location.
 		"""
-		return GoogleMaps.get_lat_loc(self.address)
+		return "%f, %f" % (self.geo_point.lat, self.geo_point.lon)
 
 	def __unicode__(self):
 		"""Returns a string representation of the object."""
 		return self.get_addressname()
-
-
-class LocationForm(djangoforms.ModelForm):
-	"""Form for creating a location."""
-	class Meta:
-		model = Location
-		exclude = ['owner', 'creation_date']
+		
+	@staticmethod
+	def get_by_address(address, create):
+		location = Location.all().filter('address=', address).get()
+		
+		# add the location to the database if it dosen't already exist
+		if location is None and create:
+			location = Location(
+				address = address,
+				geo_point = GoogleMaps.get_geo_point(address)
+			)
+		location.put()
+			
+		return location
