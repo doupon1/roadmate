@@ -2,6 +2,7 @@
 
 
 
+
 <!--calendar scripts import library start-->
 {% block javascript %} 
 <script src="http://www.google.com/jsapi?key={{ google_calendar_key }}" 
@@ -28,6 +29,7 @@ type="text/javascript"></script>
 
 	<p> <!-- ride details -->
 		<strong>Date</strong> {{ ride.date }}<br />
+
 		<strong>Departs from </strong><a href="/location?id={{ ride.source.key.id }}">{{ ride.source.get_addressname }}</a><strong> at </strong>{{ ride.departure_time }} <br />
 		<strong>Arrives at </strong><a href="/location?id={{ ride.destination.key.id }}">{{ ride.destination.get_addressname }}</a><strong> at </strong> {{ ride.arrival_time }}<br />
 		<strong>Seats </strong> {{ride.count_seats}} <br />
@@ -48,7 +50,7 @@ type="text/javascript"></script>
 			<input  id="endTime" type="hidden" value="{{ ride.date }}T{{ ride.arrival_time }}.00Z" />
              
 			 <input  id="ride_id" type="hidden" value="{{ride.key.id }}" />
-               <input id="calendar_id" type="hidden" value="" />
+            
 
 
 		<br/> 
@@ -149,7 +151,7 @@ type="text/javascript"></script>
 	    
 				 <br/>
   <span id="addcalendar">
-      <input id="create" class="button" type="button" value="Create" onClick="insertEvents(); setTimeout('showRemoveBt()', 3000); return false; "/>
+    <!-- <input id="create" class="button" type="button" value="Create" onClick="insertEvents(); setTimeout('showRemoveBt()', 3000); return false; "/>-->
   
   </span>
 		</form>

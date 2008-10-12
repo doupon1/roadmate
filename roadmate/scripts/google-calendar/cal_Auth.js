@@ -11,9 +11,9 @@
     var feedUrl = 'http://www.google.com/calendar/feeds/default/private/full';
 	
 	
-	// before change to another button google server need 1 or 2 seconds process create or remove request; so set a timeout  3 seconds; 
+	// button change for create or remove calendar reminder. 
    var createbutton="<input id=\"create\" class=\"button\" type=\"button\" value=\"Create\" onClick=\"insertEvents(); setTimeout('showRemoveBt()', 3000);return false; \"/>";
-   var removebutton="<input id=\"remove\" class=\"button\" type=\"button\" value=\"Remove\" onClick=\"var hiddencal_id=document.getElementById('calendar_id').value; deleteEvent(hiddencal_id);setTimeout('showCreateBt()', 3000); return false;\"/> ";
+   var removebutton="<input id=\"remove\" class=\"button\" type=\"button\" value=\"Remove\" onClick=\"var hiddencal_id=document.getElementById('ride_id').value; deleteEvent(hiddencal_id);setTimeout('showCreateBt()', 3000); return false;\"/> ";
     
     /*
      * loading gdata library
@@ -74,6 +74,8 @@
         if (matchArr != null) {
            status = true;
          }
+		 
+		 
 
   return status;
 }
@@ -149,13 +151,21 @@
     * otherwise require user to login google calendar
     * 
     */
-     function init_display(){
-   	  
 	
+	
+	 
+	
+	 
+	 
+   function init_display(){
+   	  google.gdata.client.init();
+	  
+	  
+			  //alert(isIncal+"");
    	
-     var obj1 = document.getElementById("log_in");
-	 var obj2=document.getElementById("add_event");
-	 var obj3=document.getElementById("wait");
+      var obj1 = document.getElementById("log_in");
+	  var obj2=document.getElementById("add_event");
+	  var obj3=document.getElementById("wait");
 	 
 
 	 
@@ -165,7 +175,11 @@
 			 	obj2.style.display = 'none';
 			 	obj3.style.display = 'block';
 				
-			    setTimeout('showcreatefiled()',8000);
+			   
+				setTimeout('showcreatefiled()',5000);
+	   	   
+				
+				 
 			 
 			 
 	   
@@ -173,19 +187,23 @@
 	   
 	   
 	   else {
+	   	    
+			
+			  
+		   
 	     	if (islogin()) {
 	   	
-	   	
-	   	
-	   		   obj2.style.display = 'block';
-	   		   obj1.style.display = 'none';
-			    obj3.style.display = 'none';
-	   		
-	   		
-	   		
-	   		
-	   		
-	   	    }
+	   	         obj2.style.display = 'block';
+	   		     obj1.style.display = 'none';
+			     obj3.style.display = 'none';
+				// alert('login');
+				 
+				 var searchText=document.getElementById('ride_id').value;
+				
+	               checkIncal(searchText);
+				    
+			    
+	           }
 	   	    else {
 	   	
 	   		   obj2.style.display = 'none';
@@ -197,6 +215,37 @@
 	   }
 	 
    }
+   
+   
+   //show createbutton
+   
+   function displayCreatbt(){
+   	  var obj1 = document.getElementById("log_in");
+	  var obj2=document.getElementById("add_event");
+	  var obj3=document.getElementById("wait");
+	     obj2.style.display = 'block';
+	     obj1.style.display = 'none';
+	     obj3.style.display = 'none'; 
+		  
+		  document.getElementById('addcalendar').innerHTML=createbutton;
+		  
+   }
+   
+   
+   //show removebutton
+   function displayRemovebt(){
+   	   var obj1 = document.getElementById("log_in");
+	  var obj2=document.getElementById("add_event");
+	  var obj3=document.getElementById("wait");
+	     obj2.style.display = 'block';
+	     obj1.style.display = 'none';
+	     obj3.style.display = 'none'; 
+		  
+		  document.getElementById('addcalendar').innerHTML=removebutton;
+   }
+   
+   
+   
    //block create field
    function blockCreate(){
    	var obj2=document.getElementById("add_event");
@@ -213,6 +262,9 @@
 	            obj2.style.display = 'block';
 	   		    obj1.style.display = 'none';
 			    obj3.style.display = 'none';
+		var searchText=document.getElementById('ride_id').value;
+				
+	               checkIncal(searchText);		
 	
 	
    }
@@ -249,21 +301,7 @@
 	
 	}
 
-  //event Id generator
   
-     function idgenerate(){
-	 	var id=new Array();
-		var idString="";
-		for (var i = 0; i < 10; i++) {
-			var t = Math.floor(Math.random()*11);
-			id[i]=t;
-		}
-	    
-		for(var j in id){
-			idString=idString+id[j];
-		}
-		return idString;
-	 }
 	 
 	 
 	  //get check box value
@@ -334,9 +372,17 @@
               var myService = new google.gdata.calendar.CalendarService('roadmate-App-1');
 			  var feedUri = 'http://www.google.com/calendar/feeds/default/private/full';
               var entry = new google.gdata.calendar.CalendarEventEntry();
+			  var calendar_id=document.getElementById('ride_id').value;
+			  
+			  var extendedProperty = new google.gdata.ExtendedProperty();
+			  extendedProperty.setName("com.roadmate.rideid");
+			  extendedProperty.setValue(calendar_id);
+			  entry.addExtendedProperty(extendedProperty);
+
+			  
               var eventList=creat_event_list();
-			  var calendar_id='road mate ride offer'+' id '+idgenerate();
-              entry.setTitle(google.gdata.Text.create(calendar_id));
+			  
+              entry.setTitle(google.gdata.Text.create('RoadMate Ride'));
 			  
 			  //set hindden field for search title
 			  
@@ -424,7 +470,7 @@
            // The callback method that will be called after a successful insertion from insertEntry()
              var callback = function(result) {
 			 	
-			 document.getElementById('calendar_id').value= calendar_id;
+			// document.getElementById('calendar_id').value= calendar_id;
 			 //alert(hiddencal_id);
 			 //var removelink="<a href=\"#\" onClick=\"deleteEvent("+hiddencal_id+"); alert(hiddencal_id);return false;\" > remove </a>"
              //addInnerText('addcalendar',removelink);
@@ -442,96 +488,7 @@
    
    
    
-               //get calendar events had title ride offer
-   
-      function getDatedEvents() {
-                 
-                 var calendarService = new google.gdata.calendar.CalendarService('roadmate-App-1');
-                  CALENDAR_FEED_URL = 'http://www.google.com/calendar/feeds/default/private/full';
-
-                  DISPLAY_DIV = '#display';
-                  $(DISPLAY_DIV).empty();
-                
-				 var tempEventId=0;
-                
-                 
-                 // Create a CalendarEventQuery, and specify that this query is
-                 // applied toward the "private/full" feed
-                 var query = new google.gdata.calendar.CalendarEventQuery(CALENDAR_FEED_URL);
-
-                 // Set the query with the query text
-                // query.setFullTextQuery(searchText);
-                
-				query.setFutureEvents();
-  
-
-                //error handle function
-  
-                var handleError = function(error) {
-                         alert(error);
-                       }
-
-                  calendarService.getEventsFeed(
-                         query, 
-						 //inner function retieve calendar feeds
-                             function(root) {
-                              var entries = root.feed.getEntries();
-
-      
-	                          var temp=[];
-	                          var output='';
-
-                              for (var i = 0, entry; entry = entries[i]; i++ ) {
-
-                              var title = entry.getTitle().getText();
-
-                            
-       
-                               var creators = '';
-                               var locations = '';
-                               var times = '';
-
-                              for (var j = 0, author; author = entry.getAuthors()[j]; j++) {
-                               var creatorName = author.getName().getValue();
-                               creators += creators + ' ' + creatorName;
-                              }
-							 
-
-                           for (var j = 0, location; location = entry.getLocations()[j]; j++) {
-
-                             // if location is empty, replace it with "---"
-                           var locationLabel = (location.getValueString()  == undefined) ? 
-                            '---' : entry.getLocations()[j].getValueString();
-                             locations += locations + ' ' + locationLabel;
-                             }
-                         
-                           for (var j = 0, time; time = entry.getTimes()[j]; j++) {
-                                var deleteButton = "<input id=\"delete_bt\" type=\"button\" value=\"delete\" onclick=\"deleteEvent(document.getElementById(\'"+title+"\').innerHTML); clearText("+tempEventId+");\"/>";
-                                 var timeLabel = 'Start: '+time.getStartTime().getDate().
-                                  toLocaleString() + ' <br\> End : ' + entry.getTimes()[j].
-                                  getEndTime().getDate().toLocaleString()
-                                  times += times + ' ' + timeLabel;
-                                 }
-
-                              temp.push('<span id=\"'+tempEventId+ '\" >'+'<fieldset>'+'Title: ' + '<span id=\"'+title+'\" >'+title+'</span> '+'<br/> '+'Organizer(s): ' + creators+' <br/>' +times+' <br/>'+locations+'<br/>'+deleteButton+'</fieldset> <br/><br/></span>');
-                              
-							   
-							  tempEventId++;
-							   
-							 }     
-
-      
-	                     for(var st in temp){
-	   	
-		                  output=output+temp[st];
-	                     }
-	                    // document.getElementById('display').innerHTML=output;
-	                             }, 
-	
-                         handleError);  
-
-             }
-			 
+           
 
  
 
@@ -544,16 +501,13 @@
 
                // The default "private/full" feed is used to delete existing event from the
                // primary calendar of the authenticated user
-              var feedUri = 'http://www.google.com/calendar/feeds/default/private/full';
+              var feedUri = 'http://www.google.com/calendar/feeds/default/private/full?extq=[com.roadmate.rideid:' + searchText + ']';
 
-              
+
 
                // Create a CalendarEventQuery, and specify that this query is
                // applied toward the "private/full" feed
               var query = new google.gdata.calendar.CalendarEventQuery(feedUri);
-
-              // Set the query with the query text
-             query.setFullTextQuery(searchText);
 
              // This callback method that will be called when getEventsFeed() returns feed data
               var callback = function(result) {
@@ -563,12 +517,14 @@
 
                // If there is matches for the full text query
              if (entries.length > 0) {
+			 	
+				//alert('entry found');
 
                      // delete the first matched event entry  
                   var event = entries[0];
                  event.deleteEntry(
                  function(result) {
-                      //alert('event deleted!');
+                     // alert('event deleted!');
                    },
                      handleError);
                  } else {
@@ -580,12 +536,76 @@
                // Error handler to be invoked when getEventsFeed() or updateEntry()
                 // produces an error
                var handleError = function(error) {
-                    // alert(error);
+                     //alert(error);
                   }
 
                // Submit the request using the calendar service object
                 calendarService.getEventsFeed(query, callback, handleError);
 	           }
+ 
+ 
+  //check if ride_id  already in calendar
+   function   checkIncal(searchText){
+	  	       
+			  
+              
+                    // Create the calendar service object
+              var calendarService = new google.gdata.calendar.CalendarService('roadmate-App-1');
+
+               // The default "private/full" feed is used to delete existing event from the
+               // primary calendar of the authenticated user
+              var feedUri = 'http://www.google.com/calendar/feeds/default/private/full?extq=[com.roadmate.rideid:' + searchText + ']';
+
+
+
+               // Create a CalendarEventQuery, and specify that this query is
+               // applied toward the "private/full" feed
+              var query = new google.gdata.calendar.CalendarEventQuery(feedUri);
+			  
+			  
+
+             // This callback method that will be called when getEventsFeed() returns feed data
+              var callback = function(result) {
+
+                // Obtain the array of matched CalendarEventEntry
+              var entries = result.feed.entry;
+
+               // If there is matches for the full text query
+             if (entries.length > 0) {
+			 	
+				displayRemovebt();
+				
+				
+				 
+				 
+				 
+				    } else {
+				 	
+			      
+				  displayCreatbt();
+				 
+					
+                    
+                  }
+               }
+
+               // Error handler to be invoked when getEventsFeed() or updateEntry()
+                // produces an error
+               var handleError = function(error) {
+                     //alert(error);
+					 //displayCreatbt();
+                  }
+
+               // Submit the request using the calendar service object
+                   calendarService.getEventsFeed(query, callback, handleError);
+				
+			
+				
+				
+				
+	           }
+   
+   
    
    
     //]]>
