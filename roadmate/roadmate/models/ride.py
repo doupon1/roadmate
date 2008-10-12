@@ -62,14 +62,19 @@ class Ride(db.Model):
 	# we could make this conditional to show some alt text (in red?) if the ride is full
 	# this saves having 2 columns "Seats" and "Passengers" - wasting half the table width on the browse pages
 	def status(self):
+
 		if self.is_full():
 			return "<h4 class='full'>FULL</h4>"
 		else:
-			seat_text = "1 SEAT" # default is the singular
-			passenger_text = "1 PASSENGER"
+			seat_text = "1 SEAT" # default is the single case
+			passenger_text = "NO PASSENGERS" # default is none
 
-			if self.count_seats() >1: #if there is more than one, use plural
+			if self.count_passengers() == 1:
+				passenger_text = "1 PASSENGER" # if there is 1 passenger, set it to 1
+
+			if self.count_seats() >1: #if there is more than one, use a plural form
 			   seat_text = self.count_seats().__str__() + " SEATS"
+
 			if self.count_passengers() >1:
 			   passenger_text = self.count_passengers().__str__() + " PASSENGERS"
 
@@ -135,39 +140,39 @@ class RideForm(djangoforms.ModelForm):
 			raise forms.ValidationError("Depature date cannot be in the past.")
 
 		return departure_date
-		
+
 	def clean_source_address(self):
 		source_address = self.clean_data['source_address']
-		
+
 		if not GoogleMaps.is_valid_address(source_address):
 			raise forms.ValidationError("Please enter a valid address.")
-			
+
 		return source_address
-		
+
 	def get_source(self):
 		source_address = self.clean_data['source_address']
-		
+
 		if GoogleMaps.is_valid_address(source_address):
 			return Location.get_by_address(source_address, create=True)
 		else:
 			return None
-		
+
 	def clean_destination_address(self):
 		destination_address = self.clean_data['destination_address']
-		
+
 		if not GoogleMaps.is_valid_address(destination_address):
 			raise forms.ValidationError("Please enter a valid address.")
-			
+
 		return destination_address
-		
+
 	def get_destination(self):
 		destination_address = self.clean_data['destination_address']
-		
+
 		if GoogleMaps.is_valid_address(destination_address):
 			return Location.get_by_address(destination_address, create=True)
 		else:
 			return None
-			
+
 
 	def clean(self):
 		cleaned_data = self.clean_data
@@ -176,7 +181,7 @@ class RideForm(djangoforms.ModelForm):
 
 		cleaned_data['source'] = self.get_source()
 		cleaned_data['destination'] = self.get_destination()
-		
+
 		errors = ErrorList()
 
 		# validate times
