@@ -64,7 +64,7 @@ class ViewRideRequestPageHandler(BaseRequestHandler):
 
 		template_values['riderequest'] = riderequest
 		template_values['googlemaps_key'] = GoogleMaps.get_key()
-		template_values['message_list'] = riderequest.messages
+		template_values['message_list'] = riderequest.riderequestmessages
 
 		# --------------------------------------------------------------------
 		# Render and Serve Template
@@ -118,7 +118,7 @@ class ViewRideRequestPageHandler(BaseRequestHandler):
 
 		template_values['riderequest'] = riderequest
 		template_values['googlemaps_key'] = GoogleMaps.get_key()
-		template_values['message_list'] = riderequest.messages
+		template_values['message_list'] = riderequest.riderequestmessages
 
 		# --------------------------------------------------------------------
 		# Render and Serve Template
@@ -147,9 +147,6 @@ class CreateRideRequestPageHandler(BaseRequestHandler):
 		# --------------------------------------------------------------------
 		# Session Values
 		current_user = RoadMateUser.get_current_user()
-		# Request Values
-		show_source_favorites = self.get_request_parameter('showSourceFavorites', converter=is_true, default=False)
-		show_destination_favorites = self.get_request_parameter('showDestinationFavorites', converter=is_true, default=False)
 
 		# --------------------------------------------------------------------
 		# Validate Session and Request
@@ -171,14 +168,7 @@ class CreateRideRequestPageHandler(BaseRequestHandler):
 		template_values['logout_url'] = users.create_logout_url("/")
 		template_values['owner'] = current_user
 
-		template_values['show_source_favorites'] = show_source_favorites
-		template_values['show_destination_favorites'] = show_destination_favorites
-
-		riderequest_form = RideRequestForm()
-		riderequest_form.fields['source'].query = current_user.locations
-		riderequest_form.fields['destination'].query = current_user.locations
-
-		template_values['riderequest_form'] = riderequest_form
+		template_values['riderequest_form'] = RideRequestForm()
 
 		# --------------------------------------------------------------------
 		# Render and Serve Template
@@ -194,10 +184,6 @@ class CreateRideRequestPageHandler(BaseRequestHandler):
 		# --------------------------------------------------------------------
 		# Session Values
 		current_user = RoadMateUser.get_current_user()
-
-		# Request Values
-		show_source_favorites = self.get_request_parameter('showSourceFavorites', converter=is_true, default=False)
-		show_destination_favorites = self.get_request_parameter('showDestinationFavorites', converter=is_true, default=False)
 
 		# --------------------------------------------------------------------
 		# Validate Sesson
@@ -238,12 +224,6 @@ class CreateRideRequestPageHandler(BaseRequestHandler):
 			template_values['logout_url'] = users.create_logout_url("/")
 			template_values['owner'] = current_user
 
-			template_values['show_source_favorites'] = show_source_favorites
-			template_values['show_destination_favorites'] = show_destination_favorites
-
-			riderequest_form.fields['source'].query = current_user.locations
-			riderequest_form.fields['destination'].query = current_user.locations
-
 			template_values['riderequest_form'] = riderequest_form
 
 			# ----------------------------------------------------------------
@@ -255,7 +235,6 @@ class CreateRideRequestPageHandler(BaseRequestHandler):
 
 		riderequest = riderequest_form.save() #else, the form is valid, so save it
 		self.redirect("/riderequest?id=%s" % riderequest.key().id()) # redirect to the view page
-
 
 
 # ----------------------------------------------------------------------------

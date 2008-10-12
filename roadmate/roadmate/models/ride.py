@@ -1,9 +1,7 @@
 from datetime import date
 
 from google.appengine.ext import db
-from google.appengine.ext.webapp import template
 from google.appengine.ext.db import djangoforms
-from google.appengine.ext.db import GeoPt
 from django import newforms as forms
 from django.newforms.util import ErrorList
 
@@ -103,10 +101,6 @@ class RideForm(djangoforms.ModelForm):
 
 	source_address = forms.CharField(label="From address", required=False)
 	destination_address = forms.CharField(label="To address", required=False)
-
-	@staticmethod
-	def is_valid_address(address):
-		return (GoogleMaps.get_lat_loc(address) != '')
 
 	def clean_number_of_seats(self):
 		number_of_seats = self.clean_data['number_of_seats']

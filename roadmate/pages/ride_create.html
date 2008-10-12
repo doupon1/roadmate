@@ -36,7 +36,7 @@
 
 		<div class="inputgroup">
 			<div>
-				{{ ride_form.destination_address.errors }}
+				{{ ride_form.source_address.errors }}
 				{{ ride_form.source_address.label_tag }}
 				{{ ride_form.source_address }}
 			</div>
@@ -47,8 +47,9 @@
 				{{ ride_form.destination_address.label_tag }}
 				{{ ride_form.destination_address }}
 			</div>
+			<div id="id_destination_address_choices" class="address_autocomplete" style="display: none;"></div>
 		</div>
-		<div id="id_destination_address_choices" class="address_autocomplete" style="display: none;"></div>
+		
 
 		<div class="inputgroup">
 			<div>
@@ -83,9 +84,9 @@
 			</div>
 		</div>
 
-	<p>
-		<input type="hidden" name="_do_create_ride" value="True">
-		<input class="button" type="submit" value="Create"/>
-	</p>
+		<p>
+			<input type="hidden" name="_do_create_ride" value="True"/>
+			<input class="button" type="submit" value="Create"/>
+		</p>
 	</form>
 {% endblock %}
