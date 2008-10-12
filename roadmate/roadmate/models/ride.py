@@ -124,7 +124,7 @@ class RideForm(djangoforms.ModelForm):
 		
 		# only allow rides in the future
 		if departure_date < date.today():
-			raise forms.ValidationError("Depature time cannot be in the past.")
+			raise forms.ValidationError("Depature date cannot be in the past.")
 		
 		return departure_date
 		

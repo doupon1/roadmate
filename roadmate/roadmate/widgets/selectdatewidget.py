@@ -30,7 +30,8 @@ class SelectDateWidget(Widget):
 			value = datetime.date(*map(int, value.split('-')))
 			year_val, month_val, day_val = value.year, value.month, value.day
 		except (AttributeError, TypeError, ValueError):
-			year_val = month_val = day_val = None
+			value = datetime.date.today()
+			year_val, month_val, day_val = value.year, value.month, value.day
 
 		output = []
 
