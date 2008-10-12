@@ -79,11 +79,11 @@ class EditProfileHandler(BaseRequestHandler):
 		if self.request.POST.has_key('editorId') and self.request.POST.has_key('value'):
 			 # input text must not be "None" (the default NULL representation)
 			 # and must not try to set a private attribute (which all start with '_')
-			if not self.request.POST['value'] == "None" and not self.request.POST['editorId'].startswith('_'):
+			if not self.request.POST['value'] == "" and not self.request.POST['value'] == "None" and not self.request.POST['editorId'].startswith('_'):
 				setattr(target_user, self.request.POST['editorId'], self.request.POST['value'])# update that attribute
 				target_user.save() # save the record
 				self.response.out.write(getattr(target_user, self.request.POST['editorId'])) # print that value to the page
-			else: # input text is "None", return the same
+			else: # input text is "None" or empty string, return "None"
 				self.response.out.write("None")
 		else: # values are missing
 			self.error(403)
