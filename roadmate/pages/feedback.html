@@ -13,32 +13,31 @@
  	     <strong>Negative Feedback</strong> {{count_negative}} <br/>
 	</p>
 
-		<table>
+		<table class="roadmate-list">
 			{% for feedback in feedback_list %}
-				<tr class="message-feedback">
-	    			<td>
+			<tr class="list-item">
+				<tr class="list-heading">
+	    			<td width="12">
 						{{feedback.icon}}
 	     			</td>
-	     			<td>
-						{{feedback.author.get_name_tag}}
+	     			<td >
+						{{feedback.author.get_name_tag}} ({{ feedback.role }})
 	     			</td>
-	                 <td>
-	                     {{ feedback.role }}
-					</td>
-	     			<td>
+	     			<td >
 						{{ feedback.created|date_for_table }}
 	     			</td>
 				</tr>
-				<tr class="message-feedback">
-				    <td colspan=4>
+				<tr class="list-heading">
+				    <td colspan=3>
 					<a href="/ride?id={{ feedback.ride.key.id }}">{{ feedback.ride.get_name }}</a>
 					</td>
 				</tr>
-				<tr class="message-text">
-					<td colspan=5>
+				<tr class="list-row">
+					<td colspan=3>
 						{{feedback.text}}
 					</td>
 				</tr>
+			</tr> <!-- end list item -->
 			{% endfor %}
 		</table>
 	{% else %}

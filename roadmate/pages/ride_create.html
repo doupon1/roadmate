@@ -1,6 +1,5 @@
 {% extends "templates/base.html" %}
 
-
 {% block title%}Offer A Ride{% endblock %}
 
 {% block javascript %}
@@ -9,22 +8,23 @@
 
 <script type="text/javascript" language="javascript">
 	// <![CDATA[
-	
+
 	document.observe('dom:loaded', function() {
 		// add autocomplete functionaliy to source address field
 		new Ajax.Autocompleter('id_source_address', 'id_source_address_choices', '/ajax/location-completer', {
 			paramName: 'current_value'
 		});
-		
+
 		// add autocomplete functionality to destiination field
 		new Ajax.Autocompleter('id_destination_address', 'id_destination_address_choices', '/ajax/location-completer', {
 			paramName: 'current_value'
 		});
-		
+
 	});
 
 	// ]]>
-</script>	
+</script>
+
 {% endblock %}
 
 {% block main %}

@@ -4,42 +4,27 @@
 
 {% block main %}
 	<h2>manage my rides</h2>
-		<p>These are the rides that you are currently offering.
-		Click each ride to see the full details.</p> <br/>
-		<p> #TODO add in cancel functionality<br/>
-		#TODO create a "past rides/history" page and link to it here??<br/>
-		#TODO tidy up the table below please</p>
+		<p>These are the rides that you currently offer.<br/>
+		Click each ride to see its full details, where you can view comments, reply to questions,
+		approve passengers, or you can cancel the ride if your plans have changed.</p>
 	{% if my_rides %}
-	<hr />
-		<h3>my rides</h3>
-		<table>
-			<tr>
-				<th>Ride</th>
-				<th>Date</th>
-				<th>Status</th>
-				<th>Requests</th>
-				<th></th>
-			</tr>
+	<table class="roadmate-list">
 			{% for ride in my_rides %}
-				<tr class="row-a">
-    			<td>
-					<a href="/ride?id={{ ride.key.id }}">{{ ride.get_name }}</a>
-     			</td>
-                 <td>
-					{{ ride.date }}
-     			</td>
-                 <td>
-					{{ ride.status }}
-     			</td>
-     			<td>
-					{{ ride.passengerrequests.count }}
-     			</td>
-    			<td>
-					<a href="">Cancel Ride</a>
-     			</td>
-				</tr>
+				<tr class="list-item">
+				    <tr class="list-row">
+				        {% if not ride.is_full %}<th rowspan="2" class="list-header"></th>{% else %}<th rowspan="2" class="list-header-red"> {% endif %}
+		    			<td> {{ride.date|date_for_table }}</td>
+		     			<td> {{ride.owner.get_name_tag}} </td>
+		     			<td> {{ride.status}} </td>
+					</tr>
+				    <tr class="list-row">
+					    <td colspan=3><strong><a href="/ride?id={{ ride.key.id }}">{{ ride.get_name }}</strong></a>
+						</td>
+					</tr>
+				</tr> <!-- end list item -->
+
 			{% endfor %}
-		</table>
+	</table>
 
 
 	{% else %}

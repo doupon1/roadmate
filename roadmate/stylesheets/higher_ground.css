@@ -1,4 +1,4 @@
-/* @override 
+/* @override
 	http://localhost:8080/stylesheets/higher_ground.css
 */
 
@@ -66,7 +66,14 @@ h2 {
 h3 {
 	font-size: 130%;
 }
-
+h4 {
+	font-size: 80%;
+    text-transform: uppercase;
+    color: #88ac0b;
+}
+h4.full {
+    color: #b10009;
+}
 h1, h2, h3, p {
 	padding: 10px;
 	margin: 0;
@@ -134,6 +141,7 @@ table {
 	margin: 10px;
 	font-size: 11px
 }
+
 th strong {
 	color: #fff;
 }
@@ -166,36 +174,42 @@ tr.row-b {
 	background: #EFEFEF;
 }
 
-/* message display */
-table.messages {
+/* generic lists */
+table.roadmate-list {
 	margin: 0;
 	width: 100%;
 }
+th.list-header {
+	width: 0px;
+}
+th.list-header-red {
+	width: 0px;
+    background: #b10009 url(higher_ground_images/red_nav.jpg) repeat-x;
+}
+tr.list-row{
+	width: 100%;
+	background: #F8F8F8;
+}
+tr.list-item{
+	height: 10px;
+}
+tr.list-heading {
+	height: 24px;
+	background: #DFDFDF;
+}
+
+/* message list headings for the different authors*/
 tr.message-owner {
 	background: #CCCCCC;
-	width: 400px;
-	border:1px solid #D5D5D5;
 }
 tr.message-passenger {
 	background: #DFDFDF;
-	border:1px solid #D5D5D5;
-}
-tr.message-feedback {
-	background: #DFDFDF;
-	border:1px solid #D5D5D5;
 }
 tr.message-user{
-	background: #F8F8F8;
-	border:1px solid #D5D5D5;
+	background: #DFDFDF;
 }
-tr.message-space{
 
-	height: 10px;
-}
-tr.message-text{
-	background: #F8F8F8;
-	border:1px solid #D5D5D5;
-}
+
 
 
 
@@ -243,7 +257,7 @@ textarea {
 	height:100px;
 	display:block;
 	color:#777;
-	margin-left: auto;
+	margin-left: 10px;
 	margin-right: auto;
 }
 

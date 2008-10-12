@@ -1,5 +1,6 @@
 {% extends "templates/base.html" %}
 
+
 {% block title%}Request A Ride{% endblock %}
 
 {% block javascript %}
@@ -30,7 +31,7 @@
 	<h2>request a ride</h2>
 	<p>
 	   You can let drivers know that you want a ride by placing a ride request.<br/>
-	   Your request will show in <a href='/browse_riderequests'>Browse Ride Requests</a> and you will be notified<br/>
+	   Your request will show in <a href='/browse_riderequests'>browse ride requests</a> and you will be notified<br/>
 	   when it is accepted.
 	</p>
 	<form method="post">
@@ -52,6 +53,7 @@
 			</div>
 			<div id="id_destination_address_choices" class="address_autocomplete" style="display: none;"></div>
 		</div>
+		<div id="id_destination_address_choices" class="address_autocomplete" style="display: none;"></div>
 
 		<div class="inputgroup">
 			<div>

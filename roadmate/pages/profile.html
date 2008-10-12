@@ -56,30 +56,27 @@
 	</div>
 	</form>
 
-	{% if my_rides %}
-	<hr />
-		<h2>offered rides</h2>
-		<table>
-			<tr>
-				<th>Ride</th>
-				<th>Date</th>
-				<th>Status</th>
-			</tr>
+{% if my_rides %}
+<p/><hr/>
+<h2>this user's rides</h2>
+	<table class="roadmate-list">
 			{% for ride in my_rides %}
-				<tr class="row-a">
-					<td>
-						<a href="/ride?id={{ ride.key.id }}">{{ ride.get_name }}</a>
-					</td>
-					<td>
-						{{ ride.date }}
-					</td>
-					<td>
-						{{ ride.status }}
-					</td>
-				</tr>
-			{% endfor %}
-		</table>
+				<tr class="list-item">
+				    <tr class="list-row">
+				        {% if not ride.is_full %}<th rowspan="2" class="list-header"></th>{% else %}<th rowspan="2" class="list-header-red"> {% endif %}
+		    			<td> {{ride.date|date_for_table }}</td>
+		     			<td> {{ride.owner.get_name_tag}} </td>
+		     			<td> {{ride.status}} </td>
+					</tr>
+				    <tr class="list-row">
+					    <td colspan=3><strong><a href="/ride?id={{ ride.key.id }}">{{ ride.get_name }}</strong></a>
+						</td>
+					</tr>
+				</tr> <!-- end list item -->
 
-	{% endif %}
+			{% endfor %}
+	</table>
+
+{% endif %}
 
 {% endblock %}

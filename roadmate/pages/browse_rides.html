@@ -5,29 +5,29 @@
 {% block main %}
 <h2>browse rides</h2>
 
-<p>#TODO description of this page goes here.</br>
-maybe we could put some controls here to limit the results
-by date occurring or date created?
+<p>
+This is a list of the rides that have been offered.<br/>
+Click each ride to view its details, ask questions, or request a seat on it.
 </p>
 {% if rides %}
-	<table>
-		<tr>
-			<th>Ride</th>
-			<th>Date</th>
-			<th>Owner</th>
-			<th>Status</th>
-
-		</tr>
-
+	<table class="roadmate-list">
 			{% for ride in rides %}
-			<tr class="row-a">
-				<td><a href="/ride?id={{ ride.key.id }}">{{ ride.get_name }}</a></td>
-				<td>{{ ride.date|date_for_table }}</td>
-				<td><a href ="/profile?user={{ride.owner.key.id}}">{{ ride.owner.user.email|local_part_from_email }}</a></td>
-				<td>{{ ride.status }}</td>
-			</tr>
+				<tr class="list-item">
+				    <tr class="list-row">
+				        {% if not ride.is_full %}<th rowspan="2" class="list-header"></th>{% else %}<th rowspan="2" class="list-header-red"> {% endif %}
+		    			<td> {{ride.date|date_for_table }}</td>
+		     			<td> {{ride.owner.get_name_tag}} </td>
+		     			<td> {{ride.status}} </td>
+					</tr>
+				    <tr class="list-row">
+					    <td colspan=3><strong><a href="/ride?id={{ ride.key.id }}">{{ ride.get_name }}</strong></a>
+						</td>
+					</tr>
+				</tr> <!-- end list item -->
+
 			{% endfor %}
 	</table>
+
 {% else %}
    <h3>Sorry, there are currently no rides available.</h3>
    <p>Why not <a href="/ride_create">offer a ride</a> of your own</p>

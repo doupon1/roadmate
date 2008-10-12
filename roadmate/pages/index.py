@@ -40,7 +40,7 @@ class IndexPageHandler(BaseRequestHandler):
 
 		#10 most recently created rides
 
-		rides = db.GqlQuery("SELECT * FROM Ride ORDER BY creation_date DESC LIMIT 10")
+		rides = db.GqlQuery("SELECT * FROM Ride ORDER BY created DESC LIMIT 10")
 
 		# --------------------------------------------------------------------
 		# Store Template Values

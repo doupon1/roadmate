@@ -4,27 +4,28 @@
 
 {% block main %}
 <h2>browse ride requests</h2>
-
-<p>#TODO description of this page goes here.</br>
-maybe we could put some controls here to limit the results
-by date occurring or date created?
+<p>
+This is a list of requests for rides that other users would like to take. By accepting their request
+and creating a ride, the requesting user will be automatically notified.
 </p>
 {% if riderequests %}
-	<table>
-		<tr>
-			<th>Ride Requested</th>
-			<th>Date</th>
-			<th>User</th>
-		</tr>
 
-			{% for riderequest in riderequests %}
-			<tr class="row-a">
-				<td><a href="/riderequest?id={{riderequest.key.id}}">{{riderequest.get_name}}</a></td>
-				<td>{{riderequest.date}}</td>
-				<td><a href ="/profile?user={{riderequest.owner.key.id}}">{{riderequest.owner.user.email|local_part_from_email}}</a></td>
+	<table class="roadmate-list">
+		{% for riderequest in riderequests %}
 
-			</tr>
-			{% endfor %}
+   <tr class="list-item">
+				    <tr class="list-row">
+				    	<th rowspan="2" class="list-header"></th>
+                        <td>{{riderequest.date|date_for_table }}</td>
+		 				<td> {{riderequest.owner.get_name_tag}} </td>
+					</tr>
+				    <tr class="list-row">
+					    <td colspan="2"><strong><a href="/riderequest?id={{ riderequest.key.id }}">{{ riderequest.get_name }}</strong></a>
+						</td>
+					</tr>
+			</tr> <!-- end list item -->
+		{% endfor %}
+
 	</table>
 {% else %}
    <h3>Sorry, there are currently no ride requests available.</h3>

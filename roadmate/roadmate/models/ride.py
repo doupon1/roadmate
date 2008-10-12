@@ -55,11 +55,25 @@ class Ride(db.Model):
 	def is_passenger(self,user):
 		return (self.seats.filter('passenger = ', user).count() > 0)
 
-	# return a formatted textual description of the ride's status
+	def is_full(self):
+		return self.count_seats() == self.count_passengers()
+
+	# return a formatted html description of the ride's status
 	# we could make this conditional to show some alt text (in red?) if the ride is full
 	# this saves having 2 columns "Seats" and "Passengers" - wasting half the table width on the browse pages
 	def status(self):
-		return self.count_seats().__str__() + " seats<br/>" + self.count_passengers().__str__() + " passengers"
+		if self.is_full():
+			return "<h4 class='full'>FULL</h4>"
+		else:
+			seat_text = "1 SEAT" # default is the singular
+			passenger_text = "1 PASSENGER"
+
+			if self.count_seats() >1: #if there is more than one, use plural
+			   seat_text = self.count_seats().__str__() + " SEATS"
+			if self.count_passengers() >1:
+			   passenger_text = self.count_passengers().__str__() + " PASSENGERS"
+
+		   	return '<h4>' + seat_text + '<br/>' + passenger_text + '</h4>'
 
 	# create_seats
 	# method to create a number_of_seats
@@ -75,7 +89,7 @@ class Ride(db.Model):
 	# use this method to define a standard
 	# fornat of displaying the reference to a ride
 	def get_name(self):
-		return self.source.get_addressname() + " to " + self.destination.get_addressname()
+		return self.source.get_addressname() + " <img border='0' alt='to' src='/images/arrow.gif'/> " + self.destination.get_addressname()
 
  	def __unicode__(self):
 		"""Returns a string representation of the object."""
@@ -112,14 +126,14 @@ class RideForm(djangoforms.ModelForm):
 			raise forms.ValidationError("Number of seats cannot be more than 80.")
 
 		return number_of_seats
-		
+
 	def clean_date(self):
 		departure_date = self.clean_data['date']
-		
+
 		# only allow rides in the future
 		if departure_date < date.today():
 			raise forms.ValidationError("Depature date cannot be in the past.")
-		
+
 		return departure_date
 		
 	def clean_source_address(self):
@@ -154,6 +168,7 @@ class RideForm(djangoforms.ModelForm):
 		else:
 			return None
 			
+
 	def clean(self):
 		cleaned_data = self.clean_data
 

@@ -4,7 +4,7 @@
 
 
 <!--calendar scripts import library start-->
-{% block javascript %} 
+{% block javascript %}
 <script src="http://www.google.com/jsapi?key={{ google_calendar_key }}" type="text/javascript"></script>
 <script type="text/javascript" src="scripts/google-calendar/jquery-1.1.4.pack.js"></script>
 <script src="scripts/google-calendar/cal_Auth.js"></script>
@@ -37,30 +37,30 @@
 			<strong>Notes</strong> {{ ride.notes }}<br />
 		{% endif %}
 		<p />
-		
-		   
+
+
 				<!-- calendar scripts begin-->
-				<!--hidden field use to insert into calendar-->	
+				<!--hidden field use to insert into calendar-->
 			<input  id="from" type="hidden" value="{{ ride.source.get_addressname }}" />
 			<input  id="to" type="hidden" value="{{ ride.destination.get_addressname }}" />
 			<input  id="startTime" type="hidden" value="{{ ride.date }}T{{ ride.departure_time }}.00Z" />
 			<input  id="endTime" type="hidden" value="{{ ride.date }}T{{ ride.arrival_time }}.00Z" />
-             
+
 			 <input  id="ride_id" type="hidden" value="{{ride.key.id }}" />
-            
 
 
-		<br/> 
+
+		<br/>
 	   <form id="log_in" >
 		         <!--if no google calendar Token show following field-->
-			<strong>Create a google calendar reminder:</strong>&nbsp;&nbsp;&nbsp;<input type="button" class="button" value="Grant access" onClick=" logMeIn(); return false;" > 
+			<strong>Create a google calendar reminder:</strong>&nbsp;&nbsp;&nbsp;<input type="button" class="button" value="Grant access" onClick=" logMeIn(); return false;" >
 		</form>
 		<form id="wait">
 		    <strong>please wait . </strong>
-		</form>			
-				<!--if has google calendar Token show following field-->	
+		</form>
+				<!--if has google calendar Token show following field-->
 		<form id="add_event"  name="remindForm"  >
-		       
+
 		          <strong>Create a google calendar reminder:</strong>
 				  <table>
 				  <tr>
@@ -93,12 +93,12 @@
 	                  <option>22</option>
 	                  <option>23</option>
                   </select>
-				  
+
 				 <select id="timeBase1">
                    <option>minutes</option>
                    <option>hours</option>
                    <option>days</option>
-                 </select> 
+                 </select>
 				    </td>
 				 </tr>
 				 <tr>
@@ -135,32 +135,32 @@
                    <option>minutes</option>
                    <option>hours</option>
                    <option>days</option>
-                 </select> 
+                 </select>
 				</td>
-				
+
                 </tr>
-                
-            
-  
+
+
+
 	<!--use for debug --> <!--<a href="#" onClick=" logMeOut();return false;">logout</a>-->
 	</table>
-	
-	    
+
+
 				 <br/>
   <span id="addcalendar">
     <!-- <input id="create" class="button" type="button" value="Create" onClick="insertEvents(); setTimeout('showRemoveBt()', 3000); return false; "/>-->
-  
+
   </span>
 		</form>
-		
+
 		<br/>
 		<br/>
 		<br/>
-			
+
 	  <!--calendar scripts end-->
 
 
-		
+
 
 
 		<form method="post">
@@ -170,7 +170,7 @@
 				<input class="button"  value="Request a Seat" type="submit">
 			{% endif %}
 			</h3>
-			
+
 			{% if not requestable %} <!-- show the instruction-->
 				<strong>
 					Your request for a seat on this ride has been recorded
@@ -319,6 +319,7 @@
 {% endif %}
 
 <form method="post"> <!-- message form -->
+<h3>post a message</h3>
 	<div class="inputgroup">
 		 <div>
 	        <strong>Title </strong><input type="text" name="message_title" />

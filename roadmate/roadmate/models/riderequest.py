@@ -34,7 +34,7 @@ class RideRequest(db.Model):
 	# use this method to define a standard
 	# fornat of displaying the reference to a riderequest
 	def get_name(self):
-		return self.source.get_addressname() + " to <br/>" + self.destination.get_addressname()
+		return self.source.get_addressname() + " <img border='0' alt='to' src='/images/arrow.gif'/> " + self.destination.get_addressname()
 
  	def __unicode__(self):
 		"""Returns a string representation of the object."""

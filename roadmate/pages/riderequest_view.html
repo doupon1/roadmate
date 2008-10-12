@@ -4,7 +4,6 @@
 
 {% block main %}
 
-
 <script src="/scripts/scriptaculous/1.8.1/prototype.js" type="text/javascript"></script>
 <script src="/scripts/scriptaculous/1.8.1/scriptaculous.js" type="text/javascript"></script>
 <script src="/scripts/roadmate/edit.js" type="text/javascript"></script>
@@ -18,7 +17,7 @@
 		<strong>To </strong><a href="/location?id={{ riderequest.destination.key.id }}">{{ riderequest.destination.get_addressname }}</a><br />
 		<p />
 
-		<strong>User</strong> <a href="/profile?user={{ riderequest.owner.key.id }}">{{ riderequest.owner.user.email }}</a><br />
+		<strong>User</strong> {{ riderequest.owner.get_name_tag }} </a><br />
 		<p />
 
 
@@ -43,22 +42,24 @@
 
 {% if message_list%}  <!-- riderequest messages -->
 <p />
-<table class="messages">
+<table class="roadmate-list">
 	{% for message in message_list %}
-       <tr class="message-{{ message.style }}"> <td>
-        <strong>{{message.title}}</strong><br/>
-		<a href="/profile?id={{ message.author.key.id }}">{{message.author.user.email}}</a>{% ifequal message.style "user" %} {% else %} ({{ message.style }}) {% endifequal %}  {{message.created}} <br/>
-    </td></tr>
-    <tr class="message-text" ><td>
-    {{message.text}}
-    </td></tr>
-    <tr class="message-space"></tr>
+	<tr class="list-item">
+	    <tr class="message-{{ message.style }}"> <td>
+	        <strong>{{message.title}}</strong><br/>
+			<a href="/profile?id={{ message.author.key.id }}">{{message.author.user.email}}</a>{% ifequal message.style "user" %} {% else %} ({{ message.style }}) {% endifequal %}  {{message.created}} <br/>
+	    </td></tr>
+	    <tr class="message-text" ><td>
+	    {{message.text}}
+	    </td></tr>
+    </tr> <!-- end list item -->
 	{% endfor %}
 </table>
 
 {% endif %}
 
 <form method="post"> <!-- message form -->
+<h3>post a message</h3>
 	<div class="inputgroup">
 		 <div>
 	        <strong>Title </strong><input type="text" name="message_title" />
