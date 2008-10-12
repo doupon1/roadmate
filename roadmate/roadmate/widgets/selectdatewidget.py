@@ -1,6 +1,8 @@
+import time
+import datetime
+
 from django.newforms.widgets import Widget, Select
 from django.utils.dates import MONTHS
-import datetime
 
 
 class SelectDateWidget(Widget):
@@ -21,7 +23,7 @@ class SelectDateWidget(Widget):
 			self.years = years
 		else:
 			this_year = datetime.date.today().year
-			self.years = range(this_year, this_year+10)
+			self.years = range(this_year, this_year+2)
 
 	def render(self, name, value, attrs=None):
 		try:
@@ -49,6 +51,8 @@ class SelectDateWidget(Widget):
 
 	def value_from_datadict(self, data, name):
 		y, m, d = data.get(self.year_field % name), data.get(self.month_field % name), data.get(self.day_field % name)
+		
 		if y and m and d:
 			return '%s-%s-%s' % (y, m, d)
 		return None
+		
