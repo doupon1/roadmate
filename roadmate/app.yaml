@@ -46,7 +46,6 @@ handlers:
 
 - url: /location(.*)
   script: pages/location.py
-  login: required
 
 - url: /riderequest(.*)
   script: pages/riderequest.py
