@@ -312,6 +312,10 @@ input.checkbox
 	height: 10px;
 }
 
+#remindTime1, #remindTime2{ width: 30px;
+
+}
+
 select#id_source {
 	width: 280px;
 }

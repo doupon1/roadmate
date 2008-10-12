@@ -2,8 +2,11 @@
 
 {% block javascript %}
 <script src="http://www.google.com/jsapi?key={{ google_calendar_key }}" type="text/javascript"></script>
-<script src="/scripts/google-calendar/cal_Auth.js" type="text/javascript"></script>
+
 <script src="/scripts/scriptaculous/1.8.1/prototype.js" type="text/javascript"></script>
+
+<script src="/scripts/google-calendar/cal_Auth.js" type="text/javascript"></script>
+
 
 <script type="text/javascript" language="javascript">
 	// <![CDATA[
@@ -47,107 +50,82 @@
 
 
 	<!-- calendar scripts begin-->
-	<!--hidden field use to insert into calendar-->
-	<input	id="from" type="hidden" value="{{ ride.source.get_addressname }}" />
-	<input	id="to" type="hidden" value="{{ ride.destination.get_addressname }}" />
-	<input	id="startTime" type="hidden" value="{{ ride.date }}T{{ ride.departure_time }}.00Z" />
-	<input	id="endTime" type="hidden" value="{{ ride.date }}T{{ ride.arrival_time }}.00Z" />
-	<input	id="ride_id" type="hidden" value="{{ride.key.id }}" />
+
+                 <!--hidden field use to insert into calendar-->	
+			<input  id="from" type="hidden" value="{{ ride.source.get_addressname }}" />
+			<input  id="to" type="hidden" value="{{ ride.destination.get_addressname }}" />
+			<input  id="startTime" type="hidden" value="{{ ride.date }}T{{ ride.departure_time }}.00Z" />
+			<input  id="endTime" type="hidden" value="{{ ride.date }}T{{ ride.arrival_time }}.00Z" />
+             
+			 <input  id="ride_id" type="hidden" value="{{ride.key.id }}" />
+            
 
 
-	<form id="log_in" >
-	<!--if no google calendar Token show following field-->
-			<strong>Create a google calendar reminder:</strong>&nbsp;&nbsp;&nbsp;<input type="button" class="button" value="Grant access" onClick=" logMeIn(); return false;" >
-	</form>
-	<form id="wait">
-		<strong>please wait . </strong>
-	</form>
+		<br/> 
+	   <form id="log_in"  style="display:none">
+
+		         <!--if no google calendar Token show following field-->
+			<strong>Create a google calendar reminder:</strong>&nbsp;&nbsp;&nbsp;<input type="button" class="button" value="Grant access" onClick=" logMeIn(); return false;" > 
+		</form>
+		<form id="wait" style="display:none">
+		    <strong>please wait . </strong>
+		</form>		
+				<!--if has google calendar Token show following field-->
+			 
+		<form id="add_event" style="display:none"  name="remindForm"  >
+		          
+		          <strong>Create a google calendar reminder:</strong><br/>
+				 
+				 <span id="errorMs" style="display:none"><ul class="errorlist"><li>Please enter a time between 5 minutes and 28 days.  </li></ul></span>		 
+				  <table>
+				  <tr>
+				    <td>
+		         <input id="byEmail" class="checkbox" type="checkbox" name="reminder" value="email" >Email&nbsp;&nbsp;&nbsp;
+				 </td>
+				 <td>
+				  <input id="remindTime1" type="text" name="remindTime1" value="" />
+	                  
+				  
+				 <select id="timeBase1">
+                   <option>minutes</option>
+                   <option>hours</option>
+                   <option>days</option>
+                 </select> 
+				    </td>
+				 </tr>
+				 <tr>
+				    <td>
+                 <input id="bySms" class="checkbox" type="checkbox" name="reminder"  value="sms" >SMS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				    </td>
+					<td>
+				 <input id="remindTime2" type="text" name="remindTime2" value="" />
+	                
+				 <select id="timeBase2">
+                   <option>minutes</option>
+                   <option>hours</option>
+                   <option>days</option>
+                 </select> 
+				</td>
+				
+                </tr>
+                
+            
+  
+	         
+	</table>
 	
-	<!--if has google calendar Token show following field-->
-	<form id="add_event"  name="remindForm">
-		<strong>Create a google calendar reminder:</strong>
-		<table>
-			<tr>
-				<td>
-				 	<input id="byEmail" class="checkbox" type="checkbox" name="reminder" value="email" >Email&nbsp;&nbsp;&nbsp;
-				</td>
-				<td>
-					<select id="remindTime1">
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
-						<option>4</option>
-						<option>5</option>
-						<option>6</option>
-						<option>7</option>
-						<option>8</option>
-						<option>9</option>
-						<option>10</option>
-						<option>11</option>
-						<option>12</option>
-						<option>13</option>
-						<option>14</option>
-						<option>15</option>
-						<option>16</option>
-						<option>17</option>
-						<option>18</option>
-						<option>19</option>
-						<option>20</option>
-						<option>21</option>
-						<option>22</option>
-						<option>23</option>
-					</select>
-
-					<select id="timeBase1">
-						<option>minutes</option>
-						<option>hours</option>
-						<option>days</option>
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<input id="bySms" class="checkbox" type="checkbox" name="reminder" value="sms" >SMS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				</td>
-				<td>
-					<select id="remindTime2">
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
-						<option>4</option>
-						<option>5</option>
-						<option>6</option>
-						<option>7</option>
-						<option>8</option>
-						<option>9</option>
-						<option>10</option>
-						<option>11</option>
-						<option>12</option>
-						<option>13</option>
-						<option>14</option>
-						<option>15</option>
-						<option>16</option>
-						<option>17</option>
-						<option>18</option>
-						<option>19</option>
-						<option>20</option>
-						<option>21</option>
-						<option>22</option>
-						<option>23</option>
-					</select>
-					<select id="timeBase2">
-						<option>minutes</option>
-						<option>hours</option>
-						<option>days</option>
-					</select>
-				</td>
-			</tr>
-		</table>
-
+	    
+				 <br/>
+  <span id="addcalendar">
+  </span>
+		</form>
+		
 		<br/>
-  		<span id="addcalendar">
-		</span>
-	</form>
+		<br/>
+		<br/>
+                 
+               
+
 	<!--calendar scripts end-->
 
 	<form method="post">

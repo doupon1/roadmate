@@ -12,8 +12,9 @@
 	
 	
 	// button change for create or remove calendar reminder. 
-   var createbutton="<input id=\"create\" class=\"button\" type=\"button\" value=\"Create\" onClick=\"insertEvents(); setTimeout('showRemoveBt()', 3000);return false; \"/>";
-   var removebutton="<input id=\"remove\" class=\"button\" type=\"button\" value=\"Remove\" onClick=\"var hiddencal_id=document.getElementById('ride_id').value; deleteEvent(hiddencal_id);setTimeout('showCreateBt()', 3000); return false;\"/> ";
+   
+   var createbutton="<input id=\"create\" class=\"button\" type=\"button\" value=\"Create\" onClick=\"valid_insert();return false; \"/>";
+   var removebutton="<input id=\"remove\" class=\"button\" type=\"button\" value=\"Remove\" onClick=\"removebtfunction(); return false;\"/> ";
     
     /*
      * loading gdata library
@@ -141,8 +142,17 @@
 	 return document.getElementById('ride_id').value;
 	
    }
-   
-    
+     
+	 function creatbtfunction(){
+		insertEvents(); 
+		setTimeout('showRemoveBt()', 3000);
+	}
+     
+	 function removebtfunction(){
+	 	var hiddencal_id=document.getElementById('ride_id').value;
+		 deleteEvent(hiddencal_id);
+		 setTimeout('showCreateBt()', 3000);
+	 }
 	
    
    /*
@@ -161,88 +171,64 @@
    	  google.gdata.client.init();
 	  
 	  
-			  //alert(isIncal+"");
-   	
-      var obj1 = document.getElementById("log_in");
-	  var obj2=document.getElementById("add_event");
-	  var obj3=document.getElementById("wait");
-	 
-
-	 
-	   if (isTokenRedirect()) {
-	   	     
-			 	obj1.style.display = 'none';
-			 	obj2.style.display = 'none';
-			 	obj3.style.display = 'block';
+	  if (isTokenRedirect()) {
+	      
+		      $('log_in').hide();
+	  		  $('add_event').hide();
+	  		  $('wait').show();
 				
 			   
 				setTimeout('showcreatefiled()',5000);
 	   	   
-				
-				 
-			 
-			 
-	   
-	   }
-	   
-	   
-	   else {
-	   	    
-			
-			  
-		   
-	     	if (islogin()) {
-	   	
-	   	         obj2.style.display = 'block';
-	   		     obj1.style.display = 'none';
-			     obj3.style.display = 'none';
-				// alert('login');
-				 
-				 var searchText=document.getElementById('ride_id').value;
-				
-	               checkIncal(searchText);
-				    
-			    
-	           }
-	   	    else {
-	   	
-	   		   obj2.style.display = 'none';
-	   		   obj1.style.display = 'block';
-	   		   obj3.style.display = 'none';
-	   		
-	   		
-	   	    }
-	   }
+
+	      
+	  }
+	  else {
+	  	if (islogin()) {
+	  	
+	  	
+	  		$('log_in').hide();
+	  		$('add_event').show();
+	  		$('wait').hide();
+	  		
+	  		var searchText = document.getElementById('ride_id').value;
+	  		
+	  		checkIncal(searchText);
+	  		
+	  		
+	  	}
+	  	else {
+	  	
+	  		$('log_in').show();
+	  		$('add_event').hide();
+	  		$('wait').hide();
+	  		
+	  		
+	  	}
+	  }
 	 
    }
+  
+  
+  //show create event field
    
-   
-   //show createbutton
-   
-   function displayCreatbt(){
-   	  var obj1 = document.getElementById("log_in");
-	  var obj2=document.getElementById("add_event");
-	  var obj3=document.getElementById("wait");
-	     obj2.style.display = 'block';
-	     obj1.style.display = 'none';
-	     obj3.style.display = 'none'; 
-		  
-		  document.getElementById('addcalendar').innerHTML=createbutton;
-		  
+    function showcreatefiled(){
+   	        
+			$('log_in').hide();
+	  		$('add_event').show();
+	  		$('wait').hide();
+	  		
+	  		var searchText = document.getElementById('ride_id').value;
+	  		
+	  		checkIncal(searchText);	
+	
+	
    }
+
+  
    
    
-   //show removebutton
-   function displayRemovebt(){
-   	   var obj1 = document.getElementById("log_in");
-	  var obj2=document.getElementById("add_event");
-	  var obj3=document.getElementById("wait");
-	     obj2.style.display = 'block';
-	     obj1.style.display = 'none';
-	     obj3.style.display = 'none'; 
-		  
-		  document.getElementById('addcalendar').innerHTML=removebutton;
-   }
+   
    
    
    
@@ -253,21 +239,21 @@
 	
    }
   
-   //show create filed
-   
-   function showcreatefiled(){
-   	   var obj1 = document.getElementById("log_in");
-	   var obj2=document.getElementById("add_event");
-	   var obj3=document.getElementById("wait");
-	            obj2.style.display = 'block';
-	   		    obj1.style.display = 'none';
-			    obj3.style.display = 'none';
-		var searchText=document.getElementById('ride_id').value;
-				
-	               checkIncal(searchText);		
-	
-	
+  function displayCreatbt(){
+   	 
+		  
+		  document.getElementById('addcalendar').innerHTML=createbutton;
+		  
    }
+   
+   
+   //show removebutton
+   function displayRemovebt(){
+   	  
+		  
+		  document.getElementById('addcalendar').innerHTML=removebutton;
+   }
+
    
    
     
@@ -315,9 +301,7 @@
 			 }
 			 	
            }
-		 /*if(remindMethod.length==0){
-		 	remindMethod[0]="email";
-		 }*/
+		 
 		 return remindMethod;
 	  }
 
@@ -338,7 +322,8 @@
 			    // Set the reminder time prior the event start time
 			var remindTime;
 			var timeBase=getSelectedValue(timeBase);
-			var selectNumber=getSelectedValue(remindTime);
+			
+			var selectNumber=document.getElementById(remindTime).value;
 			
 			
 			
@@ -362,7 +347,79 @@
 			
 		 }
 
+
+ 
+
+//validate time input and insertEvents
+
+    function validateInputTime(){
+		  
+		  var isEmailChecked=document.remindForm.reminder[0].checked;
+		  var isSmsChecked=document.remindForm.reminder[1].checked;
+		  
+		  var tN1= document.getElementById("remindTime1").value;
+		  var tN2= document.getElementById("remindTime2").value;
+		  
+		  var tb1=getSelectedValue('timeBase1');
+		  var tb2=getSelectedValue('timeBase2');
+		   
+		  
+		  if(isEmailChecked){
+		  	  if( isNaN(tN1)){
+			  
+			  	 return false;
+			  }else{
+			  	var n1=parseInt(tN1);
+			  	 if(!isIntimeScope(n1, tb1)){
+				 	return false;
+				 }
+			  }
+			
+		  }
+		  if(isSmsChecked){
+		  	   if( isNaN(tN2)){
+			   	
+			  	 return false;
+			  }else{
+			  	var n2= parseInt(tN2);
+			  	 if(!isIntimeScope(n2,tb2)){
+				 	return false;
+				 }
+			  }
+			
+		  }
+		  
+		  return true;
+		 
+		
+		
+	}
+ //time scope function for reminder time range from 5 minutes--28 days(40320)
+ 
+ function  isIntimeScope(timeNumber, timebase){
+ 	
+	if(timebase=='minutes'){
+		if(timeNumber<5|timeNumber>40320){
+			return false;
+		}
+	}
+	if(timebase=='hours'){
+		var t1= timeNumber*60;
+		if(t1<5|t1>40320){
+			return false;
+		}
+		
+	}
+	if(timebase=='days'){
+		var t2=timeNumber*24*60;
+		if(t2<5|t2>40320){
+			return false;
+		}
+	}
+	return true;
+ }
   
+    
  //insert a event into RoadMate Calendar.
  
    
@@ -386,7 +443,7 @@
 			  
 			  //set hindden field for search title
 			  
-			 // document.getElementById("calendar_id").value=eventTilte;
+			
 			  
 			  
    
@@ -470,10 +527,6 @@
            // The callback method that will be called after a successful insertion from insertEntry()
              var callback = function(result) {
 			 	
-			// document.getElementById('calendar_id').value= calendar_id;
-			 //alert(hiddencal_id);
-			 //var removelink="<a href=\"#\" onClick=\"deleteEvent("+hiddencal_id+"); alert(hiddencal_id);return false;\" > remove </a>"
-             //addInnerText('addcalendar',removelink);
              }
 
              // Error handler will be invoked if there is an error from insertEntry()
@@ -486,6 +539,23 @@
               handleError, google.gdata.calendar.CalendarEventEntry);
 	         }
    
+   
+   
+   // if input valid time insert to google calendar otherwise give notification
+          function valid_insert(){
+		  	   
+			   $('errorMs').hide();
+		  	  if(validateInputTime()){
+			  	  creatbtfunction();
+				   //alert('error');
+				
+			  }else{
+			  	
+			  	  $('errorMs').show();
+				 
+			  }
+			
+		  }
    
    
            
