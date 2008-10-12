@@ -47,7 +47,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 		current_user = RoadMateUser.get_current_user()
 
 		# Request Values
-		ride_id = self.get_request_parameter('id', converter=int, default=None)
+		ride_id = self.get_request_parameter('id', converter=int, default=-1)
 		prq_id = self.get_request_parameter('prq_id', converter=int, default=None)
 		seat_id = self.get_request_parameter('seat_id', converter=int, default=None)
 		action = self.get_request_parameter('action', converter=str, default=None)
@@ -55,6 +55,16 @@ class ViewRidePageHandler(BaseRequestHandler):
 
 		# Datastore Values
 		ride = Ride.get_by_id(ride_id)
+		
+		# --------------------------------------------------------------------
+		# Validate Request
+		# --------------------------------------------------------------------
+		# if the target ride does not exist in the datastore, then redirect
+		# the user back to the home page.
+		if ride is None:
+			self.error(404)
+			return
+		
 		# --------------------------------------------------------------------
 		# Handle approving and removing passengers and seats
 		# --------------------------------------------------------------------
@@ -90,15 +100,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 				else:
 					self.error(404) #trying to create too many seats! TODO notify the user of the error
 					return
-
-		# --------------------------------------------------------------------
-		# Validate Request
-		# --------------------------------------------------------------------
-		# if the target ride does not exist in the datastore, then redirect
-		# the user back to the home page.
-		if ride is None:
-			self.error(404)
-			return
+					
 		# --------------------------------------------------------------------
 		# Generate and Store Template Values
 		# --------------------------------------------------------------------
