@@ -1,18 +1,10 @@
 {% extends "templates/base.html" %}
 
-
-
-
-<!--calendar scripts import library start-->
 {% block javascript %}
 <script src="http://www.google.com/jsapi?key={{ google_calendar_key }}" type="text/javascript"></script>
-<script type="text/javascript" src="scripts/google-calendar/jquery-1.1.4.pack.js"></script>
+<script src="scripts/google-calendar/jquery-1.1.4.pack.js" type="text/javascript"></script>
 <script src="scripts/google-calendar/cal_Auth.js"></script>
 {% endblock %}
-
-
-<!--calendar scripts end-->
-
 
 {% block title%}View Ride{% endblock %}
 
@@ -36,150 +28,130 @@
 		{% if ride.notes %}
 			<strong>Notes</strong> {{ ride.notes }}<br />
 		{% endif %}
-		<p />
+	<p />
 
 
-				<!-- calendar scripts begin-->
-				<!--hidden field use to insert into calendar-->
-			<input  id="from" type="hidden" value="{{ ride.source.get_addressname }}" />
-			<input  id="to" type="hidden" value="{{ ride.destination.get_addressname }}" />
-			<input  id="startTime" type="hidden" value="{{ ride.date }}T{{ ride.departure_time }}.00Z" />
-			<input  id="endTime" type="hidden" value="{{ ride.date }}T{{ ride.arrival_time }}.00Z" />
-
-			 <input  id="ride_id" type="hidden" value="{{ride.key.id }}" />
-
+	<!-- calendar scripts begin-->
+	<!--hidden field use to insert into calendar-->
+	<input	id="from" type="hidden" value="{{ ride.source.get_addressname }}" />
+	<input	id="to" type="hidden" value="{{ ride.destination.get_addressname }}" />
+	<input	id="startTime" type="hidden" value="{{ ride.date }}T{{ ride.departure_time }}.00Z" />
+	<input	id="endTime" type="hidden" value="{{ ride.date }}T{{ ride.arrival_time }}.00Z" />
+	<input	id="ride_id" type="hidden" value="{{ride.key.id }}" />
 
 
-		<br/>
-	   <form id="log_in" >
-		         <!--if no google calendar Token show following field-->
+	<form id="log_in" >
+	<!--if no google calendar Token show following field-->
 			<strong>Create a google calendar reminder:</strong>&nbsp;&nbsp;&nbsp;<input type="button" class="button" value="Grant access" onClick=" logMeIn(); return false;" >
-		</form>
-		<form id="wait">
-		    <strong>please wait . </strong>
-		</form>
-				<!--if has google calendar Token show following field-->
-		<form id="add_event"  name="remindForm"  >
-
-		          <strong>Create a google calendar reminder:</strong>
-				  <table>
-				  <tr>
-				    <td>
-		         <input id="byEmail" class="checkbox" type="checkbox" name="reminder" value="email" >Email&nbsp;&nbsp;&nbsp;
-				 </td>
-				 <td>
-				  <select id="remindTime1">
-	                  <option>1</option>
-	                  <option>2</option>
-	                  <option>3</option>
-	                  <option>4</option>
-	                  <option>5</option>
-	                  <option>6</option>
-	                  <option>7</option>
-	                  <option>8</option>
-	                  <option>9</option>
-					  <option>10</option>
-					  <option>11</option>
-	                  <option>12</option>
-	                  <option>13</option>
-	                  <option>14</option>
-	                  <option>15</option>
-	                  <option>16</option>
-	                   <option>17</option>
-	                  <option>18</option>
-	                  <option>19</option>
-					  <option>20</option>
-					   <option>21</option>
-	                  <option>22</option>
-	                  <option>23</option>
-                  </select>
-
-				 <select id="timeBase1">
-                   <option>minutes</option>
-                   <option>hours</option>
-                   <option>days</option>
-                 </select>
-				    </td>
-				 </tr>
-				 <tr>
-				    <td>
-                 <input id="bySms" class="checkbox" type="checkbox" name="reminder" value="sms" >SMS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				    </td>
-					<td>
-				 <select id="remindTime2">
-	                  <option>1</option>
-	                  <option>2</option>
-	                  <option>3</option>
-	                  <option>4</option>
-	                  <option>5</option>
-	                  <option>6</option>
-	                  <option>7</option>
-	                  <option>8</option>
-	                  <option>9</option>
-					  <option>10</option>
-					  <option>11</option>
-	                  <option>12</option>
-	                  <option>13</option>
-	                  <option>14</option>
-	                  <option>15</option>
-	                  <option>16</option>
-	                   <option>17</option>
-	                  <option>18</option>
-	                  <option>19</option>
-					  <option>20</option>
-					   <option>21</option>
-	                  <option>22</option>
-	                  <option>23</option>
-                  </select>
-				 <select id="timeBase2">
-                   <option>minutes</option>
-                   <option>hours</option>
-                   <option>days</option>
-                 </select>
+	</form>
+	<form id="wait">
+		<strong>please wait . </strong>
+	</form>
+	
+	<!--if has google calendar Token show following field-->
+	<form id="add_event"  name="remindForm">
+		<strong>Create a google calendar reminder:</strong>
+		<table>
+			<tr>
+				<td>
+				 	<input id="byEmail" class="checkbox" type="checkbox" name="reminder" value="email" >Email&nbsp;&nbsp;&nbsp;
 				</td>
+				<td>
+					<select id="remindTime1">
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+						<option>5</option>
+						<option>6</option>
+						<option>7</option>
+						<option>8</option>
+						<option>9</option>
+						<option>10</option>
+						<option>11</option>
+						<option>12</option>
+						<option>13</option>
+						<option>14</option>
+						<option>15</option>
+						<option>16</option>
+						<option>17</option>
+						<option>18</option>
+						<option>19</option>
+						<option>20</option>
+						<option>21</option>
+						<option>22</option>
+						<option>23</option>
+					</select>
 
-                </tr>
-
-
-
-	<!--use for debug --> <!--<a href="#" onClick=" logMeOut();return false;">logout</a>-->
-	</table>
-
-
-				 <br/>
-  <span id="addcalendar">
-    <!-- <input id="create" class="button" type="button" value="Create" onClick="insertEvents(); setTimeout('showRemoveBt()', 3000); return false; "/>-->
-
-  </span>
-		</form>
+					<select id="timeBase1">
+						<option>minutes</option>
+						<option>hours</option>
+						<option>days</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input id="bySms" class="checkbox" type="checkbox" name="reminder" value="sms" >SMS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				</td>
+				<td>
+					<select id="remindTime2">
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+						<option>5</option>
+						<option>6</option>
+						<option>7</option>
+						<option>8</option>
+						<option>9</option>
+						<option>10</option>
+						<option>11</option>
+						<option>12</option>
+						<option>13</option>
+						<option>14</option>
+						<option>15</option>
+						<option>16</option>
+						<option>17</option>
+						<option>18</option>
+						<option>19</option>
+						<option>20</option>
+						<option>21</option>
+						<option>22</option>
+						<option>23</option>
+					</select>
+					<select id="timeBase2">
+						<option>minutes</option>
+						<option>hours</option>
+						<option>days</option>
+					</select>
+				</td>
+			</tr>
+		</table>
 
 		<br/>
-		<br/>
-		<br/>
+  		<span id="addcalendar">
+		</span>
+	</form>
+	<!--calendar scripts end-->
 
-	  <!--calendar scripts end-->
-
-
-
-
-
-		<form method="post">
-			<h3>{{ ride.count_emptyseats }} seat{{ ride.count_emptyseats|pluralize }} available
+	<form method="post">
+		<h3>
+			{{ ride.count_emptyseats }} seat{{ ride.count_emptyseats|pluralize }} available
 			{% if ride.count_emptyseats %}<!-- show the request button-->
 				<input type="hidden" name="do_request_ride" value="True"/>
 				<input class="button"  value="Request a Seat" type="submit">
 			{% endif %}
-			</h3>
+		</h3>
 
-			{% if not requestable %} <!-- show the instruction-->
-				<strong>
-					Your request for a seat on this ride has been recorded
-					and you will be notified when it is approved.
-				</strong>
-			{% endif %}
-		</form>
-
-	</p>
+		{% if not requestable %} <!-- show the instruction-->
+			<strong>
+				Your request for a seat on this ride has been recorded
+				and you will be notified when it is approved.
+			</strong>
+		{% endif %}
+	</form>
+</p>
 
 {% if has_passengers %}<!-- show passengers -->
 <p>
@@ -187,8 +159,8 @@
 <table>
 	<h2>passengers</h2>
 	<tr>
-	<th>User</th>
-	<th>Date Accepted</th>
+		<th>User</th>
+		<th>Date Accepted</th>
 	</tr>
 	{% for seat in ride.seats %}
 	  {% if seat.passenger %}
@@ -206,13 +178,13 @@
 				<td>
 					 <a href="/ride?id={{ride.key.id}}&amp;seat_id={{seat.key.id}}&amp;action=DEL">Delete Seat</a></td>
 				</td>
-                {% if has_occurred %}
-	                <td>
+				{% if has_occurred %}
+					<td>
 						 <a href="/feedback_create?ride={{ride.key.id}}&amp;on={{seat.passenger.key.id}}">Feedback</a></td>
 					</td>
 				{% endif %}
 			{% endifequal %}
-		  	</tr>
+			</tr>
 	  {% endif %}
 	{% endfor %}
 </table>
@@ -226,12 +198,12 @@
 	<p>
 	<table>
 	<h2>passenger requests</h2>
-      	<tr>
+		<tr>
 		<th>User</th>
-        <th>Date</th>
+		<th>Date</th>
 		</tr>
 
-      	{% for prq in ride.passengerrequests %}
+		{% for prq in ride.passengerrequests %}
 			<tr class="row-a">
 
 			<td>
@@ -258,42 +230,42 @@
 		<img src="http://maps.google.com/staticmap?&amp;size=400x400&amp;markers={{lat_lng_src}},reds%7C{{lat_lng_des}},blued&amp;key={{ googlemaps_key }}"/>
 	</noscript>
 	</p>
-    <html xmlns="http://www.w3.org/1999/xhtml">
-      <head>
-      <!-- Javascript Map Version -->
-        <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-        <title>Google Maps JavaScript API Example</title>
-        <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key={{ googlemaps_key }}"
-                type="text/javascript"></script>
-        <script type="text/javascript">
-     // JavaScript Document
-        var bounds = new GLatLngBounds();
-        var map;
-        var directionsPanel;
-        var directions;
-        function initialize() {
-            var map = new GMap2(document.getElementById("map_canvas"));
-            map.setCenter(new GLatLng({{lat_lng_src}}), 13);
+	<html xmlns="http://www.w3.org/1999/xhtml">
+	  <head>
+	  <!-- Javascript Map Version -->
+		<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+		<title>Google Maps JavaScript API Example</title>
+		<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key={{ googlemaps_key }}"
+				type="text/javascript"></script>
+		<script type="text/javascript">
+	 // JavaScript Document
+		var bounds = new GLatLngBounds();
+		var map;
+		var directionsPanel;
+		var directions;
+		function initialize() {
+			var map = new GMap2(document.getElementById("map_canvas"));
+			map.setCenter(new GLatLng({{lat_lng_src}}), 13);
 
-            var topRight = new GControlPosition(G_ANCHOR_TOP_RIGHT, new GSize(10,10));
-            var bottomRight = new GControlPosition(G_ANCHOR_BOTTOM_RIGHT, new GSize(10,10));
-            map.addControl(new GSmallMapControl());
+			var topRight = new GControlPosition(G_ANCHOR_TOP_RIGHT, new GSize(10,10));
+			var bottomRight = new GControlPosition(G_ANCHOR_BOTTOM_RIGHT, new GSize(10,10));
+			map.addControl(new GSmallMapControl());
 
-          //Shows the route between destination and source
-            directionsPanel = document.getElementById("route");
-            directions = new GDirections(map, directionsPanel);
-            directions.load("from: {{ ride.source.address }} to: {{ ride.destination.address }}");
+		  //Shows the route between destination and source
+			directionsPanel = document.getElementById("route");
+			directions = new GDirections(map, directionsPanel);
+			directions.load("from: {{ ride.source.address }} to: {{ ride.destination.address }}");
 
-            map.setZoom(map.getBoundsZoomLevel(bounds));
-            map.setCenter(bounds.getCenter());
+			map.setZoom(map.getBoundsZoomLevel(bounds));
+			map.setCenter(bounds.getCenter());
 
-        }
-        </script>
-      </head>
-      <body onLoad="initialize()" onUnload="GUnload()">
-        <div id="map_canvas" style="width: 400px; height: 400px"></div>
-      </body>
-    </html>
+		}
+		</script>
+	  </head>
+	  <body onLoad="initialize()" onUnload="GUnload()">
+		<div id="map_canvas" style="width: 400px; height: 400px"></div>
+	  </body>
+	</html>
 
 {% endif %}
 
@@ -305,14 +277,14 @@
 <p />
 <table class="messages">
 	{% for message in message_list %}
-       <tr class="message-{{ message.style }}"> <td>
-        <strong>{{message.title}}</strong><br/>
-		<a href="/profile?id={{ message.author.key.id }}">{{message.author.user.email}}</a>{% ifequal message.style "user" %} {% else %} ({{ message.style }}) {% endifequal %}  {{message.created}} <br/>
-    </td></tr>
-    <tr class="message-text" ><td>
-    {{message.text}}
-    </td></tr>
-    <tr class="message-space"></tr>
+	   <tr class="message-{{ message.style }}"> <td>
+		<strong>{{message.title}}</strong><br/>
+		<a href="/profile?id={{ message.author.key.id }}">{{message.author.user.email}}</a>{% ifequal message.style "user" %} {% else %} ({{ message.style }}) {% endifequal %}	 {{message.created}} <br/>
+	</td></tr>
+	<tr class="message-text" ><td>
+	{{message.text}}
+	</td></tr>
+	<tr class="message-space"></tr>
 	{% endfor %}
 </table>
 
@@ -322,8 +294,8 @@
 <h3>post a message</h3>
 	<div class="inputgroup">
 		 <div>
-	        <strong>Title </strong><input type="text" name="message_title" />
-	      </div>
+			<strong>Title </strong><input type="text" name="message_title" />
+		  </div>
 
 			<div>
 			<strong>Type your message here</strong>
