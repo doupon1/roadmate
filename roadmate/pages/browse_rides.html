@@ -117,6 +117,7 @@
 	}
 	
 	function displayMap(srcAdd, desAdd, filterValue){
+
 	  myMap = new GMap2(document.getElementById("map"));
 	  myMap.setCenter(new GLatLng(-41, 174),5);
 	  myMap.addControl(new GSmallMapControl());
@@ -375,6 +376,8 @@
 	<!-------------------------------- Ajax Request Handler -------------------------------------------->
 	 GeoQuery.prototype.updateLocations = function (srcCenterlat, srcCenterlng, desCenterlat, desCenterlng, srcRadius, desRadius){
 	 	var myObject = this;
+		filter = document.getElementById("time_filter");
+	  	filterValue = filter.options[filter.selectedIndex].text;
 		new Ajax.Request('/ajax/location-finder',
 		{
 			method:'post',
