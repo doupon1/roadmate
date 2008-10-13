@@ -168,7 +168,7 @@
 	 
 	 
    function init_display(){
-   	  google.gdata.client.init();
+   	  google.gdata.client.init(function (str) {}); 
 	  
 	  
 	  if (isTokenRedirect()) {
