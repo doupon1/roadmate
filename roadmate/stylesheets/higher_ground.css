@@ -1,4 +1,4 @@
-/* @override 
+/* @override
 	http://localhost:8080/stylesheets/higher_ground.css
 */
 
@@ -66,6 +66,12 @@ h2 {
 }
 h3 {
 	font-size: 130%;
+}
+h3.full {
+    color: #b10009;
+}
+h3.green {
+    color: #88ac0b;
 }
 h4 {
 	font-size: 80%;

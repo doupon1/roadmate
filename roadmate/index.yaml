@@ -22,8 +22,20 @@ indexes:
   - name: creation_date
     direction: desc
 
-# Unused in query history -- copied from input.
+# Used 23 times in query history.
 - kind: Ride
   properties:
   - name: owner
   - name: date
+
+# Used 4 times in query history.
+- kind: Seat
+  properties:
+  - name: passenger
+  - name: date
+
+# Used 3 times in query history.
+- kind: Seat
+  properties:
+  - name: passenger
+  - name: get_ride_date

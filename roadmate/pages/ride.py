@@ -101,7 +101,8 @@ class ViewRidePageHandler(BaseRequestHandler):
 		template_values['has_passengers'] = (ride.count_seats() - ride.count_emptyseats()) > 0
 		template_values['message_list'] = ride.ridemessages
 		template_values['has_occurred'] = (ride.date < ride.date.today())
-
+		template_values['is_full'] = (ride.count_emptyseats() == 0)
+		template_values['enable_feedback_on_driver'] = (ride.date < ride.date.today()) & ride.is_passenger(current_user)
 		# --------------------------------------------------------------------
 		# Control the display of the form element
 		# --------------------------------------------------------------------
