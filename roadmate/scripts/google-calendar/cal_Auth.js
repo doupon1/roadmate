@@ -19,7 +19,7 @@
     /*
      * loading gdata library
      */
-	google.load("gdata", "1");
+	google.load("gdata", "1.s");
 	
 	/*
 	 * init check if user already
