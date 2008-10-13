@@ -262,12 +262,12 @@
 
 
 {% if message_list%}  <!-- ride messages -->
-
+<h2>discussion</h2>
 <table class="messages">
 	{% for message in message_list %}
        <tr class="message-{{ message.style }}"> <td>
         <strong>{{message.title|escape }}</strong><br/>
-		<a href="/profile?id={{ message.author.key.id }}">{{message.author.user.email}}</a>{% ifequal message.style "user" %} {% else %} ({{ message.style }}) {% endifequal %}  {{message.created}} <br/>
+		<a href="/profile?id={{ message.author.key.id }}">{{message.author.user.email}}</a>{% ifequal message.style "user" %} {% else %} ({{ message.style }}) {% endifequal %}  {{message.created|datetime_for_table}} <br/>
     </td></tr>
     <tr class="message-text" ><td>
     {{message.text|escape}}
@@ -291,6 +291,13 @@
 			<input type="hidden" name="do_post_message" value="True"/>
 			<input class="button" value="Submit" type="submit"/>
 	</div>
+	<p>
+	<strong>Discuss the ride with the driver and other RoadMate users</strong></br>
+	If you have a question about the ride, this is the best place to ask it.
+	Please try and keep your comments free of
+	 inappropriate or offensive language.
+
+	 </p>
 </form>
 
 

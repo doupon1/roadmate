@@ -23,6 +23,11 @@ def date_for_table(value):
 
 register.filter(date_for_table)
 
+def datetime_for_table(value):
+	return date(value, "D, d M Y, h:i:s a")
+
+register.filter(datetime_for_table)
+
 def time_for_table(value):
 	return time(value, "g:ia")
 
