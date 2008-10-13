@@ -21,3 +21,9 @@ indexes:
   properties:
   - name: creation_date
     direction: desc
+
+# Used 2 times in query history.
+- kind: Ride
+  properties:
+  - name: owner
+  - name: date
