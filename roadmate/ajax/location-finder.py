@@ -6,7 +6,7 @@ import urllib
 import logging
 import math
 
-import libraries.simplejson as simplejson
+import simplejson
 
 from google.appengine.api import urlfetch
 from google.appengine.ext import db
