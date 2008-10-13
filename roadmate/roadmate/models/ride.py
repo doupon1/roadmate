@@ -120,7 +120,6 @@ class RideForm(djangoforms.ModelForm):
 
 	source_address = forms.CharField(label="From address", required=False)
 	destination_address = forms.CharField(label="To address", required=False)
-	notes = forms.CharField(label="Notes", required=False)
 
 	def clean_notes(self):
 		number_of_seats = self.clean_data['notes']
@@ -150,7 +149,7 @@ class RideForm(djangoforms.ModelForm):
 		source_address = self.clean_data['source_address']
 
 		if not GoogleMaps.is_valid_address(source_address):
-			raise forms.ValidationError("Please enter a valid address.")
+			raise forms.ValidationError("Google Maps was not able to locate your 'From' address.")
 
 		return source_address
 
@@ -166,7 +165,7 @@ class RideForm(djangoforms.ModelForm):
 		destination_address = self.clean_data['destination_address']
 
 		if not GoogleMaps.is_valid_address(destination_address):
-			raise forms.ValidationError("Please enter a valid address.")
+			raise forms.ValidationError("Google Maps was not able to locate your 'To' address.")
 
 		return destination_address
 

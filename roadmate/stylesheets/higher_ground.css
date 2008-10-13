@@ -310,7 +310,6 @@ input[type="text"] {
 }
 
 input.button {
-	font: bold 12px Arial, Sans-serif;
 	margin-left: 10px;
 	width: 125px;
 }
