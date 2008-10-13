@@ -19,7 +19,7 @@
     /*
      * loading gdata library
      */
-	google.load("gdata", "1.s");
+	google.load("gdata", "1");
 	
 	/*
 	 * init check if user already
@@ -179,8 +179,8 @@
 				
 			  
 			   
-				//setTimeout('showcreatefiled()',5000);
-	   	   setTimeout('refresh()',5000);
+		   setTimeout('showcreatefiled()',5000);
+	   	   //setTimeout('refresh()',6000);
 
 	      
 	  }
@@ -191,10 +191,10 @@
 	  		$('log_in').hide();
 	  		$('add_event').show();
 	  		$('wait').hide();
+	  		//displayCreatbt();
+	  		//var searchText = document.getElementById('ride_id').value;
 	  		
-	  		var searchText = document.getElementById('ride_id').value;
-	  		
-	  		checkIncal(searchText);
+	  		//checkIncal(searchText);
 	  		
 	  		
 	  	}
@@ -218,10 +218,12 @@
 			$('log_in').hide();
 	  		$('add_event').show();
 	  		$('wait').hide();
+			//displayCreatbt();
+			
 	  		
-	  		var searchText = document.getElementById('ride_id').value;
+	  		//var searchText = document.getElementById('ride_id').value;
 	  		
-	  		checkIncal(searchText);	
+	  		//checkIncal(searchText);	
 	
 	
    }
