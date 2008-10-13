@@ -9,57 +9,84 @@
 <script src="/scripts/scriptaculous/1.8.1/scriptaculous.js" type="text/javascript"></script>
 <script src="/scripts/roadmate/edit.js" type="text/javascript"></script>
 
-	<h2>view ride request</h2>
-	<h3>{{ riderequest.get_name }}</h3>
+<h2>view ride request</h2>
+<h3>{{ riderequest.get_name }}</h3>
 
-	<p> <!-- Ride Request Details -->
-		<strong>Date</strong> {{ riderequest.date }}<br />
-		<strong>From </strong><a href="/location?id={{ riderequest.source.key.id }}">{{ riderequest.source.get_addressname }}</a><br />
-		<strong>To </strong><a href="/location?id={{ riderequest.destination.key.id }}">{{ riderequest.destination.get_addressname }}</a><br />
-		<p />
+<p> <!-- Ride Request Details -->
+	<strong>Date</strong> {{ riderequest.date }}<br />
+	<strong>From </strong><a href="/location?id={{ riderequest.source.key.id }}">{{ riderequest.source.get_addressname }}</a><br />
+	<strong>To </strong><a href="/location?id={{ riderequest.destination.key.id }}">{{ riderequest.destination.get_addressname }}</a><br />
+	<p />
 
-		<strong>User</strong> {{ riderequest.owner.get_name_tag }} </a><br />
-		<p />
+	<strong>User</strong> {{ riderequest.owner.get_name_tag }} </a><br />
+	<p />
 
 
 
-		</li>
-		{% if riderequest.notes %}
-			<strong>Notes </strong><editvalue id='notes'> {{ riderequest.notes|escape }}</editvalue>
-			{% ifequal current_user riderequest.owner %}<script>editTextControl('notes', '/edit_riderequest?id=' + {{riderequest.key.id}})</script>{% endifequal %}
+	</li>
+	{% if riderequest.notes %}
+		<strong>Notes </strong><editvalue id='notes'> {{ riderequest.notes|escape }}</editvalue>
+		{% ifequal current_user riderequest.owner %}<script>editTextControl('notes', '/edit_riderequest?id=' + {{riderequest.key.id}})</script>{% endifequal %}
 
-		{% endif %}
-		<p />
+	{% endif %}
+</p>
 
+
+{% if current_user %} <!-- only want these controls visible if a user is logged in  -->
+{% ifequal current_user riderequest.owner %}
+<form method="post" ><!-- cancel request form -->
+	<p><strong>Cancel your ride request</strong></br>
+	If someone has accepted your request and created a ride that you want to take,
+	if you have found another ride or just changed your mind, then you should cancel this ride request
+	 which will remove it from the RoadMate site.
 	</p>
+	<input type="hidden" name="do_cancel_request" value="True"/>
+	<input class="button"  value="Cancel Request" type="submit">
+</form>
+{% else %}
 
 
+<form method="post"  target="/ride_create?rq={{riderequest.key.id}}"> <!-- accept request form-->
+	<p><strong>Accept the request for a ride</strong></br>
+	By accepting the ride request, you will be taken to the page to create a ride. After
+	you have created your ride, an email will be sent to the person who made this request with
+	a link to your ride where they can view its details and become a passenger. No notification
+	will be sent until you create the ride.
+	 </p>
+	<input class="button"  value="Accept Request" type="submit">
+</form>
+{% endifequal %}
+{% endif %}
+
+<p /><hr />
 {% if lat_lng_src and lat_lng_des %}
 	<p> <!-- Static Google Map -->
 		<h2>map</h2>
 		<img src="http://maps.google.com/staticmap?&amp;size=400x400&amp;markers={{ riderequest.source.get_lat_loc }},reds%7C{{ riderequest.destination.get_lat_loc }},blued&amp;key={{ googlemaps_key }}"/>
 	</p>
+<hr /><p />
 {% endif %}
 
-{% if message_list%}  <!-- riderequest messages -->
-<p />
-<table class="roadmate-list">
+
+
+{% if message_list.count %}  <!-- riderequest messages -->
+<h2>discussion</h2>
+<table class="messages">
 	{% for message in message_list %}
-	<tr class="list-item">
-	    <tr class="message-{{ message.style }}"> <td>
-	        <strong>{{message.title|escape}}</strong><br/>
-			<a href="/profile?id={{ message.author.key.id }}">{{message.author.user.email}}</a>{% ifequal message.style "user" %} {% else %} ({{ message.style }}) {% endifequal %}  {{message.created}} <br/>
-	    </td></tr>
-	    <tr class="message-text" ><td>
-	    {{message.text|escape}}
-	    </td></tr>
-    </tr> <!-- end list item -->
+       <tr class="message-{{ message.style }}"> <td>
+        <strong>{{message.title|escape }}</strong><br/>
+		<a href="/profile?id={{ message.author.key.id }}">{{message.author.user.email}}</a>{% ifequal message.style "user" %} {% else %} ({{ message.style }}) {% endifequal %}  {{message.created|datetime_for_table}} <br/>
+    </td></tr>
+    <tr class="message-text" ><td>
+    {{message.text|escape}}
+    </td></tr>
+    <tr class="message-space"></tr>
 	{% endfor %}
 </table>
 
 {% endif %}
 
-<form method="post"> <!-- message form -->
+<form method="post"> <!-- the message form -->
 <h3>post a message</h3>
 	<div class="inputgroup">
     <strong>Title </strong><input type="text" name="message_title" /></br>
@@ -69,8 +96,7 @@
 
 	<input type="hidden" name="do_post_message" value="True"/>
 	<input class="button" value="Submit" type="submit"/>
-	<p>
-	<strong>Discuss the request with the person who made it</strong></br>
+	<p><strong>Discuss the request with the person who is making it</strong></br>
 	This is the best way to ask about the details of the request before you accept it.
 	Please try and keep your comments free of
 	 inappropriate or offensive language. </p>

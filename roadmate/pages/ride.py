@@ -47,11 +47,10 @@ class ViewRidePageHandler(BaseRequestHandler):
 		current_user = RoadMateUser.get_current_user()
 
 		# Request Values
-		ride_id = self.get_request_parameter('id', converter=int, default=-1)
-		prq_id = self.get_request_parameter('prq_id', converter=int, default=None)
-		seat_id = self.get_request_parameter('seat_id', converter=int, default=None)
+		ride_id = self.get_request_parameter('id', converter=int, default=-1) # ride
+		prq_id = self.get_request_parameter('prq_id', converter=int, default=None) # passenger request (accept)
 		action = self.get_request_parameter('action', converter=str, default=None)
-		newseats = self.get_request_parameter('newseats', converter=int, default=None)
+		seat_id = self.get_request_parameter('seat_id', converter=int, default=None) # seat (remove passenger)
 
 		# Datastore Values
 		ride = Ride.get_by_id(ride_id)
@@ -87,6 +86,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 					#TODO notify the passenger they have been removed
 
 
+
 		# --------------------------------------------------------------------
 		# Generate and Store Template Values
 		# --------------------------------------------------------------------
@@ -103,8 +103,9 @@ class ViewRidePageHandler(BaseRequestHandler):
 		template_values['has_occurred'] = (ride.date < ride.date.today()) # is in the past
 		template_values['is_full'] = (ride.count_emptyseats() == 0) # no empty seats
 		template_values['enable_feedback_on_driver'] = (ride.date < ride.date.today()) & ride.is_passenger(current_user) # ride is in the past and current user has been passenger
-		template_values['enable_feedback_on_passengers'] = (ride.date < ride.date.today()) & (current_user == ride.owner) # ride is in the future and current user is owner
-		template_values['enable_edit_controls'] = (ride.date >= ride.date.today()) & (current_user == ride.owner) # ride is in the past and current user was owner
+		template_values['enable_feedback_on_passengers'] = (ride.date < ride.date.today()) & (current_user == ride.owner) # ride is in the past and current user was owner
+		template_values['enable_edit_controls'] = (ride.date >= ride.date.today()) & (current_user == ride.owner) # ride is in the future and current user is owner
+		template_values['enable_passenger_withdraw'] = (ride.date >= ride.date.today()) & ride.is_passenger(current_user) # ride is in the future and current user is passenger
 
 		# --------------------------------------------------------------------
 		# Control the display of the form element
@@ -169,15 +170,30 @@ class ViewRidePageHandler(BaseRequestHandler):
 		template_values['has_occurred'] =  (ride.date < ride.date.today()) # is in the past
 		template_values['is_full'] = (ride.count_emptyseats() == 0) # no empty seats
 		template_values['enable_feedback_on_driver'] = (ride.date < ride.date.today()) & ride.is_passenger(current_user) # ride is in the past and current user has been passenger
-		template_values['enable_feedback_on_passengers'] = (ride.date < ride.date.today()) & (current_user == ride.owner) # ride is in the future and current user is owner
-		template_values['enable_edit_controls'] = (ride.date >= ride.date.today()) & (current_user == ride.owner) # ride is in the past and current user was owner
-
+		template_values['enable_feedback_on_passengers'] = (ride.date < ride.date.today()) & (current_user == ride.owner) # ride is in the past and current user was owner
+		template_values['enable_edit_controls'] = (ride.date >= ride.date.today()) & (current_user == ride.owner) # ride is in the future and current user is owner
+		template_values['enable_passenger_withdraw'] = (ride.date >= ride.date.today()) & ride.is_passenger(current_user) # ride is in the future and current user is passenger
 
 
 		# --------------------------------------------------------------------
 		# Control the display of the form element
 		# and handle the new request
 		# --------------------------------------------------------------------
+
+		# if user is cancelling their ride
+		if current_user == ride.owner and self.request.POST.has_key('do_cancel_ride'):
+		   #TODO notify all the passengers!
+		   ride.delete()
+		   self.redirect("/") # redirect to the main page
+
+		# if passenger is withdrawing
+		if ride.is_passenger(current_user) and self.request.POST.has_key('do_withdraw'):
+		   #TODO notify the driver!
+		   passenger_seat = ride.seats.filter('passenger = ', user).get() # find the passenger's seat
+		   passenger_seat.passenger = None
+		   passenger_seat.accepted = None #disassociate the seat from the user
+		   passenger_seat.save()
+		   self.redirect("/ride?id=%s" % ride.key().id()) # redirect back to the view page
 
 		#if user has already placed a request on this ride ~~appears in get and post
 		if ride.passengerrequests.filter('owner = ', current_user).get():
@@ -186,9 +202,9 @@ class ViewRidePageHandler(BaseRequestHandler):
 			template_values['requestable'] = True #turn on the request button
 
 
-		#if user is placing a request
+		#if user is placing a passenger request
 		if self.request.POST.has_key('do_request_ride') and self.request.POST['do_request_ride']:
-			prq = PassengerRequest(owner=current_user, ride=ride) #create a new passengerrequest
+			prq = PassengerRequest(owner=current_user, ride=ride) #create a new passenger request
 			prq.put()
 			template_values['requestable'] = False #turn off the request button
 

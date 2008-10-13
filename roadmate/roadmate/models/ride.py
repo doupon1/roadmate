@@ -56,7 +56,7 @@ class Ride(db.Model):
 		return (self.seats.filter('passenger = ', user).count() > 0)
 
 	def is_full(self):
-		return self.count_seats() == self.count_passengers()
+		return self.seats.count() == (self.seats.count() - self.seats.filter('passenger = ', None).count())
 
 	# return a formatted html description of the ride's status
 	# we could make this conditional to show some alt text (in red?) if the ride is full

@@ -66,6 +66,7 @@ class ViewRideRequestPageHandler(BaseRequestHandler):
 		template_values['googlemaps_key'] = GoogleMaps.get_key()
 		template_values['message_list'] = riderequest.riderequestmessages
 
+
 		# --------------------------------------------------------------------
 		# Render and Serve Template
 		# --------------------------------------------------------------------
@@ -102,10 +103,12 @@ class ViewRideRequestPageHandler(BaseRequestHandler):
 			self.error(404)
 			return
 
+        #if user is cancelling the riderequest
+        if self.request.POST.has_key('do_cancel_request') and (current_user == riderequest.owner):
+        	riderequest.delete() #delete the riderequest
+        	self.redirect("/browse_riderequests") # redirect to the browse riderequest page
 
         #if user is posting a message
-		#TODO make this more secure! clean the title and body text and validate max/min length!
-
 		if self.request.POST.has_key('do_post_message') and self.request.POST['do_post_message']:
 			message = RideRequestMessage(author=current_user, riderequest=riderequest, title=escape(self.request.POST['message_title']), text=escape(self.request.POST['message_body']))
 			message.put()

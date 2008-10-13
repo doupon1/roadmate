@@ -58,8 +58,32 @@
 
 	<p />
 
+{% if enable_edit_controls %}
+<form method="post" >    <!-- cancel ride form -->
+	<p><strong>Cancel your ride</strong></br>
+	You are the driver on this ride. But if your plans have changed and you cannot
+	take the ride then you should cancel
+	the ride. All passengers that you have approved on the ride will be notified
+	of the cancellation so they	have time to make other plans.
+	</p>
+	<input type="hidden" name="do_cancel_ride" value="True"/>
+	<input class="button"  value="Cancel Ride" type="submit">
+</form>
+{% endif %}
 
-	<!-- calendar scripts begin-->
+{% if enable_passenger_withdraw %}
+<form method="post" >    <!-- passenger withdraw from ride form -->
+	<p><strong>Withdraw from this ride</strong></br>
+	Because you are a passenger on this ride, you can withdraw from it at any time.
+	If your plans have changed and you cannot take the ride then you should withdraw
+	from the ride as soon as possible to give the driver time to assign your seat
+	to someone else.
+	</p>
+	<input type="hidden" name="do_passenger_withdraw" value="True"/>
+	<input class="button"  value="Withdraw" type="submit">
+</form>
+{% endif %}
+<!-- calendar scripts begin-->
 {% if not has_occurred %}
                  <!--hidden field use to insert into calendar-->
 			<input  id="from" type="hidden" value="{{ ride.source.get_addressname }}" />
@@ -68,8 +92,6 @@
 			<input  id="endTime" type="hidden" value="{{ ride.date }}T{{ ride.arrival_time }}.00Z" />
 
 			 <input  id="ride_id" type="hidden" value="{{ride.key.id }}" />
-
-
 
 		<br/>
 	   <form id="log_in"  style="display:none">
@@ -95,7 +117,6 @@
 				 <td>
 				  <input id="remindTime1" type="text" name="remindTime1" value="30" />
 
-
 				 <select id="timeBase1">
                    <option>minutes</option>
                    <option>hours</option>
@@ -118,12 +139,7 @@
 				</td>
 
                 </tr>
-
-
-
-
 	</table>
-
 
 				 <br/>
   <span id="addcalendar">
@@ -138,7 +154,7 @@
 
 <form method="post"><!-- request a seat form-->
 	{% if is_full %} <!-- then show a 'no seats available' message-->
-		<h3 class="full">No seats available</h3>
+		<h3 class="full">No more seats available</h3>
 		 <strong>Sorry, the driver has approved passengers for all of the available seats on this ride.</strong>
 
 	{% else %} <!-- not full, so show the # of seats and request button-->
@@ -153,8 +169,8 @@
 				and you will be notified when it is approved.
 			</strong>
 	{% endif %}
-	</form>
-</p>
+</form>
+<p/>
 {% endif %} <!-- end if not has occurred -->
 
 {% if has_passengers %}<!-- show passengers -->
@@ -200,7 +216,7 @@
 {% endif %}<!-- end if show passengers -->
 
 
-{% if enable_edit_controls %}  <!-- show passenger requests -->
+{% if enable_edit_controls %} {% if ride.passengerrequests.count %}  <!-- show passenger requests -->
 <hr />
 
 <table>
@@ -227,7 +243,7 @@
 	  </tr>
 	{% endfor %}
 	</table>
-{% endif %}<!-- end if show passenger requests -->
+{% endif %}{% endif %}<!-- end if show passenger requests -->
 
 
 {% if lat_lng_src and lat_lng_des %}

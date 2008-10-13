@@ -9,30 +9,31 @@
 
 <script type="text/javascript" language="javascript">
 	// <![CDATA[
-	
+
 	document.observe('dom:loaded', function() {
 		// add autocomplete functionaliy to source address field
 		new Ajax.Autocompleter('id_source_address', 'id_source_address_choices', '/ajax/location-completer', {
 			paramName: 'current_value'
 		});
-		
+
 		// add autocomplete functionality to destiination field
 		new Ajax.Autocompleter('id_destination_address', 'id_destination_address_choices', '/ajax/location-completer', {
 			paramName: 'current_value'
 		});
-		
+
 	});
 
 	// ]]>
-</script>	
+</script>
 {% endblock %}
 
 {% block main %}
 	<h2>request a ride</h2>
 	<p>
-	   You can let drivers know that you want a ride by placing a ride request.<br/>
+	   You can let drivers know that you want a ride by placing a ride request<br/>
 	   Your request will show in <a href='/browse_riderequests'>browse ride requests</a> and you will be notified<br/>
-	   when it is accepted.
+	   when it is accepted. You can cancel the ride request if it is accepted, otherwise it will expire automatically
+	    on the date you enter.
 	</p>
 	<form method="post">
 
@@ -81,11 +82,11 @@
 				{{ riderequest_form.notes }}
 			</div>
 		</div>
-		
+
 		<p>
 			<input type="hidden" name="_do_create_riderequest" value="True"/>
 			<input class="button" type="submit" value="Create"/>
 		</p>
-		
+
 	</form>
 {% endblock %}

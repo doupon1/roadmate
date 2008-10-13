@@ -194,8 +194,8 @@ class CreateFeedbackPageHandler(BaseRequestHandler):
 		if target_user is None or ride is None:
 			self.error(403) # forbidden
 			return
-		#if the current user has already placed feedback on the author for this ride
-		if ride.feedbackmessages.filter('author =', current_user).filter('recipient =', target_user):
+		#if the current user has already placed feedback on the recipient for this ride
+		if ride.feedbackmessages.filter('author =', current_user).filter('recipient =', target_user).count() >= 1:
 			self.redirect("/feedback?id=%s" % target_user.key().id()) # redirect to the recipient's feedback page
 			return
 
