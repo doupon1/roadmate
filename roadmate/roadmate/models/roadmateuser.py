@@ -1,5 +1,3 @@
-
-
 from google.appengine.ext import db
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
@@ -30,9 +28,28 @@ class RoadMateUser(db.Model):
 		else:
 			result = "new"
 		return result
+		
+	def feedback_image(self):
+		score = self.feedback_score()
+		image_html = '<img src="/images/star-%s.gif"/>'
+		
+		if score == "new":
+			return ""
+		
+		if score > 0 and score < 5:
+			return image_html % score
+		elif score > 5:
+			return image_html % "max"
+		
+		return ""
 
 	def get_name_tag(self):
-		return '<a href="/profile?user=' + self.key().id().__str__() + '">' + self.user.email().__str__() + '</a> (<a href="/feedback?id=' + self.key().id().__str__() + '">' + self.feedback_score().__str__() + '</a>) <img src="/images/star-1.gif" />'
+		return  '<a href="/profile?user=' + str(self.key().id()) + '">' \
+					+ str(self.user.email()) + \
+				'</a> ' + \
+				'(<a href="/feedback?id=' + str(self.key().id()) + '">' \
+					+ str(self.feedback_score()) + self.feedback_image() + \
+				'</a>)'
 
 	def __eq__(self, other):
 		"""Overloaded equality operator."""
@@ -112,4 +129,3 @@ class RoadMateUserForm(djangoforms.ModelForm):
 	class Meta:
 		model = RoadMateUser
 		exclude = ['user', 'registration_date']
-
