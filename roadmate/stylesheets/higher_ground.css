@@ -203,10 +203,10 @@ tr.list-heading {
 
 /* message list headings for the different authors*/
 tr.message-owner {
-	background: #c3c3c3;
+	background: #b4d151;
 }
 tr.message-passenger {
-	background: #DFDFDF;
+	background: #c1c1c1;
 }
 tr.message-user {
 	background: #DFDFDF;
