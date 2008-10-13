@@ -163,6 +163,10 @@ td {
 	padding-left: 11px;
 	padding-right: 11px;
 }
+
+table.messages {
+	width: 505px;
+}
 td.first,th.first {
 	border-left: 0px;
 }
@@ -199,13 +203,16 @@ tr.list-heading {
 
 /* message list headings for the different authors*/
 tr.message-owner {
-	background: #CCCCCC;
+	background: #c3c3c3;
 }
 tr.message-passenger {
 	background: #DFDFDF;
 }
-tr.message-user{
+tr.message-user {
 	background: #DFDFDF;
+}
+tr.message-text{
+	background: #ddd;
 }
 
 
@@ -256,13 +263,9 @@ textarea {
 	height:100px;
 	display:block;
 	color:#777;
-<<<<<<< .mine
 	margin-left: auto;
 	margin-right: auto;
-=======
-	margin-left: 10px;
-	margin-right: auto;
->>>>>>> .r345
+	margin-bottom: 10px;
 }
 
 /* special case for feedback radio buttons*/

@@ -161,12 +161,6 @@
 					{{seat.accepted|date_for_table}}
 				</td>
 			{% ifequal current_user ride.owner %} <!-- only show "assign seat" if user is owner -->
-				<td>
-					 <a href="/ride?id={{ride.key.id}}&amp;seat_id={{seat.key.id}}&amp;action=RM">Remove User</a></td>
-				</td>
-				<td>
-					 <a href="/ride?id={{ride.key.id}}&amp;seat_id={{seat.key.id}}&amp;action=DEL">Delete Seat</a></td>
-				</td>
 				{% if has_occurred %}
 					<td>
 						 <a href="/feedback_create?ride={{ride.key.id}}&amp;on={{seat.passenger.key.id}}">Feedback</a></td>
@@ -269,7 +263,7 @@
 
 
 {% if message_list%}  <!-- ride messages -->
-<p />
+
 <table class="messages">
 	{% for message in message_list %}
        <tr class="message-{{ message.style }}"> <td>
@@ -301,8 +295,6 @@
 		</div>
 	</div>
 </form>
-
-</p>
 
 
 <p /><hr />
