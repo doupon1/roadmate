@@ -203,26 +203,17 @@ tr.list-heading {
 
 /* message list headings for the different authors*/
 tr.message-owner {
-	background: #c3c3c3;
-
-	background: #c3c3c3;
-
 	background: #b4d151;
-
 }
 tr.message-passenger {
-	background: #c1c1c1;
+	background: #bbb;
 }
 tr.message-user {
-	background: #DFDFDF;
+	background: #d3d3d3;
 }
 tr.message-text{
 	background: #ddd;
 }
-
-
-
-
 
 /* @end */
 
@@ -331,16 +322,10 @@ input.checkbox
 	height: 10px;
 }
 
-#viewLocaltion{ width:250px;
-height:400px;
-}
 #remindTime1, #remindTime2{ width: 30px;
 
 }
-#viewLocaltion{ width:250px;
-height:400px;
-    
-}
+
 select#id_source {
 	width: 280px;
 }
