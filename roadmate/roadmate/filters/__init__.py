@@ -29,6 +29,6 @@ def datetime_for_table(value):
 register.filter(datetime_for_table)
 
 def time_for_table(value):
-	return time(value, "g:ia")
+	return time(value, "g:i a")
 
 register.filter(time_for_table)

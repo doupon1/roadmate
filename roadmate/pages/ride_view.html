@@ -37,8 +37,8 @@
 	<p> <!-- ride details -->
 		<strong>Date</strong> {{ ride.date }}<br />
 
-		<strong>Departs from </strong><a href="/location?id={{ ride.source.key.id }}">{{ ride.source.get_addressname }}</a><strong> at </strong>{{ ride.departure_time }} <br />
-		<strong>Arrives at </strong><a href="/location?id={{ ride.destination.key.id }}">{{ ride.destination.get_addressname }}</a><strong> at </strong> {{ ride.arrival_time }}<br />
+		<strong>Departs from </strong><a href="/location?id={{ ride.source.key.id }}">{{ ride.source.get_addressname }}</a><strong> at </strong>{{ ride.departure_time|time_for_table }} <br />
+		<strong>Arrives at </strong><a href="/location?id={{ ride.destination.key.id }}">{{ ride.destination.get_addressname }}</a><strong> at </strong> {{ ride.arrival_time|time_for_table }}<br />
 		<strong>Seats </strong> {{ride.count_seats}} <br />
 		<p />
 		<strong>Driver</strong> <a href="/profile?user={{ ride.owner.key.id }}">{{ ride.owner.user.email }}</a><br />

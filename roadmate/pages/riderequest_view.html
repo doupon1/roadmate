@@ -14,8 +14,8 @@
 
 	<p> <!-- Ride Request Details -->
 		<strong>Date</strong> {{ riderequest.date }}<br />
-		<strong>From </strong><a href="/location?id={{ riderequest.source.key.id }}">{{ riderequest.source.get_addressname }}</a><br />
-		<strong>To </strong><a href="/location?id={{ riderequest.destination.key.id }}">{{ riderequest.destination.get_addressname }}</a><br />
+		<strong>From </strong><a href="/location?id={{ riderequest.source.key.id }}">{{ riderequest.source.get_addressname|time_for_table }}</a><br />
+		<strong>To </strong><a href="/location?id={{ riderequest.destination.key.id }}">{{ riderequest.destination.get_addressname|time_for_table }}</a><br />
 		<p />
 
 		<strong>User</strong> {{ riderequest.owner.get_name_tag }} </a><br />
