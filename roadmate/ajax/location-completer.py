@@ -60,8 +60,14 @@ class LocationCompleterRequestHandler(BaseRequestHandler):
 		
 		fetch_url = WISES_FETCH_URL + '?address=' + urllib.quote_plus(current_value) 
 		
-		content = urlfetch.fetch(fetch_url).content
-		query_content = simplejson.loads(content)
+		query_content = {}
+		
+		try:
+			content = urlfetch.fetch(fetch_url).content
+			query_content = simplejson.loads(content)
+		except:
+			self.error(500)
+			return
 		
 		closest_locations = []
 		
