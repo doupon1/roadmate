@@ -103,12 +103,12 @@ class ViewRideRequestPageHandler(BaseRequestHandler):
 			self.error(404)
 			return
 
-        #if user is cancelling the riderequest
-        if self.request.POST.has_key('do_cancel_request') and (current_user == riderequest.owner):
-        	riderequest.delete() #delete the riderequest
-        	self.redirect("/browse_riderequests") # redirect to the browse riderequest page
+		#if user is cancelling the riderequest
+		if self.request.POST.has_key('do_cancel_request') and (current_user == riderequest.owner):
+			riderequest.delete() #delete the riderequest
+			self.redirect("/browse_riderequests") # redirect to the browse riderequest page
 
-        #if user is posting a message
+		#if user is posting a message
 		if self.request.POST.has_key('do_post_message') and self.request.POST['do_post_message']:
 			message = RideRequestMessage(author=current_user, riderequest=riderequest, title=escape(self.request.POST['message_title']), text=escape(self.request.POST['message_body']))
 			message.put()
