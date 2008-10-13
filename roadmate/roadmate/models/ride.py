@@ -73,10 +73,10 @@ class Ride(db.Model):
 				passenger_text = "1 PASSENGER" # if there is 1 passenger, set it to 1
 
 			if self.count_seats() >1: #if there is more than one, use a plural form
-			   seat_text = self.count_seats().__str__() + " SEATS"
+			   seat_text = str(self.count_seats()) + " SEATS"
 
 			if self.count_passengers() >1:
-			   passenger_text = self.count_passengers().__str__() + " PASSENGERS"
+			   passenger_text = str(self.count_passengers()) + " PASSENGERS"
 
 		   	return '<h4>' + seat_text + '<br/>' + passenger_text + '</h4>'
 

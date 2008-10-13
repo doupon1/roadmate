@@ -51,7 +51,6 @@ class MyridesPageHandler(BaseRequestHandler):
 
 		template_values['my_rides'] = current_user.rides.filter('date >=', datetime.date.today()) # only future rides or rides that occur today
 		template_values['my_past_rides'] = current_user.rides.filter('date <', datetime.date.today()) # only rides that occurred yesterday or earlier
-	##	print(current_user.rides.filter('date <', datetime.date.today()).count())
 		# --------------------------------------------------------------------
 		# Render and Serve Template
 		# --------------------------------------------------------------------

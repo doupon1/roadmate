@@ -2,6 +2,7 @@
 
 import os
 import logging
+import datetime
 
 from google.appengine.api import users
 from google.appengine.ext import db
@@ -48,7 +49,20 @@ class MybookingsPageHandler(BaseRequestHandler):
 		# we redirect them back to the home page.
 		template_values['logout_url'] = users.create_logout_url('/')
 
-		template_values['my_booked_seats'] = list(current_user.myseats)
+		# sort out the rides into current and past
+		# GQL doesn't have the ability to join tables (seat to ride) and query on the result
+		# so need to sort the seats into current/past lists by iteration
+		seats = current_user.myseats
+		current_seats = []
+		past_seats = []
+		for seat in seats:
+			if seat.ride.date >= datetime.date.today():
+				current_seats.append(seat)
+			else:
+			    past_seats.append(seat)
+		# now create the template values for these output lists
+		template_values['current_seats'] = current_seats
+		template_values['past_seats'] = past_seats
 
 		# --------------------------------------------------------------------
 		# Render and Serve Template

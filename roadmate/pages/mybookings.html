@@ -3,35 +3,84 @@
 {% block title%}My Booked Rides{% endblock %}
 
 {% block main %}
-	<h2>my booked rides</h2>
-       	<p>These are the rides that you have been accepted as a passenger on.<br/>
-		   Rides you have requested to be a passenger on until
-		you have been accepted as a passenger by the driver of that ride.</p>
+<!-- this page has two parts, the rides the user is currently a passenger on
+and the rides they have been a passenger on in the past -->
 
-	{% if my_booked_seats %}
-		<table class="roadmate-list">
-			{% for seat in my_booked_seats %}
-				<tr class="list-item">
-				    <tr class="list-row">
-				        {% if not seat.ride.is_full %}<th rowspan="2" class="list-header"></th>{% else %}<th rowspan="2" class="list-header-red"> {% endif %}
-		    			<td> {{seat.ride.date|date_for_table }}</td>
-		     			<td> {{seat.ride.owner.get_name_tag}} </td>
-		     			<td> {{seat.ride.status}} </td>
-					</tr>
-				    <tr class="list-row">
-					    <td colspan=3><strong><a href="/ride?id={{ ride.key.id }}">{{ seat.ride.get_name }}</strong></a>
-						</td>
-					</tr>
-				</tr> <!-- end list item -->
+<!-- currently a passenger on -->
+	<h2>rides where i'm currently a passenger</h2>
+{% if current_seats %}
 
-			{% endfor %}
-	</table>
 
-	{% else %}
-	   <p />
-	   <h3>You have no rides booked.</h3>
-	   <p>Looking for a ride? Try <a href="/browse_rides">browse all rides</a>.</p>
+    <p><strong>These are the current rides you are taking</strong><br/>
+	   Rides you have requested to be a passenger on until
+		you have been accepted as a passenger by the driver of that ride.
+		Once you have been accepted, you are considered to have booked that seat
+		and if your plans change, it is your responsibility to cancel your seat beforehand
+		so the driver is able to assign it to another user.
+    </p>
+    <p>If you are looking for rides to take, try <a href="/browse_rides">Browse All Rides</a></p>
+	<table class="roadmate-list">
+		{% for seat in current_seats %}
+			<tr class="list-item">
+			    <tr class="list-row">
+			        {% if not seat.ride.is_full %}<th rowspan="2" class="list-header"></th>{% else %}<th rowspan="2" class="list-header-red"> {% endif %}
+	    			<td> {{seat.ride.date|date_for_table }}</td>
+	     			<td> {{seat.ride.owner.get_name_tag}} </td>
+	     			<td> {{seat.ride.status}} </td>
+				</tr>
+			    <tr class="list-row">
+				    <td colspan=3><strong><a href="/ride?id={{ ride.key.id }}">{{ seat.ride.get_name }}</strong></a>
+					</td>
+				</tr>
+			</tr> <!-- end list item -->
 
-	{% endif %}
+		{% endfor %}
+</table>
+
+{% else %}
+   <p />
+   <h3>You have not booked a seat on any rides.</h3>
+   <p>
+	Rides you have requested to be a passenger on until	you have been
+	accepted as a passenger by the driver of that ride.</p>
+    <p>To find a ride click <a href="/browse_rides">Browse All Rides</a></p>
+
+{% endif %}
+
+<p/><hr/><p/>
+
+<!-- has been a passenger on -->
+	<h2>rides where i have been a passenger</h2>
+{% if past_seats %}
+
+       	<p><strong>These are the rides that you have taken as a passenger</strong><br/>
+ 		After you have been a passenger on a ride it will be added to this list, you
+   		can view their details and place feedback on the driver.</p>
+	<table class="roadmate-list">
+		{% for seat in past_seats %}
+			<tr class="list-item">
+			    <tr class="list-row">
+			        {% if not seat.ride.is_full %}<th rowspan="2" class="list-header"></th>{% else %}<th rowspan="2" class="list-header-red"> {% endif %}
+	    			<td> {{seat.ride.date|date_for_table }}</td>
+	     			<td> {{seat.ride.owner.get_name_tag}} </td>
+	     			<td> {{seat.ride.status}} </td>
+				</tr>
+			    <tr class="list-row">
+				    <td colspan=3><strong><a href="/ride?id={{ ride.key.id }}">{{ seat.ride.get_name }}</strong></a>
+					</td>
+				</tr>
+			</tr> <!-- end list item -->
+
+		{% endfor %}
+</table>
+
+{% else %}
+   <p />
+   <h3>You have not been a passenger on any rides</h3>
+   <p>
+ 		After you have taken rides they will show in this list, you
+   		can view their details and place feedback on the driver.</p>
+
+{% endif %}
 
 {% endblock %}
