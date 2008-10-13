@@ -5,6 +5,7 @@ import os
 import urllib
 import logging
 import math
+import datetime
 
 import simplejson
 
@@ -38,6 +39,7 @@ class LocationFinderRequestHandler(BaseRequestHandler):
                         desCircleCenterLng - float[Required]
                         srcRadius - float[Required]
                         desRadius - float[Required]
+                        filter - String[Required]
 	"""
 	def post(self):
 		# --------------------------------------------------------------------
@@ -50,9 +52,10 @@ class LocationFinderRequestHandler(BaseRequestHandler):
 		desCircleCenterLng = self.get_request_parameter('desCircleCenterLng', converter=float, default=None)
 		srcRadius = self.get_request_parameter('srcRadius', converter=float, default=None)
 		desRadius = self.get_request_parameter('desRadius', converter=float, default=None)
+		date_filter = self.get_request_parameter('filter', converter=str, default=None)
 		
-		logging.info("srcCircle center lat: %s,srcCircle center lng: %s, srcCircle Radius %d, desCircle center lat: %s,desCircle center lng: %s, desCircle Radius %d" %
-				(srcCircleCenterLat, srcCircleCenterLng, srcRadius, desCircleCenterLat, desCircleCenterLng, desRadius))
+		logging.info("srcCircle center lat: %s,srcCircle center lng: %s, srcCircle Radius %d, desCircle center lat: %s,desCircle center lng: %s, desCircle Radius %d, filter %s" %
+				(srcCircleCenterLat, srcCircleCenterLng, srcRadius, desCircleCenterLat, desCircleCenterLng, desRadius, date_filter))
 
 		# --------------------------------------------------------------------
 		# Validate Request
@@ -75,6 +78,9 @@ class LocationFinderRequestHandler(BaseRequestHandler):
 		if desRadius is None:
 			self.error(400)
 			return
+		if date_filter is None:
+			self.error(400)
+			return
 		# --------------------------------------------------------------------
 		# Generate and Store Template Values
 		# --------------------------------------------------------------------
@@ -83,9 +89,28 @@ class LocationFinderRequestHandler(BaseRequestHandler):
 		desR = desRadius/1000
 		validPoints = []
 
-		rides = db.GqlQuery("SELECT * FROM Ride")
+		OneDay = datetime.timedelta(days=1)
+		OneWeek = datetime.timedelta(days=6)
+
+		today = datetime_from_date(datetime.datetime.today())
+		tomorrow = today + OneDay
+		nxt_day = tomorrow + OneDay
 		
+		rides = db.GqlQuery("SELECT * FROM Ride " + "WHERE date >= :1", today)
+							
+		if date_filter == "Today":
+			rides = db.GqlQuery("SELECT * FROM Ride " +"WHERE date >= :1 AND date <= :2", today, tomorrow)
+
+		if date_filter == "Tomorrow":
+			rides = db.GqlQuery("SELECT * FROM Ride " +"WHERE date >= :1 AND date <= :2", tomorrow, nxt_day)
+		 						
+		if date_filter == "This Week":
+			week_start = today
+			week_end = today + OneWeek
+			rides = db.GqlQuery("SELECT * FROM Ride " +"WHERE date >= :1 AND date <= :2", week_start, week_end)
+
 		for ride in rides:
+			date = ride.date
 			current_src = ride.source.get_lat_loc()
 			current_des = ride.destination.get_lat_loc()
 			srcLat, srcLon = current_src.split(", ")
@@ -154,6 +179,9 @@ def encode_ride(ride):
 				"lng" : desLng
 			}
 		}
+
+def datetime_from_date(date):
+    return datetime.datetime(date.year, date.month, date.day, 0, 0, 0)
 
 # ----------------------------------------------------------------------------
 #  Program Entry Point

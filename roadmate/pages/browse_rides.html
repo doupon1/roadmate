@@ -27,6 +27,11 @@
 	
 	{% block main %}
 	<h2>browse rides</h2>
+	
+	<p>
+	<strong>Search all available rides by defining a source and a destination</strong><br>Or click on the map and define the
+	two circles. For more information on how to use the map go to the support page.
+	</p>
 	<div class="inputgroup">
 	<form name="searchForm" onSubmit="doSearch(); return false">
 	<table cellpadding="4" cellspacing="4">
@@ -47,6 +52,18 @@
 				<INPUT type="text" name="destination" id="id_destination_search">
 				<div id="destination_choices" class="address_autocomplete" style="display: none;"></div>
 			</td>
+		</tr>
+		<tr>
+		<td><label for="time">Time Filter: </label></td>
+		<td>
+			<select name = "timeFilter" id="time_filter">
+				<option>Today</option>
+				<option>Tomorrow </option>
+				<option>This Week</option>
+				<option>All</option>
+			</select>
+		
+		</td>
 		</tr>
 	</table>
 		<input class="search_button"  type="submit" value="Search">
@@ -78,7 +95,8 @@
 	var pointOne = null;
 	var pointTwo = null;
 	var bounds = new GLatLngBounds();
-	
+	var filter = null;
+	var filterValue;
 	var mapBounds = null;
 	var southwest = null
 	var northeast = null
@@ -89,20 +107,20 @@
 	  pointOne = null;
 	  pointTwo = null;
 	  bounds = new GLatLngBounds();
+	  filter = document.getElementById("time_filter");
+	  filterValue = filter.options[filter.selectedIndex].text;
 	  count = 0;
 	  var txtSrc = document.searchForm.source.value;
 	  var txtDes = document.searchForm.destination.value;
 	  $("map").show();
-	  displayMap(txtSrc , txtDes);
+	  displayMap(txtSrc , txtDes, filterValue);
 	}
 	
-	function displayMap(srcAdd, desAdd){
+	function displayMap(srcAdd, desAdd, filterValue){
 	  myMap = new GMap2(document.getElementById("map"));
 	  myMap.setCenter(new GLatLng(-41, 174),5);
-	  
 	  myMap.addControl(new GSmallMapControl());
-	  myMap.disableDoubleClickZoom()
-	  myMap.enableScrollWheelZoom();  
+	  myMap.disableDoubleClickZoom(); 
 	  radius = 2000; //radius measured in meters
 	  
 	  myQueryControl = new QueryControl();//localSearch
@@ -360,7 +378,7 @@
 		new Ajax.Request('/ajax/location-finder',
 		{
 			method:'post',
-			parameters: {srcCircleCenterLat: srcCenterlat, srcCircleCenterLng: srcCenterlng, desCircleCenterLat: desCenterlat, desCircleCenterLng: desCenterlng, srcRadius: srcRadius, desRadius: desRadius},
+			parameters: {srcCircleCenterLat: srcCenterlat, srcCircleCenterLng: srcCenterlng, desCircleCenterLat: desCenterlat, desCircleCenterLng: desCenterlng, srcRadius: srcRadius, desRadius: desRadius, filter: filterValue},
 			onSuccess: function(transport){
 				var rides = transport.responseText.evalJSON();
 
@@ -581,7 +599,7 @@
 	</script>
 	
 	</head>
-	<body onLoad="displayMap(null, null)" onUnload="GUnload()">
+	<body onLoad="displayMap(null, null, null)" onUnload="GUnload()">
 		<div id="map" style="width: 100%; height: 95%;"></div>
 		<!-- Part of code was produced 3rdCrust.com http://www.3rdcrust.com -->
 	</body>
