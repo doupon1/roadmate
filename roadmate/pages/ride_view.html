@@ -41,18 +41,21 @@
 		<p />
 		<strong>Departs from </strong><a href="/location?id={{ ride.source.key.id }}">{{ ride.source.get_addressname }}</a><strong> at </strong>{{ ride.departure_time|time_for_table }} <br />
 		<strong>Arrives at </strong><a href="/location?id={{ ride.destination.key.id }}">{{ ride.destination.get_addressname }}</a><strong> at </strong> {{ ride.arrival_time|time_for_table }} (estimated)<br />
-		<p />
 
-		<strong>Driver</strong> {{ride.owner.get_name_tag }}<br/>
-		{% if enable_feedback_on_driver %}
-		   <p><a href="/feedback_create?ride={{ride.key.id}}&on={{ride.owner.key.id}}"><strong>Place feedback on driver</strong></a><br />
-		   As you were a passenger on this ride, you are now able to place feedback on the driver which will be visible to other users
-		   on their <a href="/feedback?id={{ride.owner.key.id}}">feedback page</a> and will contribute to their social score</p>
-		{% endif %}
-		<p />
 		{% if ride.notes %}
+		<p />
 			<strong>Notes</strong> {{ ride.notes|escape }}<br />
 		{% endif %}
+		<p />
+
+		<strong>Driver</strong> {{ride.owner.get_name_tag }}
+		{% if enable_feedback_on_driver %} <!-- if the ride has occurred and current user, enable feedback -->
+			   <a href="/feedback_create?ride={{ride.key.id}}&on={{ride.owner.key.id}}"><strong>Place feedback</strong></a>
+			   <p><strong>You can now place feedback on the driver</strong></a><br />
+			   As you were a passenger on this ride, you are now able to place feedback on the driver which will be visible to other users
+			   on their <a href="/feedback?id={{ride.owner.key.id}}">feedback page</a> and will contribute to their social score</p>
+		{% endif %}<br/>
+
 	<p />
 
 
@@ -128,7 +131,7 @@
 
   </span>
 		</form>
-{% endif %} 	<!--calendar scripts end-->
+<!--calendar scripts end-->
 
 
 
@@ -152,6 +155,7 @@
 	{% endif %}
 	</form>
 </p>
+{% endif %} <!-- end if not has occurred -->
 
 {% if has_passengers %}<!-- show passengers -->
 <hr />
@@ -171,26 +175,32 @@
 				<td>
 					{{seat.accepted|date_for_table}}
 				</td>
-			{% ifequal current_user ride.owner %} <!-- only show "assign seat" if user is owner -->
-				{% if has_occurred %}
+				{% if enable_feedback_on_passengers %} <!-- show the feedback link -->
 					<td>
-						 <a href="/feedback_create?ride={{ride.key.id}}&amp;on={{seat.passenger.key.id}}">Feedback</a></td>
-					</td>
-				{% else %}
-					<td>
-						 <a href="/ride?id={{ride.key.id}}&amp;seat_id={{seat.key.id}}&amp;action=RM">Remove User</a></td>
+						 <a href="/feedback_create?ride={{ride.key.id}}&amp;on={{seat.passenger.key.id}}"><strong>Place Feedback</strong></a></td>
 					</td>
 				{% endif %}
-			{% endifequal %}
+				{% if enable_edit_controls %}<!-- show the remove passenger link -->
+					<td>
+						 <a href="/ride?id={{ride.key.id}}&amp;seat_id={{seat.key.id}}&amp;action=RM"><strong>Remove User</strong></a></td>
+					</td>
+				{% endif %}
 			</tr>
 	  {% endif %}
 	{% endfor %}
 </table>
-<!-- end if - show passengers -->
-{% endif %}
+{% if enable_feedback_on_passengers %} <!-- show the feedback on passenger instruction -->
+	<p><strong>You can now place feedback on passengers</strong></a><br />
+	As you were a the driver on this ride, you are now able to place feedback on
+	your passenger which will be visible to other users
+	on their feedback page and will contribute to their social score.
+	</p>
+{% endif %} <!-- end if show feedback instruction -->
+
+{% endif %}<!-- end if show passengers -->
 
 
-{% ifequal current_user ride.owner %}{% if ride.passengerrequests.count %} <!-- show passenger requests -->
+{% if enable_edit_controls %}  <!-- show passenger requests -->
 <hr />
 
 <table>
@@ -209,19 +219,16 @@
 			<td>
 				{{prq.created|date_for_table}}
 			</td>
-		{% ifequal current_user ride.owner %} <!-- only show "approve" if user is owner -->
+		{% if enable_edit_controls %} <!-- show "approve" -->
 			<td>
-				 <a href="/ride?id={{ride.key.id}}&amp;prq_id={{prq.key.id}}&amp;action=APRV">Approve</a></td>
+				 <a href="/ride?id={{ride.key.id}}&amp;prq_id={{prq.key.id}}&amp;action=APRV"><strong>Approve Request</strong></a></td>
 			</td>
-		{% endifequal %}
+		{% endif %}
 	  </tr>
 	{% endfor %}
 	</table>
+{% endif %}<!-- end if show passenger requests -->
 
-
-	<!-- end if show passenger requests -->
-	{% endif %}
-{% endifequal %}
 
 {% if lat_lng_src and lat_lng_des %}
 	<p> <!-- Static Google Map -->

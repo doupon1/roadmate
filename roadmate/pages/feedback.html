@@ -5,13 +5,8 @@
 {% block main %}
 	<h2>feedback</h2>
 	<h3>{{target_user.get_name_tag}}</h3>
-
+	<p/>
 	{% if feedback_list %}
-	<p>
-	     <strong>Positive Feedback</strong> {{count_positive}} <br/>
-	     <strong>Neutral Feedback</strong> {{count_neutral}} <br/>
- 	     <strong>Negative Feedback</strong> {{count_negative}} <br/>
-	</p>
 
 		<table class="roadmate-list">
 			{% for feedback in feedback_list %}
@@ -21,7 +16,7 @@
 						{{feedback.icon}}
 	     			</td>
 	     			<td >
-						{{feedback.author.get_name_tag}} ({{ feedback.role }})
+						{{feedback.author.get_name_tag}} (from {{ feedback.role }})
 	     			</td>
 	     			<td >
 						{{ feedback.created|date_for_table }}

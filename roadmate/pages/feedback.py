@@ -13,7 +13,7 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 from roadmate.converters import is_true
 from roadmate.google.googlemaps import GoogleMaps
 from roadmate.handlers.baserequesthandler import BaseRequestHandler
-
+from django.template.defaultfilters import escape
 
 from roadmate.models.roadmateuser import RoadMateUser
 from roadmate.models.ride import Ride
@@ -135,9 +135,9 @@ class CreateFeedbackPageHandler(BaseRequestHandler):
 		# if the target user is not the driver, and the current user is not a passenger
 		# or vice versa, then error
 		if ride.is_passenger(current_user) and (target_user == ride.owner):
-			target_user_role = 'passenger'
-		elif ride.is_passenger(target_user) and (current_user == ride.owner):
 			target_user_role = 'driver'
+		elif ride.is_passenger(target_user) and (current_user == ride.owner):
+			target_user_role = 'passenger'
 		else: # then the relationship is not valid
 			self.error(403) # forbidden
 			return
@@ -194,6 +194,11 @@ class CreateFeedbackPageHandler(BaseRequestHandler):
 		if target_user is None or ride is None:
 			self.error(403) # forbidden
 			return
+		#if the current user has already placed feedback on the author for this ride
+		if ride.feedbackmessages.filter('author =', current_user).filter('recipient =', target_user):
+			self.redirect("/feedback?id=%s" % target_user.key().id()) # redirect to the recipient's feedback page
+			return
+
 
 		# if the target user is not the driver, and the current user is not a passenger
 		# or vice versa, then error
@@ -275,7 +280,7 @@ class CreateFeedbackPageHandler(BaseRequestHandler):
 						 ) # not validated
 
 		feedback_message.put() # save the new Message
-		self.redirect("/profile?id=%s" % target_user.key().id()) # redirect to the recipient's profile page or feedback page
+		self.redirect("/feedback?id=%s" % target_user.key().id()) # redirect to the recipient's profile page or feedback page
 
 
 

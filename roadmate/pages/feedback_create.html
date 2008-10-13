@@ -12,10 +12,11 @@
 	<form method="post">
 		<div class="inputgroup">
 
+			 <strong>Ride </strong><a href="/ride?id={{ ride.key.id }}">{{ ride.get_name }}</a><br/>
+		    <strong>Date </strong>{{ ride.date|date_for_table }}<br/>
+		    <br/>
 
-		    <strong>Date </strong>{{ ride.date|date_for_table }}</strong><br/>
-
-			<strong>User </strong><a href ="/profile?user={{target_user.key.id}}">{{ target_user.user.email }}</a> <br/>
+			<strong>User </strong>{{ target_user.get_name_tag }} <br/>
 			{{feedback_form.value}}<br/>
 
 			<strong>Enter your feedback</strong><br/>
@@ -27,13 +28,13 @@
 
 	</form>
 	<p>
-	   This is a chance to tell other RoadMate users what you thought of the driver and the ride.
+	   <strong>Placing feedback supports the RoadMate community</strong><br/>
+	   This is a chance to tell other RoadMate users what you thought of the {{target_user_role}} and the ride.
 	   Your comments will be visible on the public profile of the driver and the rating you assign
-	   them will contribute to their feedback score.
+	   them will contribute to their feedback score. This will help other drivers decide
 	</p>
 	<p>
-	Please try and keep your comments constructive, and refrain from using
-	 inappropriate or offensive language.
+	Please try and keep your comments constructive, and free from inappropriate or offensive language.
     </p>
 
 <p /><hr /><p />
