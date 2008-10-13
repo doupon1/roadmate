@@ -31,6 +31,10 @@
 	<form name="searchForm" onSubmit="doSearch(); return false">
 	<table cellpadding="4" cellspacing="4">
 		<tr>
+			<td><span id="er1" style="display:none"><ul class="errorlist"><li>Source Address is not valid</li></ul></span></td>
+			<td><span id="er2" style="display:none"><ul class="errorlist"><li>Destination Address in not valid</li></ul></span></td>
+		</tr>
+		<tr>
     		<td><label for="id_source_search">Source: </label></td>
             <td>
 				<INPUT type="text" name="source" id="id_source_search">
@@ -47,22 +51,23 @@
 	</table>
 		<input class="search_button"  type="submit" value="Search">
 	</form>
+
+	</div>	
 	
-	</div>
 	<head>
 	<script src="http://maps.google.com/maps?file=api&amp;v=2.x&amp;key={{key}}" type="text/javascript"></script>
-	<!-- <script src="/scripts/scriptaculous/1.8.1/prototype.js" type="text/javascript"></script>-->
 	<script src="http://www.google.com/uds/api?file=uds.js&amp;v=1.0&amp;key={{key}}" type="text/javascript"></script>
 	<script src="http://www.google.com/uds/solutions/localsearch/gmlocalsearch.js?adsense=pub-1227201690587661" type="text/javascript"></script>
 	<script src="/scripts/google-maps/markermanager.js" type="text/javascript"></script>
 	<script type="text/javascript" language="JavaScript">
 	var myMap = null;
-	//var localSearch = null;
+	var localSearch = null;
 	var myQueryControl = null;
 	var count =0;
 	var mgr;
 	var markers = [];
 	var radius;
+	var tempRds = 0;
 	var name;
 	var currentCenter1 = new GLatLng();
 	var currentCenter2 = new GLatLng();
@@ -74,67 +79,79 @@
 	var pointTwo = null;
 	var bounds = new GLatLngBounds();
 	
+	var mapBounds = null;
+	var southwest = null
+	var northeast = null
+	var SwNeDist = null
+	var tempRds = SwNeDist * 0.1;
+	
 	function doSearch(){
 	  pointOne = null;
 	  pointTwo = null;
 	  bounds = new GLatLngBounds();
-	  count =0;
+	  count = 0;
 	  var txtSrc = document.searchForm.source.value;
 	  var txtDes = document.searchForm.destination.value;
+	  $("map").show();
 	  displayMap(txtSrc , txtDes);
 	}
 	
 	function displayMap(srcAdd, desAdd){
 	  myMap = new GMap2(document.getElementById("map"));
-	  myMap.setCenter(new GLatLng(0,0), 12);
+	  myMap.setCenter(new GLatLng(-41, 174),5);
 	  
 	  myMap.addControl(new GSmallMapControl());
+	  myMap.disableDoubleClickZoom()
 	  myMap.enableScrollWheelZoom();  
 	  radius = 2000; //radius measured in meters
 	  
 	  myQueryControl = new QueryControl();//localSearch
 	  myMap.addControl(myQueryControl);
-
 	 
 	  var initSource = new GClientGeocoder();
 	  var initDestination = new GClientGeocoder();
 	  
-	  initSource.getLatLng(srcAdd, function(point) {
-		if (!point) {
-			alert(srcAdd + " not found");
-		} else {
-			pointOne = point;
-			if(pointOne && pointTwo)
-				setPoints(pointOne,pointTwo);
-		 }
-		});
-	  initDestination.getLatLng(desAdd, function(point1) {
-	  	if (!point1) {
-			alert(desAdd + " not found");
-		} else {
-			pointTwo = point1;
-			if(pointOne && pointTwo)
-				setPoints(pointOne,pointTwo);
-		}
-
-	  });
-
-		
-
-	  
+	  if(srcAdd && desAdd){
+		  initSource.getLatLng(srcAdd, function(point) {
+			if (!point) {
+				$("er1").show();
+			} else {
+				pointOne = point;
+				if(pointOne && pointTwo)
+					setPoints(pointOne,pointTwo);
+			 }
+			});
+		  initDestination.getLatLng(desAdd, function(point1) {
+			if (!point1) {
+				$("er2").show();
+			} else {
+				pointTwo = point1;
+				if(pointOne && pointTwo)
+					setPoints(pointOne,pointTwo);
+			}
+	
+		  });
+	  }
+	
 	  GEvent.addListener(myMap, "click", function(overlay, point) {
+	  	var zoom = myMap.getZoom();
+		
+		mapBounds = myMap.getBounds();
+		southwest = mapBounds.getSouthWest();
+		northeast = mapBounds.getNorthEast();
+		SwNeDist = distance(southwest,northeast);
+		tempRds = SwNeDist * 0.1* 500;
+	  
 		if (point && count < 2) {
 		  if(count == 0){
 		  	name = "source";
-		  }
-
-		  if(count == 1){
+		  }else if(count == 1){
 		  	name = "destination";
 		  }
-		  
-		  count = count + 1;
+
 		  singleClick = !singleClick;
-		  setTimeout("if (singleClick) createCircle(name ,new GLatLng("+ point.y + ", " + point.x +"), radius);", 100);
+		  setTimeout("if (singleClick) createCircle(name ,new GLatLng("+ point.y + ", " + point.x +"), tempRds);", 100);
+
 		}
 	  });
 	}
@@ -143,19 +160,13 @@
 		if(point1 && point2){
 			var dist = distance(point1, point2);
 			var nwRad = (dist * 0.1) * 1000; // radius is 10% of total distance
-			count = 0;
 			createCircle("source",point1,nwRad);
-
-			count = 1;
 			createCircle("destination",point2,nwRad);
-			
 			bounds.extend(point1);
 			bounds.extend(point2);
 			myMap.setZoom(myMap.getBoundsZoomLevel(bounds));
       		myMap.setCenter(bounds.getCenter());
-			//return true;
 		}
-		//return false;
 	}
 	  var metric = false;
 	  var singleClick = false;
@@ -254,6 +265,7 @@
 		circle2Radius = radius;		
 		COLORI=count;
 		this._color = this.COLORS[COLORI];//
+		count++;
 		if(this._name == "source"){
 			currentCenter1 = this._centerHandle.getLatLng();//////////////////////////////////////////////////////////////////////Modified
 		}
@@ -399,16 +411,16 @@
 					var srcPoint = new GLatLng(rides[a].source.lat, rides[a].source.lng);
 					var desPoint = new GLatLng(rides[a].destination.lat, rides[a].destination.lng);
 					
-					var srcMarker = createSrcMarker(rides[a].id, srcPoint, "/images/google-maps-icons/marker-BLUE-"+alphabets[a]+"-UPPER.png");
-					var desMarker = createDesMarker(rides[a].id, desPoint, "/images/google-maps-icons/marker-GREEN-"+alphabets[a]+"-UPPER.png");
+					var srcMarker = createMarker(rides[a].id, srcPoint, "/images/google-maps-icons/marker-BLUE-"+alphabets[a]+"-UPPER.png");
+					var desMarker = createMarker(rides[a].id, desPoint, "/images/google-maps-icons/marker-GREEN-"+alphabets[a]+"-UPPER.png");
 					
 					GEvent.addListener(srcMarker, "click", function() {
-						//alert("reched");
-						myObject._map.openInfoWindowHtml("Source Clicked");
+						alert("reched");
+						srcMarker.openInfoWindowHtml("<strong> Hiiii </strong>");
 					});
 					GEvent.addListener(desMarker,"click", function() {
-						//alert("reched");
-						myObject._map.openInfoWindowHtml("Destination Clicked");
+						alert("reched");
+						desMarker.openInfoWindowHtml("<strong> Hiiii </strong>");
 					});
 					GEvent.addListener(myObject._map, "click", function() {
           				myObject._map.closeInfoWindow();
@@ -420,13 +432,13 @@
 					markers.push(desMarker);
 				}
 		},
-		onFailure: function(){ alert('Something went wrong...') }
+		//onFailure: function(){ alert('Something went wrong...') }
 		});
 	
 	}
 	<!-------------------------------- Ajax Ends-------------------------------------------->
 	
-	function createSrcMarker(id, point , image)
+	function createMarker(id, point , image)
 	{
 		var func_icon = new GIcon(G_DEFAULT_ICON);
         func_icon.image = image;
@@ -434,17 +446,6 @@
 		func_marker.ride_id = id;
         return func_marker;
 	}
-	
-	
-	function createDesMarker(id, point, image)
-	{
-		var func_icon = new GIcon(G_DEFAULT_ICON);
-        func_icon.image = image;
-        var func_marker = new GMarker(point, {icon:func_icon});
-		func_marker.ride_id = id;
-        return func_marker;
-	}
-
 	
 	
 	GeoQuery.prototype.getRadius = function() {
@@ -590,43 +591,13 @@
 	</script>
 	
 	</head>
-	 <!-- onLoad="displayMap(srcAdd, desAdd)" onUnload="GUnload()" -->
-	<body>
+	<body onLoad="displayMap(null, null)" onUnload="GUnload()">
 		<div id="map" style="width: 100%; height: 95%;"></div>
-		<div style="font-family: arial, sans-serif;">Made by <a href="http://www.3rdcrust.com">3rdCrust.com</a></div>
+		<!-- Part of code was produced 3rdCrust.com http://www.3rdcrust.com -->
 	</body>
 
 
 <!--------------------------------------------------------End of Java Script------------------------------------------------------------------------->
-	<p>#TODO description of this page goes here.</br>
-	maybe we could put some controls here to limit the results
-	by date occurring or date created?
-	</p>
-	{% if rides %}
-		<table>
-			<tr>
-				<th>Ride</th>
-				<th>Date</th>
-				<th>Owner</th>
-				<th>Status</th>
-	
-			</tr>
-	
-				{% for ride in rides %}
-				<tr class="row-a">
-					<td><a href="/ride?id={{ ride.key.id }}">{{ ride.get_name }}</a></td>
-					<td>{{ ride.date|date_for_table }}</td>
-					<td><a href ="/profile?user={{ride.owner.key.id}}">{{ ride.owner.user.email|local_part_from_email }}</a></td>
-					<td>{{ ride.status }}</td>
-				</tr>
-				{% endfor %}
-		</table>
-	{% else %}
-	   <h3>Sorry, there are currently no rides available.</h3>
-	   <p>Why not <a href="/ride_create">offer a ride</a> of your own</p>
-	{% endif %}
-	
-	
 
 
 {% endblock %}
