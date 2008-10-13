@@ -528,28 +528,28 @@ select#id_destination {
 
 }
 
-#main .address_autocomplete {
+.address_autocomplete {
 	background-color: rgba(243,243,243,0.9);
 }
 
-#main .address_autocomplete ul {
+.address_autocomplete ul {
 	margin: 0;
 	padding: 0;
 }
 
-#main .address_autocomplete ul li {
+.address_autocomplete ul li {
 	list-style-image: none;
 	padding-right: 5px;
 	padding-top: 1px;
 	padding-left: 5px;
 }
 
-#main .address_autocomplete ul li.selected {
+.address_autocomplete ul li.selected {
 	color: #5A93C9;
 	background-color: #e4e4e4;
 }
 
-#main .address_autocomplete ul li:hover {
+.address_autocomplete ul li:hover {
 	color: #5A93C9;
 	background-color: #e4e4e4;
 }
