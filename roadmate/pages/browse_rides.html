@@ -11,12 +11,12 @@
 	
 	document.observe('dom:loaded', function() {
 		// add autocomplete functionaliy to source address field
-		new Ajax.Autocompleter('id_source', 'source_choices', '/ajax/location-completer', {
+		new Ajax.Autocompleter('id_source_search', 'source_choices', '/ajax/location-completer', {
 			paramName: 'current_value'
 		});
 		
 		// add autocomplete functionality to destiination field
-		new Ajax.Autocompleter('id_destination', 'destination_choices', '/ajax/location-completer', {
+		new Ajax.Autocompleter('id_destination_search', 'destination_choices', '/ajax/location-completer', {
 			paramName: 'current_value'
 		});
 	});
@@ -31,31 +31,28 @@
 	<form name="searchForm" onSubmit="doSearch(); return false">
 	<table cellpadding="4" cellspacing="4">
 		<tr>
-    		<td><label for="source">Source: </label></td>
+    		<td><label for="id_source_search">Source: </label></td>
             <td>
-				<INPUT type="text" name="source" STYLE="background-color:#0066FF" id="id_source">
+				<INPUT type="text" name="source" id="id_source_search">
 				<div id="source_choices" class="address_autocomplete" style="display: none;"></div>
 			</td>
 		</tr>
     	<tr>
-			<td><label for="destination">Destination: </label></td>
+			<td><label for="id_destination_search">Destination: </label></td>
 		    <td>
-				<INPUT type="text" name="destination" STYLE="background-color:#00FF00" id="id_destination">
+				<INPUT type="text" name="destination" id="id_destination_search">
 				<div id="destination_choices" class="address_autocomplete" style="display: none;"></div>
 			</td>
 		</tr>
-		<tr>
-			<td>&nbsp;</td>
-			<td><input class="button2"  type="submit" value="Search"></td>
-		</tr>
 	</table>
+		<input class="search_button"  type="submit" value="Search">
 	</form>
 	
 	</div>
 	<head>
 	<script src="http://maps.google.com/maps?file=api&amp;v=2.x&amp;key={{key}}" type="text/javascript"></script>
 	<!-- <script src="/scripts/scriptaculous/1.8.1/prototype.js" type="text/javascript"></script>-->
-	<script src="http://www.google.com/uds/api?file=uds.js&amp;v=1.0&key={{key}}" type="text/javascript"></script>
+	<script src="http://www.google.com/uds/api?file=uds.js&amp;v=1.0&amp;key={{key}}" type="text/javascript"></script>
 	<script src="http://www.google.com/uds/solutions/localsearch/gmlocalsearch.js?adsense=pub-1227201690587661" type="text/javascript"></script>
 	<script src="/scripts/google-maps/markermanager.js" type="text/javascript"></script>
 	<script type="text/javascript" language="JavaScript">

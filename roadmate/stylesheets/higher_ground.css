@@ -1,12 +1,6 @@
-<<<<<<< .mine
 /* @override 
 	http://localhost:8080/stylesheets/higher_ground.css
 */
-=======
-/* @override
-	http://localhost:8080/stylesheets/higher_ground.css
-*/
->>>>>>> .r345
 
 /********************************************
 	AUTHOR:				Erwin Aligam
@@ -26,6 +20,7 @@
 
 
 /* @group top elements */
+
 * { margin: 0; padding: 0; outline: 0 }
 
 body {
@@ -317,9 +312,10 @@ input.button {
 	width: 125px;
 }
 
-input.button2 {
-	font: bold 12px Arial, Sans-serif;
+input.search_button {
 	width: 125px;
+	margin-bottom: 15px;
+	margin-left: 550px;
 }
 
 input.checkbox
@@ -732,5 +728,13 @@ form.inplaceeditor-form a { /* The cancel link */
 .map_canvas {
 	margin-left: auto;
 	margin-right: auto;
+}
+
+#id_source_search {
+	background-color: #c1bfed;
+}
+
+#id_destination_search {
+	background-color: #c1f2ba;
 }
 
