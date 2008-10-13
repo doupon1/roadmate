@@ -359,7 +359,7 @@ select#id_destination {
 	clear: both;
 	float: left;
 	width: 790px;
-	padding: 0;
+	padding:0 0 5px 0;
 	background: #E8E8E8;
 	border-top: 5px solid #FFF;
 	border-bottom: 2px solid #D0D0D0;
