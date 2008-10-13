@@ -177,9 +177,10 @@
 	  		  $('add_event').hide();
 	  		  $('wait').show();
 				
+			  
 			   
-				setTimeout('showcreatefiled()',5000);
-	   	   
+				//setTimeout('showcreatefiled()',5000);
+	   	   setTimeout('refresh()',5000);
 
 	      
 	  }
@@ -262,9 +263,11 @@
   
     //refresh current page
    
-      function refresh(newurl){
-   
-            window.location.replace( newurl );
+      function refresh(){
+                var id=document.getElementById('ride_id').value;
+				var url='/ride?id='+id;
+				
+            window.location.replace( url );
       }
 
 
