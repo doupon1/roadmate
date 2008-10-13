@@ -32,7 +32,7 @@ class RoadMateUser(db.Model):
 		return result
 
 	def get_name_tag(self):
-		return '<a href="/profile?user=' + self.key().id().__str__() + '">' + self.user.email().__str__() + '</a> (<a href="/feedback?id=' + self.key().id().__str__() + '">' + self.feedback_score().__str__() + '</a>)'
+		return '<a href="/profile?user=' + self.key().id().__str__() + '">' + self.user.email().__str__() + '</a> (<a href="/feedback?id=' + self.key().id().__str__() + '">' + self.feedback_score().__str__() + '</a>) <img src="/images/star-1.gif" />'
 
 	def __eq__(self, other):
 		"""Overloaded equality operator."""
