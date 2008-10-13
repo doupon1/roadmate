@@ -46,13 +46,14 @@
 {% else %}
 
 
-<form method="post"  target="/ride_create?rq={{riderequest.key.id}}"> <!-- accept request form-->
+<form method="get" action="/ride_create"> <!-- accept request form-->
 	<p><strong>Accept the request for a ride</strong></br>
 	By accepting the ride request, you will be taken to the page to create a ride. After
 	you have created your ride, an email will be sent to the person who made this request with
 	a link to your ride where they can view its details and become a passenger. No notification
 	will be sent until you create the ride.
 	 </p>
+ 	<input type="hidden" name="rq" value="{{riderequest.key.id}}"/>
 	<input class="button"  value="Accept Request" type="submit">
 </form>
 {% endifequal %}

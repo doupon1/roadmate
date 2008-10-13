@@ -23,7 +23,7 @@ from roadmate.models.ride import RideForm
 from roadmate.models.seat import Seat
 from roadmate.models.location import Location
 from roadmate.models.message import RideMessage
-
+from roadmate.models.riderequest import RideRequest
 # ----------------------------------------------------------------------------
 #  Request Handlers
 # ----------------------------------------------------------------------------
@@ -100,12 +100,12 @@ class ViewRidePageHandler(BaseRequestHandler):
 		template_values['google_calendar_key'] = GoogleCalendar.get_key()
 		template_values['has_passengers'] = (ride.count_seats() - ride.count_emptyseats()) > 0 # has some passengers
 		template_values['message_list'] = ride.ridemessages # the list of comments
-		template_values['has_occurred'] = (ride.date < ride.date.today()) # is in the past
+		template_values['has_occurred'] =  False #(ride.date < ride.date.today()) # is in the past
 		template_values['is_full'] = (ride.count_emptyseats() == 0) # no empty seats
-		template_values['enable_feedback_on_driver'] = (ride.date < ride.date.today()) & ride.is_passenger(current_user) # ride is in the past and current user has been passenger
-		template_values['enable_feedback_on_passengers'] = (ride.date < ride.date.today()) & (current_user == ride.owner) # ride is in the past and current user was owner
-		template_values['enable_edit_controls'] = (ride.date >= ride.date.today()) & (current_user == ride.owner) # ride is in the future and current user is owner
-		template_values['enable_passenger_withdraw'] = (ride.date >= ride.date.today()) & ride.is_passenger(current_user) # ride is in the future and current user is passenger
+		template_values['enable_feedback_on_driver'] = True #(ride.date < ride.date.today()) & ride.is_passenger(current_user) # ride is in the past and current user has been passenger
+		template_values['enable_feedback_on_passengers'] = True #(ride.date < ride.date.today()) & (current_user == ride.owner) # ride is in the past and current user was owner
+		template_values['enable_edit_controls'] =  True #(ride.date >= ride.date.today()) & (current_user == ride.owner) # ride is in the future and current user is owner
+		template_values['enable_passenger_withdraw'] = True #(ride.date >= ride.date.today()) & ride.is_passenger(current_user) # ride is in the future and current user is passenger
 
 		# --------------------------------------------------------------------
 		# Control the display of the form element
@@ -167,12 +167,12 @@ class ViewRidePageHandler(BaseRequestHandler):
 		template_values['google_calendar_key'] = GoogleCalendar.get_key()
 		template_values['has_passengers'] = (ride.count_seats() - ride.count_emptyseats()) > 0 # has some passengers
 		template_values['message_list'] = ride.ridemessages # the list of comments
-		template_values['has_occurred'] =  (ride.date < ride.date.today()) # is in the past
+		template_values['has_occurred'] =  False #(ride.date < ride.date.today()) # is in the past
 		template_values['is_full'] = (ride.count_emptyseats() == 0) # no empty seats
-		template_values['enable_feedback_on_driver'] = (ride.date < ride.date.today()) & ride.is_passenger(current_user) # ride is in the past and current user has been passenger
-		template_values['enable_feedback_on_passengers'] = (ride.date < ride.date.today()) & (current_user == ride.owner) # ride is in the past and current user was owner
-		template_values['enable_edit_controls'] = (ride.date >= ride.date.today()) & (current_user == ride.owner) # ride is in the future and current user is owner
-		template_values['enable_passenger_withdraw'] = (ride.date >= ride.date.today()) & ride.is_passenger(current_user) # ride is in the future and current user is passenger
+		template_values['enable_feedback_on_driver'] = True #(ride.date < ride.date.today()) & ride.is_passenger(current_user) # ride is in the past and current user has been passenger
+		template_values['enable_feedback_on_passengers'] = True #(ride.date < ride.date.today()) & (current_user == ride.owner) # ride is in the past and current user was owner
+		template_values['enable_edit_controls'] =  True #(ride.date >= ride.date.today()) & (current_user == ride.owner) # ride is in the future and current user is owner
+		template_values['enable_passenger_withdraw'] = True #(ride.date >= ride.date.today()) & ride.is_passenger(current_user) # ride is in the future and current user is passenger
 
 
 		# --------------------------------------------------------------------
@@ -288,6 +288,7 @@ class CreateRidePageHandler(BaseRequestHandler):
 		# Retrive Session Info
 		# --------------------------------------------------------------------
 		# Session Values
+		rq_id = self.get_request_parameter('rq', converter=int, default=None) #if created with a ride request
 		current_user = RoadMateUser.get_current_user()
 
 		# --------------------------------------------------------------------
@@ -339,7 +340,16 @@ class CreateRidePageHandler(BaseRequestHandler):
 			return
 
 		ride = ride_form.save() #else, the form is valid, so save it
+		if rq_id:
+			request = RideRequest.get_by_id(rq_id)
+			print(request.owner.user.email) #TODO notify him by email that a ride has been created
+
 		ride.create_seats(ride_form.clean_data.get('number_of_seats')) # create its seats
+
+		#notification if created by ride request
+		if rq_id:
+			request = RideRequest.get_by_id(rq_id)
+			print(request.owner.user.email) #TODO notify him by email that a ride has been created and send the link
 
 		self.redirect("/ride?id=%s" % ride.key().id()) # redirect to the view page
 
