@@ -47,9 +47,10 @@ class RoadMateUser(db.Model):
 		return  '<a href="/profile?user=' + str(self.key().id()) + '">' \
 					+ str(self.user.email()) + \
 				'</a> ' + \
-				'(<a href="/feedback?id=' + str(self.key().id()) + '">' \
-					+ str(self.feedback_score()) + self.feedback_image() + \
-				'</a>)'
+				'(' + \
+					'<a href="/feedback?id=' + str(self.key().id()) + '">' + str(self.feedback_score()) + '</a>' + \
+					self.feedback_image() + \
+				')'
 
 	def __eq__(self, other):
 		"""Overloaded equality operator."""
