@@ -313,7 +313,7 @@ input.button {
 input.search_button {
 	width: 125px;
 	margin-bottom: 15px;
-	margin-left: 550px;
+	margin-left: 10px;
 }
 
 input.checkbox

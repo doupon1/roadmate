@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+﻿#!/usr/bin/env python
 # encoding: utf-8
 
 import os
@@ -14,14 +14,12 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 from roadmate.models.ride import Ride
+
+from roadmate.filters import date_for_table
+
 from roadmate.handlers.baserequesthandler import BaseRequestHandler
 
 from roadmate.models.location import Location
-
-# ----------------------------------------------------------------------------
-#  Constants
-# ----------------------------------------------------------------------------
-
 
 # ----------------------------------------------------------------------------
 #  Request Handlers
@@ -48,13 +46,13 @@ class LocationFinderRequestHandler(BaseRequestHandler):
 		# Request Values
 		srcCircleCenterLat = self.get_request_parameter('srcCircleCenterLat', converter=float, default=None)
 		srcCircleCenterLng = self.get_request_parameter('srcCircleCenterLng', converter=float, default=None)
-                desCircleCenterLat = self.get_request_parameter('desCircleCenterLat', converter=float, default=None)
+		desCircleCenterLat = self.get_request_parameter('desCircleCenterLat', converter=float, default=None)
 		desCircleCenterLng = self.get_request_parameter('desCircleCenterLng', converter=float, default=None)
 		srcRadius = self.get_request_parameter('srcRadius', converter=float, default=None)
 		desRadius = self.get_request_parameter('desRadius', converter=float, default=None)
 		
 		logging.info("srcCircle center lat: %s,srcCircle center lng: %s, srcCircle Radius %d, desCircle center lat: %s,desCircle center lng: %s, desCircle Radius %d" %
-                             (srcCircleCenterLat, srcCircleCenterLng, srcRadius, desCircleCenterLat, desCircleCenterLng, desRadius))
+				(srcCircleCenterLat, srcCircleCenterLng, srcRadius, desCircleCenterLat, desCircleCenterLng, desRadius))
 
 		# --------------------------------------------------------------------
 		# Validate Request
@@ -103,7 +101,7 @@ class LocationFinderRequestHandler(BaseRequestHandler):
 			if(state1 == True & state2 == True):
 				validPoints.append(ride)
 		list_lats_lngs = str(validPoints)
-                # --------------------------------------------------------------------
+		# --------------------------------------------------------------------
 		# Render and Serve Template
 		# --------------------------------------------------------------------
 		self.response.out.write(simplejson.dumps(validPoints, default=encode_ride))
@@ -137,10 +135,12 @@ def encode_ride(ride):
 	srcLatLng = ride.source.get_lat_loc()
 	srcLat, srcLng = srcLatLng.split(", ")
 
- 	desLatLng = ride.destination.get_lat_loc()
+	desLatLng = ride.destination.get_lat_loc()
 	desLat, desLng = desLatLng.split(", ")
 	return {
 		"id" : ride.key().id(),
+		"owner" : ride.owner.get_name_tag(),
+		"date" : date_for_table(ride.date),
 		"source" :
 			{
 				"id" : ride.source.key().id(),

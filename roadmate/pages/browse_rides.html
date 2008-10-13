@@ -1,4 +1,4 @@
-{% extends "templates/base-sidebar.html" %}
+{% extends "templates/base.html" %}
 
 {% block title%}Browse All Rides{% endblock %}
 
@@ -339,7 +339,6 @@
 			var markersrc = markers[i].getLatLng();
 			var markerdes = markers[i+1].getLatLng();
 			
-			//var srcCenter = this._centerHandle.getLatLng();
 			var distanceFrmSrc = currentCenter1.distanceFrom(markersrc);
 			var distanceFrmDes = currentCenter2.distanceFrom(markerdes);
 
@@ -411,20 +410,8 @@
 					var srcPoint = new GLatLng(rides[a].source.lat, rides[a].source.lng);
 					var desPoint = new GLatLng(rides[a].destination.lat, rides[a].destination.lng);
 					
-					var srcMarker = createMarker(rides[a].id, srcPoint, "/images/google-maps-icons/marker-BLUE-"+alphabets[a]+"-UPPER.png");
-					var desMarker = createMarker(rides[a].id, desPoint, "/images/google-maps-icons/marker-GREEN-"+alphabets[a]+"-UPPER.png");
-					
-					GEvent.addListener(srcMarker, "click", function() {
-						alert("reched");
-						srcMarker.openInfoWindowHtml("<strong> Hiiii </strong>");
-					});
-					GEvent.addListener(desMarker,"click", function() {
-						alert("reched");
-						desMarker.openInfoWindowHtml("<strong> Hiiii </strong>");
-					});
-					GEvent.addListener(myObject._map, "click", function() {
-          				myObject._map.closeInfoWindow();
-        			});
+					var srcMarker = createMarker(rides[a], srcPoint, "/images/google-maps-icons/marker-BLUE-"+alphabets[a]+"-UPPER.png");
+					var desMarker = createMarker(rides[a], desPoint, "/images/google-maps-icons/marker-GREEN-"+alphabets[a]+"-UPPER.png");
 
 					myObject._map.addOverlay(srcMarker);
 					myObject._map.addOverlay(desMarker);
@@ -432,18 +419,21 @@
 					markers.push(desMarker);
 				}
 		},
-		//onFailure: function(){ alert('Something went wrong...') }
 		});
 	
 	}
 	<!-------------------------------- Ajax Ends-------------------------------------------->
 	
-	function createMarker(id, point , image)
+	function createMarker(ride, point , image)
 	{
 		var func_icon = new GIcon(G_DEFAULT_ICON);
         func_icon.image = image;
         var func_marker = new GMarker(point, {icon:func_icon});
-		func_marker.ride_id = id;
+		func_marker.ride_id = ride.id;
+		var html = "<div><p><h4>Owner:</h4>"+ride.owner+"<br><h4>Date:</h4>"+ride.date+"<br><br>For more information on this ride <strong><a href=/ride?id="+ride.id+">Click Here</strong></p></div>";
+		GEvent.addListener(func_marker,"click", function() {
+			func_marker.openInfoWindowHtml(html);
+		});
         return func_marker;
 	}
 	
