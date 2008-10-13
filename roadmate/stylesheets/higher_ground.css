@@ -1,6 +1,12 @@
+<<<<<<< .mine
+/* @override 
+	http://localhost:8080/stylesheets/higher_ground.css
+*/
+=======
 /* @override
 	http://localhost:8080/stylesheets/higher_ground.css
 */
+>>>>>>> .r345
 
 /********************************************
 	AUTHOR:				Erwin Aligam
@@ -255,8 +261,13 @@ textarea {
 	height:100px;
 	display:block;
 	color:#777;
+<<<<<<< .mine
+	margin-left: auto;
+	margin-right: auto;
+=======
 	margin-left: 10px;
 	margin-right: auto;
+>>>>>>> .r345
 }
 
 /* special case for feedback radio buttons*/
@@ -303,6 +314,11 @@ input[type="text"] {
 input.button {
 	font: bold 12px Arial, Sans-serif;
 	margin-left: 10px;
+	width: 125px;
+}
+
+input.button2 {
+	font: bold 12px Arial, Sans-serif;
 	width: 125px;
 }
 
@@ -479,6 +495,23 @@ select#id_destination {
 }
 
 /* Main Column */
+#main2 {
+	padding: 20px 20px 20px 10px;; margin: 0 0 0 10px;
+}
+#main2 h2 {
+	font: normal 1.9em 'Trebuchet MS', Tahoma, Sans-serif;
+	color: #85970C;
+	text-transform: none;
+	padding: 10px 0 0px 10px;
+}
+#main2 h2 a {
+	color: #85970C;
+	text-decoration: none;
+}
+#main2 ul li {
+
+}
+
 #main {
 	float: left;
 	width: 67%;

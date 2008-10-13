@@ -77,6 +77,18 @@ handlers:
   script: pages/feedback.py
 
 
+<<<<<<< .mine
+# ----------------------------------------------------------------------------
+# AJAX Request Handlers
+# ----------------------------------------------------------------------------
+- url: /ajax/location-completer(.*)
+  script: ajax/location-completer.py
+
+- url: /ajax/location-finder(.*)
+  script: ajax/location-finder.py
+
+- url: /ajax/edit_(.*)
+=======
 # ----------------------------------------------------------------------------
 # AJAX Request Handlers
 # ----------------------------------------------------------------------------
@@ -84,4 +96,5 @@ handlers:
   script: ajax/location-completer.py
 
 - url: /ajax/edit_(.*)
+>>>>>>> .r346
   script: ajax/edit_handlers.py

@@ -1,39 +1,635 @@
-{% extends "templates/base.html" %}
+{% extends "templates/base-sidebar.html" %}
 
 {% block title%}Browse All Rides{% endblock %}
 
-{% block main %}
-<h2>browse rides</h2>
+{% block javascript %}
+<script src="/scripts/scriptaculous/1.8.1/prototype.js" type="text/javascript"></script>
+<script src="/scripts/scriptaculous/1.8.1/scriptaculous.js" type="text/javascript"></script>
 
-<p>
-This is a list of the rides that have been offered.<br/>
-Click each ride to view its details, ask questions, or request a seat on it.
-</p>
-{% if rides %}
-	<table class="roadmate-list">
-			{% for ride in rides %}
-				<tr class="list-item">
-				    <tr class="list-row">
-				        {% if not ride.is_full %}<th rowspan="2" class="list-header"></th>{% else %}<th rowspan="2" class="list-header-red"> {% endif %}
-		    			<td> {{ride.date|date_for_table }}</td>
-		     			<td> {{ride.owner.get_name_tag}} </td>
-		     			<td> {{ride.status}} </td>
-					</tr>
-				    <tr class="list-row">
-					    <td colspan=3><strong><a href="/ride?id={{ ride.key.id }}">{{ ride.get_name }}</strong></a>
-						</td>
-					</tr>
-				</tr> <!-- end list item -->
+<script type="text/javascript" language="javascript">
+	// <![CDATA[
+	
+	document.observe('dom:loaded', function() {
+		// add autocomplete functionaliy to source address field
+		new Ajax.Autocompleter('id_source', 'source_choices', '/ajax/location-completer', {
+			paramName: 'current_value'
+		});
+		
+		// add autocomplete functionality to destiination field
+		new Ajax.Autocompleter('id_destination', 'destination_choices', '/ajax/location-completer', {
+			paramName: 'current_value'
+		});
+	});
 
-			{% endfor %}
+	// ]]>
+</script>	
+{% endblock %}
+	
+	{% block main %}
+	<h2>browse rides</h2>
+	<div class="inputgroup">
+	<form name="searchForm" onSubmit="doSearch(); return false">
+	<table cellpadding="4" cellspacing="4">
+		<tr>
+    		<td><label for="source">Source: </label></td>
+            <td>
+				<INPUT type="text" name="source" STYLE="background-color:#0066FF" id="id_source">
+				<div id="source_choices" class="address_autocomplete" style="display: none;"></div>
+			</td>
+		</tr>
+    	<tr>
+			<td><label for="destination">Destination: </label></td>
+		    <td>
+				<INPUT type="text" name="destination" STYLE="background-color:#00FF00" id="id_destination">
+				<div id="destination_choices" class="address_autocomplete" style="display: none;"></div>
+			</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td><input class="button2"  type="submit" value="Search"></td>
+		</tr>
 	</table>
+	</form>
+	
+	</div>
+	<head>
+	<script src="http://maps.google.com/maps?file=api&amp;v=2.x&amp;key={{key}}" type="text/javascript"></script>
+	<!-- <script src="/scripts/scriptaculous/1.8.1/prototype.js" type="text/javascript"></script>-->
+	<script src="http://www.google.com/uds/api?file=uds.js&amp;v=1.0&key={{key}}" type="text/javascript"></script>
+	<script src="http://www.google.com/uds/solutions/localsearch/gmlocalsearch.js?adsense=pub-1227201690587661" type="text/javascript"></script>
+	<script src="/scripts/google-maps/markermanager.js" type="text/javascript"></script>
+	<script type="text/javascript" language="JavaScript">
+	var myMap = null;
+	//var localSearch = null;
+	var myQueryControl = null;
+	var count =0;
+	var mgr;
+	var markers = [];
+	var radius;
+	var name;
+	var currentCenter1 = new GLatLng();
+	var currentCenter2 = new GLatLng();
+	var circle1;
+	var circle2;
+	var circle1Radius;
+	var circle2Radius;
+	var pointOne = null;
+	var pointTwo = null;
+	var bounds = new GLatLngBounds();
+	
+	function doSearch(){
+	  pointOne = null;
+	  pointTwo = null;
+	  bounds = new GLatLngBounds();
+	  count =0;
+	  var txtSrc = document.searchForm.source.value;
+	  var txtDes = document.searchForm.destination.value;
+	  displayMap(txtSrc , txtDes);
+	}
+	
+	function displayMap(srcAdd, desAdd){
+	  myMap = new GMap2(document.getElementById("map"));
+	  myMap.setCenter(new GLatLng(0,0), 12);
+	  
+	  myMap.addControl(new GSmallMapControl());
+	  myMap.enableScrollWheelZoom();  
+	  radius = 2000; //radius measured in meters
+	  
+	  myQueryControl = new QueryControl();//localSearch
+	  myMap.addControl(myQueryControl);
 
-{% else %}
-   <h3>Sorry, there are currently no rides available.</h3>
-   <p>Why not <a href="/ride_create">offer a ride</a> of your own</p>
-{% endif %}
+	 
+	  var initSource = new GClientGeocoder();
+	  var initDestination = new GClientGeocoder();
+	  
+	  initSource.getLatLng(srcAdd, function(point) {
+		if (!point) {
+			alert(srcAdd + " not found");
+		} else {
+			pointOne = point;
+			if(pointOne && pointTwo)
+				setPoints(pointOne,pointTwo);
+		 }
+		});
+	  initDestination.getLatLng(desAdd, function(point1) {
+	  	if (!point1) {
+			alert(desAdd + " not found");
+		} else {
+			pointTwo = point1;
+			if(pointOne && pointTwo)
+				setPoints(pointOne,pointTwo);
+		}
+
+	  });
+
+		
+
+	  
+	  GEvent.addListener(myMap, "click", function(overlay, point) {
+		if (point && count < 2) {
+		  if(count == 0){
+		  	name = "source";
+		  }
+
+		  if(count == 1){
+		  	name = "destination";
+		  }
+		  
+		  count = count + 1;
+		  singleClick = !singleClick;
+		  setTimeout("if (singleClick) createCircle(name ,new GLatLng("+ point.y + ", " + point.x +"), radius);", 100);
+		}
+	  });
+	}
+	function setPoints(point1, point2){
+
+		if(point1 && point2){
+			var dist = distance(point1, point2);
+			var nwRad = (dist * 0.1) * 1000; // radius is 10% of total distance
+			count = 0;
+			createCircle("source",point1,nwRad);
+
+			count = 1;
+			createCircle("destination",point2,nwRad);
+			
+			bounds.extend(point1);
+			bounds.extend(point2);
+			myMap.setZoom(myMap.getBoundsZoomLevel(bounds));
+      		myMap.setCenter(bounds.getCenter());
+			//return true;
+		}
+		//return false;
+	}
+	  var metric = false;
+	  var singleClick = false;
+	  var queryCenterOptions = new Object();
+	  var queryLineOptions = new Object();
+	
+	queryCenterOptions.icon = new GIcon();
+	queryCenterOptions.icon.image = "http://jfno.net/images/centerArrow.png";
+	queryCenterOptions.icon.iconSize = new GSize(20,20);
+	queryCenterOptions.icon.shadowSize = new GSize(0, 0);
+	queryCenterOptions.icon.iconAnchor = new GPoint(10, 10);
+	queryCenterOptions.draggable = true;
+	queryCenterOptions.bouncy = false;
+	
+	queryLineOptions.icon = new GIcon();
+	queryLineOptions.icon.image = "http://jfno.net/images/resizeArrow.png";
+	queryLineOptions.icon.iconSize = new GSize(25,20);
+	queryLineOptions.icon.shadowSize = new GSize(0, 0);
+	queryLineOptions.icon.iconAnchor = new GPoint(12, 10);
+	queryLineOptions.draggable = true;
+	queryLineOptions.bouncy = false;
+	
+	function createCircle(name, point, radius) {
+	  singleClick = false;
+	  geoQuery = new GeoQuery();
+	  geoQuery.initializeCircle(name, radius, point, myMap);
+	  myQueryControl.addGeoQuery(geoQuery);
+	  geoQuery.render();
+	}
+	
+	function destination(orig, hdng, dist) {
+	  var R = 6371; // earth's mean radius in km
+	  var oX, oY;
+	  var x, y;
+	  var d = dist/R;  // d = angular distance covered on earth's surface
+	  hdng = hdng * Math.PI / 180; // degrees to radians
+	  oX = orig.x * Math.PI / 180;
+	  oY = orig.y * Math.PI / 180;
+	
+	  y = Math.asin( Math.sin(oY)*Math.cos(d) + Math.cos(oY)*Math.sin(d)*Math.cos(hdng) );
+	  x = oX + Math.atan2(Math.sin(hdng)*Math.sin(d)*Math.cos(oY), Math.cos(d)-Math.sin(oY)*Math.sin(y));
+	
+	  y = y * 180 / Math.PI;
+	  x = x * 180 / Math.PI;
+	  return new GLatLng(y, x);
+	}
+	
+	function distance(point1, point2) {
+	  var R = 6371; // earth's mean radius in km
+	  var lon1 = point1.lng() * Math.PI / 180;
+	  var lat1 = point1.lat() * Math.PI / 180;
+	  var lon2 = point2.lng() * Math.PI / 180;
+	  var lat2 = point2.lat() * Math.PI / 180;
+	
+	  var deltaLat = lat1 - lat2
+	  var deltaLon = lon1 - lon2
+	
+	  var step1 = Math.pow(Math.sin(deltaLat/2), 2) + Math.cos(lat2) * Math.cos(lat1) * Math.pow(Math.sin(deltaLon/2), 2);
+	  var step2 = 2 * Math.atan2(Math.sqrt(step1), Math.sqrt(1 - step1));
+	  return step2 * R;
+	}
+	
+	function GeoQuery() {
+	
+	}
+	
+	GeoQuery.prototype.CIRCLE='circle';
+	GeoQuery.prototype.COLORS=["#0000ff", "#00ff00"];
+	var COLORI=0;
+	
+	GeoQuery.prototype = new GeoQuery();
+	GeoQuery.prototype._map;
+	GeoQuery.prototype._type;
+	GeoQuery.prototype._radius;
+	GeoQuery.prototype._name;
+	GeoQuery.prototype._dragHandle;
+	GeoQuery.prototype._centerHandle;
+	GeoQuery.prototype._polyline;
+	GeoQuery.prototype._color ;
+	GeoQuery.prototype._control;
+	GeoQuery.prototype._points;
+	GeoQuery.prototype._dragHandlePosition;
+	GeoQuery.prototype._centerHandlePosition;
+	
+	
+	GeoQuery.prototype.initializeCircle = function(name, radius, point, map) {
+		this._type = this.CIRCLE;
+		this._name = name;
+		this._radius = radius;
+		this._map = map;
+		this._dragHandlePosition = destination(point, 90, this._radius/1000);
+		this._dragHandle = new GMarker(this._dragHandlePosition, queryLineOptions);
+		this._centerHandlePosition = point;
+		this._centerHandle = new GMarker(this._centerHandlePosition, queryCenterOptions);
+		circle1Radius = radius;
+		circle2Radius = radius;		
+		COLORI=count;
+		this._color = this.COLORS[COLORI];//
+		if(this._name == "source"){
+			currentCenter1 = this._centerHandle.getLatLng();//////////////////////////////////////////////////////////////////////Modified
+		}
+		if(this._name == "destination"){
+			currentCenter2 = this._centerHandle.getLatLng();//////////////////////////////////////////////////////////////////////Modified
+		}
+		map.addOverlay(this._dragHandle);
+		map.addOverlay(this._centerHandle);
+		var myObject = this;
+		if(currentCenter1.lat() && currentCenter2.lat()) // runs only if there exits a source circle and a destination circle too.
+			myObject.updateRides();
+		GEvent.addListener (this._dragHandle, "dragend", function() {myObject.clearMarkers(); myObject.updateCircle(1); myObject.updateRides();});// updates radius of the circles
+		GEvent.addListener (this._dragHandle, "drag", function() {myObject.updateCircle(1);});
+		GEvent.addListener(this._centerHandle, "dragend", function() {myObject.clearMarkers(); myObject.updateCircle(2); myObject.updateRides();}); // updates centers of the circles
+		GEvent.addListener(this._centerHandle, "drag", function() {myObject.updateCircle(2);});
+	}
+	
+	GeoQuery.prototype.updateCircle = function (type) {
+		this._map.removeOverlay(this._polyline);
+		if (type==1) {
+		  this._dragHandlePosition = this._dragHandle.getPoint();  
+		  this._radius = distance(this._centerHandlePosition, this._dragHandlePosition) * 1000;
+		  this.render();
+		  if(this._name == "source")
+		  	circle1Radius = this._radius;//////////////////////////////////////////////////////////////////////Modified
+		  if(this._name == "destination")
+		  	circle2Radius = this._radius; 
+		} else {
+		  this._centerHandlePosition = this._centerHandle.getPoint();
+		  this.render();
+		  this._dragHandle.setPoint(this.getEast());
+		  if(this._name == "source"){
+		  	currentCenter1 = this._centerHandle.getLatLng();//////////////////////////////////////////////////////////////Modified 
+			}
+		  if(this._name == "destination")
+		  	currentCenter2 = this._centerHandle.getLatLng();//////////////////////////////////////////////////////////////Modified 
+		}
+		
+	}
+	
+	GeoQuery.prototype.render = function() {
+	  if (this._type == this.CIRCLE) {
+		this._points = [];
+		var distance = this._radius/1000;
+		for (i = 0; i < 72; i++) {
+		  this._points.push(destination(this._centerHandlePosition, i * 360/72, distance) );
+		}
+		this._points.push(destination(this._centerHandlePosition, 0, distance) );
+		this._polyline = new GPolygon(this._points, this._color, 1, 1, this._color, 0.2);
+		this._map.addOverlay(this._polyline);
+		this._control.render();
+	  }
+	}
+	
+	GeoQuery.prototype.remove = function() {
+		count = count - 1;
+		this._map.removeOverlay(this._polyline);
+		this._map.removeOverlay(this._dragHandle);
+		this._map.removeOverlay(this._centerHandle);
+	}
+	
+	GeoQuery.prototype.updateRides = function() {
+		this.updateLocations(currentCenter1.lat(),currentCenter1.lng(),currentCenter2.lat(),currentCenter2.lng(), circle1Radius, circle2Radius);
+
+	}
+	
+	GeoQuery.prototype.clearMarkers = function  () {
+		var nwMarkers = [];
+		
+		for(var i=0;i<markers.length;i++){
+			var markersrc = markers[i].getLatLng();
+			var markerdes = markers[i+1].getLatLng();
+			
+			//var srcCenter = this._centerHandle.getLatLng();
+			var distanceFrmSrc = currentCenter1.distanceFrom(markersrc);
+			var distanceFrmDes = currentCenter2.distanceFrom(markerdes);
+
+			if(distanceFrmSrc > circle1Radius || distanceFrmDes > circle2Radius){
+				myMap.removeOverlay(markers[i]);
+				myMap.removeOverlay(markers[i+1]);
+			} else {
+				nwMarkers.push(markers[i]);
+				nwMarkers.push(markers[i+1]);
+			}
+			i++;
+		}
+		markers = nwMarkers;
+    }
+
+	<!-------------------------------- Ajax Request Handler -------------------------------------------->
+	 GeoQuery.prototype.updateLocations = function (srcCenterlat, srcCenterlng, desCenterlat, desCenterlng, srcRadius, desRadius){
+	 	var myObject = this;
+		new Ajax.Request('/ajax/location-finder',
+		{
+			method:'post',
+			parameters: {srcCircleCenterLat: srcCenterlat, srcCircleCenterLng: srcCenterlng, desCircleCenterLat: desCenterlat, desCircleCenterLng: desCenterlng, srcRadius: srcRadius, desRadius: desRadius},
+			onSuccess: function(transport){
+				var rides = transport.responseText.evalJSON();
+
+				//alert("Success! \n\n"+ rides[0].source.lat + ", "+rides[0].source.lng);
 
 
+				for(var a=0; a < rides.length; a++) {
+				    var markerExists = false;
+					var alphabets = new Array(27);
+					alphabets[0] = "A";
+      				alphabets[1] = "B";
+      				alphabets[2] = "C";
+      				alphabets[3] = "D";
+      				alphabets[5] = "E";
+					alphabets[6] = "F";
+      				alphabets[7] = "G";
+      				alphabets[8] = "H";
+      				alphabets[9] = "I";
+      				alphabets[10] = "J";
+					alphabets[11] = "K";
+      				alphabets[12] = "L";
+      				alphabets[13] = "M";
+      				alphabets[14] = "N";
+      				alphabets[15] = "O";
+					alphabets[16] = "P";
+      				alphabets[17] = "Q";
+      				alphabets[18] = "R";
+      				alphabets[19] = "S";
+      				alphabets[20] = "T";
+					alphabets[21] = "U";
+      				alphabets[22] = "V";
+      				alphabets[23] = "W";
+      				alphabets[24] = "X";
+      				alphabets[25] = "Y";
+      				alphabets[26] = "Z";
+					
+					for(var i=0;i<markers.length;i++){
+						if(rides[a].id == markers[i].ride_id) {
+							markerExists = true;
+							break;
+						}
+					}
+					if (markerExists) {
+						continue;
+					}  
+				
+					var srcPoint = new GLatLng(rides[a].source.lat, rides[a].source.lng);
+					var desPoint = new GLatLng(rides[a].destination.lat, rides[a].destination.lng);
+					
+					var srcMarker = createSrcMarker(rides[a].id, srcPoint, "/images/google-maps-icons/marker-BLUE-"+alphabets[a]+"-UPPER.png");
+					var desMarker = createDesMarker(rides[a].id, desPoint, "/images/google-maps-icons/marker-GREEN-"+alphabets[a]+"-UPPER.png");
+					
+					GEvent.addListener(srcMarker, "click", function() {
+						//alert("reched");
+						myObject._map.openInfoWindowHtml("Source Clicked");
+					});
+					GEvent.addListener(desMarker,"click", function() {
+						//alert("reched");
+						myObject._map.openInfoWindowHtml("Destination Clicked");
+					});
+					GEvent.addListener(myObject._map, "click", function() {
+          				myObject._map.closeInfoWindow();
+        			});
+
+					myObject._map.addOverlay(srcMarker);
+					myObject._map.addOverlay(desMarker);
+					markers.push(srcMarker);
+					markers.push(desMarker);
+				}
+		},
+		onFailure: function(){ alert('Something went wrong...') }
+		});
+	
+	}
+	<!-------------------------------- Ajax Ends-------------------------------------------->
+	
+	function createSrcMarker(id, point , image)
+	{
+		var func_icon = new GIcon(G_DEFAULT_ICON);
+        func_icon.image = image;
+        var func_marker = new GMarker(point, {icon:func_icon});
+		func_marker.ride_id = id;
+        return func_marker;
+	}
+	
+	
+	function createDesMarker(id, point, image)
+	{
+		var func_icon = new GIcon(G_DEFAULT_ICON);
+        func_icon.image = image;
+        var func_marker = new GMarker(point, {icon:func_icon});
+		func_marker.ride_id = id;
+        return func_marker;
+	}
+
+	
+	
+	GeoQuery.prototype.getRadius = function() {
+		return this._radius;
+	}
+	
+	GeoQuery.prototype.getHTML = function() {
+	  return "<span><font color='"+ this._color + "''>" + this.getDistHtml() + "</font></span>";
+	}
+	
+	GeoQuery.prototype.getDistHtml = function() {
+	  result = "<img src='http://jfno.net/images/close.gif' onClick='myQueryControl.remove(" + this._control.getIndex(this) + ");'/>Radius ";
+	  if (metric) {
+		if (this._radius < 1000) {
+		  result += "in meters : " + this._radius.toFixed(1);
+		} else {
+		  result += "in kilometers : " + (this._radius / 1000).toFixed(1);
+		}
+	  } else {
+		var radius = this._radius * 3.2808399;
+		if (radius < 5280) {
+		  result += "in feet : " + radius.toFixed(1);
+		} else {
+		  result += "in miles : " + (radius / 5280).toFixed(1);
+		}
+	  }
+	  return result;   
+	}
+	
+	GeoQuery.prototype.getNorth = function() {
+	  return this._points[0];
+	}
+	
+	GeoQuery.prototype.getSouth = function() {
+	  return this._points[(72/2)];
+	}
+	
+	GeoQuery.prototype.getEast = function() {
+	  return this._points[(72/4)];
+	}
+	
+	GeoQuery.prototype.getWest = function() {
+	  return this._points[(72/4*3)];
+	}
+	
+	function QueryControl (localSearch) {
+	  this._localSearch = localSearch;
+	}
+	QueryControl.prototype = new GControl();
+	QueryControl.prototype._geoQueries ;
+	QueryControl.prototype._mainDiv;
+	QueryControl.prototype._queriesDiv;
+	QueryControl.prototype._minStar;
+	QueryControl.prototype._minPrice;
+	QueryControl.prototype._maxPrice;
+	QueryControl.prototype._timeout;
+	QueryControl.prototype._localSearch;
+	
+	QueryControl.prototype.initialize = function(map) {
+	  this._mainDiv = document.createElement("div");
+	  this._mainDiv.id = "GQueryControl";
+	  titleDiv = document.createElement("div");
+	  titleDiv.id = "GQueryControlTitle";
+	  titleDiv.appendChild(document.createTextNode("Filter"));
+	  this._mainDiv.appendChild(titleDiv);
+	  this._queriesDiv = document.createElement("div");
+	  this._queriesDiv.id = "queriesDiv";
+	  this._mainDiv.appendChild(this._queriesDiv);
+	
+	  map.getContainer().appendChild(this._mainDiv);
+	  this._geoQueries = new Array();
+	  return this._mainDiv;
+	}
+	
+	QueryControl.prototype.getDefaultPosition = function() {
+	  return new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(50, 10));
+	}
+	
+	QueryControl.prototype.addGeoQuery = function(geoQuery) {
+	  this._geoQueries.push(geoQuery);
+	  geoQuery._control = this;
+	  newDiv = document.createElement("div");
+	  newDiv.innerHTML = geoQuery.getHTML();
+	  this._queriesDiv.appendChild(newDiv);
+	 
+	}
+	
+	QueryControl.prototype.render = function() {
+	  for (i = 0; i < this._geoQueries.length; i++) {
+		geoQuery = this._geoQueries[i];
+		this._queriesDiv.childNodes[i].innerHTML = geoQuery.getHTML();
+	  }
+	  if (this._timeout == null) {
+		this._timeout = setTimeout(myQueryControl.query, 1000);
+	  } else {
+		clearTimeout(this._timeout);
+		this._timeout = setTimeout(myQueryControl.query, 1000);
+	  }
+	}
+	
+	QueryControl.prototype.query = function() {
+	  listMarkers = myQueryControl._localSearch.markers.slice();
+	  for (i = 0; i < listMarkers.length; i++) {
+		marker = listMarkers[i].marker;
+		result = listMarkers[i].resultsListItem;
+		listImage = marker.getIcon().image;
+		inCircle = true;
+		for (j = 0; j < myQueryControl._geoQueries.length; j++) {
+		  geoQuery = myQueryControl._geoQueries[j];
+		  dist = distance(marker.getLatLng(), geoQuery._centerHandlePosition); 
+		  if (dist > geoQuery._radius / 1000) {
+			inCircle = false;
+			break;
+		  }
+		}
+		if (inCircle) {
+		  marker.setImage(listImage);
+		  result.childNodes[1].style.color = '#0000cc';
+		} else {
+		  var re = new RegExp(".*(marker.\.png)");
+		  marker.setImage(listImage.replace(re, "img/$1"));
+		  result.childNodes[1].style.color = '#b0b0cc';
+		}
+	  }
+	}
+	
+	QueryControl.prototype.remove = function(index) {
+	  this._geoQueries[index].remove();
+	  this._queriesDiv.removeChild(this._queriesDiv.childNodes[index]);
+	  delete this._geoQueries[index];
+	  this._geoQueries.splice(index,1);
+	  this.render();
+	}
+	
+	QueryControl.prototype.getIndex = function(geoQuery) {
+	  for (i = 0; i < this._geoQueries.length; i++) {
+		if (geoQuery == this._geoQueries[i]) {
+		  return i;
+		}
+	  }
+	  return -1;
+	}
+	</script>
+	
+	</head>
+	 <!-- onLoad="displayMap(srcAdd, desAdd)" onUnload="GUnload()" -->
+	<body>
+		<div id="map" style="width: 100%; height: 95%;"></div>
+		<div style="font-family: arial, sans-serif;">Made by <a href="http://www.3rdcrust.com">3rdCrust.com</a></div>
+	</body>
+
+
+<!--------------------------------------------------------End of Java Script------------------------------------------------------------------------->
+	<p>#TODO description of this page goes here.</br>
+	maybe we could put some controls here to limit the results
+	by date occurring or date created?
+	</p>
+	{% if rides %}
+		<table>
+			<tr>
+				<th>Ride</th>
+				<th>Date</th>
+				<th>Owner</th>
+				<th>Status</th>
+	
+			</tr>
+	
+				{% for ride in rides %}
+				<tr class="row-a">
+					<td><a href="/ride?id={{ ride.key.id }}">{{ ride.get_name }}</a></td>
+					<td>{{ ride.date|date_for_table }}</td>
+					<td><a href ="/profile?user={{ride.owner.key.id}}">{{ ride.owner.user.email|local_part_from_email }}</a></td>
+					<td>{{ ride.status }}</td>
+				</tr>
+				{% endfor %}
+		</table>
+	{% else %}
+	   <h3>Sorry, there are currently no rides available.</h3>
+	   <p>Why not <a href="/ride_create">offer a ride</a> of your own</p>
+	{% endif %}
+	
+	
 
 
 {% endblock %}

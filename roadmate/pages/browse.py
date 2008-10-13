@@ -9,6 +9,7 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 
+from roadmate.google.googlemaps import GoogleMaps
 from roadmate.handlers.baserequesthandler import BaseRequestHandler
 
 from roadmate.models.ride import Ride
@@ -52,6 +53,7 @@ class BrowseRidePageHandler(BaseRequestHandler):
 			).generate_template_values(self.request.url)
 
 		template_values['rides'] = list(rides)
+		template_values['key'] = GoogleMaps.get_key()
 		# --------------------------------------------------------------------
 		# Render and Serve Template
 		# --------------------------------------------------------------------
