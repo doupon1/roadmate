@@ -1,5 +1,6 @@
-/* @override
+/* @override 
 	http://localhost:8080/stylesheets/higher_ground.css
+	http://road-mate.appspot.com/stylesheets/higher_ground.css
 */
 
 /********************************************
@@ -189,10 +190,10 @@ table.roadmate-list {
 	width: 100%;
 }
 th.list-header {
-	width: 0px;
+	width: 1px;
 }
 th.list-header-red {
-	width: 0px;
+	width: 1px;
     background: #b10009 url(higher_ground_images/red_nav.jpg) repeat-x;
 }
 tr.list-row{
