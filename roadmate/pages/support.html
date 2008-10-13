@@ -4,31 +4,71 @@
 
 {% block main %}
 
-<h2>log in and register</h2>
+<h2>log in</h2>
 <p>
-	We require an OpenID for logging in. OpenID is an easy way to use a single identity across the Internet. Find out more about
-   	how to get an <a href="http://openid.net/"> OpenID</a>.
-</p>
-
-<h2>request ride</h2>
-<p>
-	View the most recent rides on the <a href="/">Home</a> page or <a href="/browse_rides">Browse rides</a>
-	and once you found a ride offer that suites you click on the request link next to it to request a seat on that ride.
-</p>
-
-<h2>offer ride</h2>
-<p>
-   Use your OpenID to log in. Select <a href="/ride_create">Offer Ride</a> from Sidebar Menu and submit your offer ride form.
-</p>
-
-<h2>browse rides </h2>
-<p>
-	<a href="/browse_rides">Browse rides</a> allows users to search available rides by specifying source and destination.
+	We require a Google Account for logging in. Click on the link to find out more about how to get a 
+	<a href="https://www.google.com/accounts/ManageAccount" target="_blank"> Google Account</a>.
 </p>
 
 <h2>profile</h2>
 <p>
-	<a href="/profile">My profile</a> allows users to view and edit their personal details and also view and edit their rides.
+	<a href="/profile">My Profile</a> is the page where you can view and edit the information about yourself other users can see.</p>
+	<p>
+	Since it is your own profile you are viewing, you can edit some of the information. If you move your mouse over a field and it turns green, you can click on it, change the value,
+	click 'save', and your profile information will be updated. This information is visible to other RoadMate users. </p>
+	<p>
+	On <a href="/profile">My Profile</a> page you can also see a list of last 10 rides you offered to the other users.
+</p>
+
+<h2>offer a ride</h2>
+<p>
+	If you are driving somewhere and don't feel like traveling on your own, you can <br><a href="/ride_create">offer a ride</a> 
+	to other RoadMate users. Simply fill in the details of your ride and click Create.</p>
+	<p>
+	Start typing in the address box and a list of options will appear in a drop-down menu. Either select one using your mouse
+	or arrow buttons or just finish typing.</p>
+	<p>
+	Once you successfully created a ride its details will appear on a view ride page also showing the map.
+</p>
+
+<h2>request a ride</h2>
+<p>	
+	You can let drivers know that you want a ride by placing a ride request.<br/>
+	Your request will show in <a href='/browse_riderequests'>browse ride requests</a> and you will be notified<br/>
+	when it is accepted.</p>
+	<p>
+	Simply fill in the details of your ride on <a href="/riderequest_create">request a ride</a> page and click Create.</p>
+	<p>
+	Once you successfully created a ride request its details will appear on a view ride request page where you can also post
+	a message about the ride.
+</p>
+
+<h2>manage my rides</h2>
+<p>
+	<a href="/myrides">Manage My Offered Rides</a> page displays all future rides you are offering to other RoadMate users and 
+	a list of up to 10 rides you offered in the past.</p>
+	<p>
+	When you click on a listed ride a view ride page will display all its details including Google Map showing the route.
+	On this page you can also add the ride event to your Google Calendar, accept passengers wishing to join your ride 
+	or place a feedback on passengers you shared a ride with in the past.</p>
+	<p>
+	Once you successfully created a ride its details will appear on a view ride page also showing the map.
+</p>
+
+<h2>manage my bookings</h2>
+<p>
+	<a href="/mybookings">Manage My Bookings</a> page displays all the rides you have been accepted on as a passenger.
+</p>
+
+<h2>browse all rides </h2>
+<p>	
+	<a href="/browse_rides">Browse rides</a> allows users to search available rides by specifying source and destination.
+</p>
+
+<h2>browse ride requests</h2>
+<p>
+	<a href="/browse_riderequests">Browse Ride Requests</a> page displays a list of requests for rides that other users would 
+	like to take. By accepting their request and creating a ride, the requesting user will be automatically notified.
 </p>
 
 <p><h1>Support contact:</h1></p>
