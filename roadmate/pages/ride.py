@@ -72,7 +72,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 		   	# Approve a passenger request
 			if prq_id and action == 'APRV':
 				prq = PassengerRequest.get_by_id(prq_id) #only proceed if there is a valid passengerrequest
-				if prq:
+				if prq and (ride.count_emptyseats() > 0):
 					empty_seat = ride.seats.filter('passenger = ', None).get() #retrieve the empty seats on this ride
 					empty_seat.assign(prq) #assign the seat: this method of Seat handles setting the "assigned time"
 					prq.delete() #delete the passenger request
@@ -86,20 +86,6 @@ class ViewRidePageHandler(BaseRequestHandler):
 					seat.save()
 					#TODO notify the passenger they have been removed
 
-			# Delete a seat
-			if seat_id and action == 'DEL':
-				seat = Seat.get_by_id(seat_id) #only proceed if there is a valid seat
-				if seat:
-					seat.delete()
-					#TODO if seat has passenger, notify them
-
-			# Create additional seats
-			if newseats and action == 'NEW':
-				if ride.count_seats() + newseats < 80:
-					ride.create_seats(newseats)
-				else:
-					self.error(404) #trying to create too many seats! TODO notify the user of the error
-					return
 
 		# --------------------------------------------------------------------
 		# Generate and Store Template Values

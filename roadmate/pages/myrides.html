@@ -3,11 +3,19 @@
 {% block title%}Manage My Rides{% endblock %}
 
 {% block main %}
-	<h2>manage my rides</h2>
-		<p>These are the rides that you currently offer.<br/>
+<!-- this page has two parts, the rides the user currently offers, and the rides they have offered in the past -->
+
+<!-- current ride offers -->
+	<h2>my current rides</h2>
+
+	{% if my_rides.count %}
+		<p><strong>These are the rides that you currently offer.</strong><br/>
 		Click each ride to see its full details, where you can view comments, reply to questions,
 		approve passengers, or you can cancel the ride if your plans have changed.</p>
-	{% if my_rides %}
+		<p>It is important to check your rides regularly in order to approve your passengers
+		 as soon as possible so they are notified that they have been accepted
+		 and can plan accordingly.
+		</p>
 	<table class="roadmate-list">
 			{% for ride in my_rides %}
 				<tr class="list-item">
@@ -29,8 +37,50 @@
 
 	{% else %}
 	   <p />
-	   <h3>You currently offer no rides.</h3>
-	   <p>Would you like to host a ride? Go to <a href="/create_ride">Offer A Ride</a></p>
+	   <h3>You currently offer no rides</h3>
+	   <p>The rides that you currently offer will show here, where you can view comments, reply to questions,
+		approve passengers, or you can cancel the ride if your plans have changed.<p/>
+	   Would you like to <a href="/ride_create">offer a ride</a> now?</p>
+
+	{% endif %}
+
+<p/><hr/><p/>
+
+<!-- past ride offers -->
+	<h2>my past rides</h2>
+
+	{% if my_past_rides.count %}
+		<p><strong>These are the rides that you have offered in the past.</strong><br/>
+		You can still view the details of a ride and continue to discuss it on the ride page,
+		 as well as placing feedback on your passengers, but you can't accept
+		 passenger requests, or remove passengers after the ride has occurred.</p>
+
+	<table class="roadmate-list">
+			{% for ride in my_past_rides %}
+				<tr class="list-item">
+				    <tr class="list-row">
+				        {% if not ride.is_full %}<th rowspan="2" class="list-header"></th>{% else %}<th rowspan="2" class="list-header-red"> {% endif %}
+		    			<td> {{ride.date|date_for_table }}</td>
+		     			<td> {{ride.owner.get_name_tag}} </td>
+		     			<td> {{ride.status}} </td>
+					</tr>
+				    <tr class="list-row">
+					    <td colspan=3><strong><a href="/ride?id={{ ride.key.id }}">{{ ride.get_name }}</strong></a>
+						</td>
+					</tr>
+				</tr> <!-- end list item -->
+
+			{% endfor %}
+	</table>
+
+
+	{% else %}
+	   <p />
+
+	   <h3>You have not offered rides before</h3>
+	   <p>After you have given rides they will show here where you can view the ride details
+	   and place feedback on your passengers.
+	   </p>
 
 	{% endif %}
 

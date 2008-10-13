@@ -44,39 +44,39 @@
 		<strong>Driver</strong> <a href="/profile?user={{ ride.owner.key.id }}">{{ ride.owner.user.email }}</a><br />
 		<p />
 		{% if ride.notes %}
-			<strong>Notes</strong> {{ ride.notes }}<br />
+			<strong>Notes</strong> {{ ride.notes|escape }}<br />
 		{% endif %}
 	<p />
 
 
 	<!-- calendar scripts begin-->
 
-                 <!--hidden field use to insert into calendar-->	
+                 <!--hidden field use to insert into calendar-->
 			<input  id="from" type="hidden" value="{{ ride.source.get_addressname }}" />
 			<input  id="to" type="hidden" value="{{ ride.destination.get_addressname }}" />
 			<input  id="startTime" type="hidden" value="{{ ride.date }}T{{ ride.departure_time }}.00Z" />
 			<input  id="endTime" type="hidden" value="{{ ride.date }}T{{ ride.arrival_time }}.00Z" />
-             
+
 			 <input  id="ride_id" type="hidden" value="{{ride.key.id }}" />
-            
 
 
-		<br/> 
+
+		<br/>
 	   <form id="log_in"  style="display:none">
 
 		         <!--if no google calendar Token show following field-->
-			<strong>Create a google calendar reminder:</strong>&nbsp;&nbsp;&nbsp;<input type="button" class="button" value="Grant access" onClick=" logMeIn(); return false;" > 
+			<strong>Create a google calendar reminder:</strong>&nbsp;&nbsp;&nbsp;<input type="button" class="button" value="Grant access" onClick=" logMeIn(); return false;" >
 		</form>
 		<form id="wait" style="display:none">
 		    <strong>Processing, please wait... </strong>
-		</form>		
+		</form>
 				<!--if has google calendar Token show following field-->
-			 
+
 		<form id="add_event" style="display:none"  name="remindForm"  >
-		          
+
 		          <strong>Create a google calendar reminder:</strong><br/>
-				 
-				 <span id="errorMs" style="display:none"><ul class="errorlist"><li>Please enter a time between 5 minutes and 28 days.  </li></ul></span>		 
+
+				 <span id="errorMs" style="display:none"><ul class="errorlist"><li>Please enter a time between 5 minutes and 28 days.  </li></ul></span>
 				  <table>
 				  <tr>
 				    <td>
@@ -84,13 +84,13 @@
 				 </td>
 				 <td>
 				  <input id="remindTime1" type="text" name="remindTime1" value="" />
-	                  
-				  
+
+
 				 <select id="timeBase1">
                    <option>minutes</option>
                    <option>hours</option>
                    <option>days</option>
-                 </select> 
+                 </select>
 				    </td>
 				 </tr>
 				 <tr>
@@ -99,28 +99,28 @@
 				    </td>
 					<td>
 				 <input id="remindTime2" type="text" name="remindTime2" value="" />
-	                
+
 				 <select id="timeBase2">
                    <option>minutes</option>
                    <option>hours</option>
                    <option>days</option>
-                 </select> 
+                 </select>
 				</td>
-				
+
                 </tr>
-                
-            
-  
-	         
+
+
+
+
 	</table>
-	
-	    
+
+
 				 <br/>
   <span id="addcalendar">
   </span>
 		</form>
-                 
-               
+
+
 
 	<!--calendar scripts end-->
 
@@ -143,8 +143,8 @@
 </p>
 
 {% if has_passengers %}<!-- show passengers -->
-<p>
 <hr />
+
 <table>
 	<h2>passengers</h2>
 	<tr>
@@ -175,40 +175,39 @@
 	  {% endif %}
 	{% endfor %}
 </table>
-</p>
 <!-- end if - show passengers -->
 {% endif %}
 
 
 {% ifequal current_user ride.owner %}{% if ride.passengerrequests.count %} <!-- show passenger requests -->
 <hr />
-	<p>
-	<table>
-	<h2>passenger requests</h2>
-		<tr>
-		<th>User</th>
-		<th>Date</th>
-		</tr>
 
-		{% for prq in ride.passengerrequests %}
-			<tr class="row-a">
+<table>
+<h2>passenger requests</h2>
+	<tr>
+	<th>User</th>
+	<th>Date Requested</th>
+	</tr>
 
-				<td>
-					{{prq.owner.get_name_tag}}
-				</td>
-				<td>
-					{{seat.created|date_for_table}}
-				</td>
-			{% ifequal current_user ride.owner %} <!-- only show "approve" if user is owner -->
-				<td>
-					 <a href="/ride?id={{ride.key.id}}&amp;prq_id={{prq.key.id}}&amp;action=APRV">Approve</a></td>
-				</td>
-			{% endifequal %}
-		  </tr>
-		{% endfor %}
-		</table>
+	{% for prq in ride.passengerrequests %}
+		<tr class="row-a">
 
-	</p>
+			<td>
+				{{prq.owner.get_name_tag}}
+			</td>
+			<td>
+				{{prq.created|date_for_table}}
+			</td>
+		{% ifequal current_user ride.owner %} <!-- only show "approve" if user is owner -->
+			<td>
+				 <a href="/ride?id={{ride.key.id}}&amp;prq_id={{prq.key.id}}&amp;action=APRV">Approve</a></td>
+			</td>
+		{% endifequal %}
+	  </tr>
+	{% endfor %}
+	</table>
+
+
 	<!-- end if show passenger requests -->
 	{% endif %}
 {% endifequal %}
@@ -282,7 +281,6 @@
 <form method="post"> <!-- message form -->
 <h3>post a message</h3>
 	<div class="inputgroup">
-		 <div>
 			<strong>Title </strong><input type="text" name="message_title" />
 		  </div>
 
@@ -292,7 +290,6 @@
 
 			<input type="hidden" name="do_post_message" value="True"/>
 			<input class="button" value="Submit" type="submit"/>
-		</div>
 	</div>
 </form>
 
