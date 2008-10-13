@@ -203,7 +203,11 @@ tr.list-heading {
 
 /* message list headings for the different authors*/
 tr.message-owner {
+<<<<<<< .mine
+	background: #c3c3c3;
+=======
 	background: #b4d151;
+>>>>>>> .r366
 }
 tr.message-passenger {
 	background: #c1c1c1;
@@ -326,10 +330,16 @@ input.checkbox
 	height: 10px;
 }
 
+#viewLocaltion{ width:250px;
+height:400px;
+}
 #remindTime1, #remindTime2{ width: 30px;
 
 }
-
+#viewLocaltion{ width:250px;
+height:400px;
+    
+}
 select#id_source {
 	width: 280px;
 }
