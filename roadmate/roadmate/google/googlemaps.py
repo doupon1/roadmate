@@ -15,7 +15,8 @@ class GoogleMaps:
 	#: Google Maps Keys
 	_keys = {
 		'localhost:8080':"ABQIAAAALrh5mwxiKkNrHuqNwGGHJRTwM0brOpm-All5BF6PoaKBxRWWERQ6Ykd3tAT6M4xWsQW4l2QU6snihg",
-		'seat-web3.massey.ac.nz:8080':"ABQIAAAALCi9t1naIjEhwoF3_R48QxQtrj2yXU7uUDf9MLK2OBnE3PD31hRS8GRlNBL8LAzbUwLiBPN_wWqmoQ"
+		'seat-web3.massey.ac.nz:8080':"ABQIAAAALCi9t1naIjEhwoF3_R48QxQtrj2yXU7uUDf9MLK2OBnE3PD31hRS8GRlNBL8LAzbUwLiBPN_wWqmoQ",
+		'road-mate.appspot.com':"ABQIAAAALCi9t1naIjEhwoF3_R48QxRhbta4VHtNWG2yNZ6nOJy0sL8GLhQmdrJBrmpLe3AZgiflnsysMODZWQ"
 	}
 	
 	@classmethod
