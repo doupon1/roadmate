@@ -106,7 +106,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 		# --------------------------------------------------------------------
 		template_values = super(ViewRidePageHandler, self
 			).generate_template_values(self.request.url)
-
+		print(ride.source.get_lat_loc() + " " + ride.destination.get_lat_loc())
 		template_values['ride'] = ride
 		template_values['lat_lng_src'] = ride.source.get_lat_loc()
 		template_values['lat_lng_des'] = ride.destination.get_lat_loc()
