@@ -35,10 +35,8 @@
 	<div class="inputgroup">
 	<form name="searchForm" onSubmit="doSearch(); return false">
 	<table cellpadding="4" cellspacing="4">
-		<tr>
-			<td><span id="er1" style="display:none"><ul class="errorlist"><li>Source Address is not valid</li></ul></span></td>
-			<td><span id="er2" style="display:none"><ul class="errorlist"><li>Destination Address in not valid</li></ul></span></td>
-		</tr>
+		<tr id="er1" style="display:none"><td>&nbsp;</td><td><span><ul class="errorlist"><li>Source Address is invalid</li></ul></span></td></tr>
+		<tr id="er2"  style="display:none"><td>&nbsp;</td><td><span><ul class="errorlist"><li>Destination Address is invalid</li></ul></span></td>	</tr>
 		<tr>
     		<td><label for="id_source_search">Source: </label></td>
             <td>
@@ -65,6 +63,7 @@
 		
 		</td>
 		</tr>
+
 	</table>
 		<input class="search_button"  type="submit" value="Search">
 	</form>
@@ -98,12 +97,14 @@
 	var filter = null;
 	var filterValue;
 	var mapBounds = null;
-	var southwest = null
-	var northeast = null
-	var SwNeDist = null
+	var southwest = null;
+	var northeast = null;
+	var SwNeDist = null;
 	var tempRds = SwNeDist * 0.1;
 	
 	function doSearch(){
+	  $("er1").hide();
+	  $("er2").hide();
 	  pointOne = null;
 	  pointTwo = null;
 	  bounds = new GLatLngBounds();
@@ -451,7 +452,7 @@
         func_icon.image = image;
         var func_marker = new GMarker(point, {icon:func_icon});
 		func_marker.ride_id = ride.id;
-		var html = "<div><p><h4>Owner:</h4>"+ride.owner+"<br><h4>Date:</h4>"+ride.date+"<br><br>For more information on this ride <strong><a href=/ride?id="+ride.id+">Click Here</strong></p></div>";
+		var html = "<div><p><h4>Owner:</h4>"+ride.owner+"<br><h4>Date:</h4>"+ride.date+"<br><br>For more information on this ride <strong><a href=/ride?id="+ride.id+">click here.</strong></p></div>";
 		GEvent.addListener(func_marker,"click", function() {
 			func_marker.openInfoWindowHtml(html);
 		});
