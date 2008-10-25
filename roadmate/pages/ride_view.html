@@ -2,11 +2,8 @@
 
 {% block javascript %}
 <script src="http://www.google.com/jsapi?key={{ google_calendar_key }}" type="text/javascript"></script>
-
 <script src="/scripts/scriptaculous/1.8.1/prototype.js" type="text/javascript"></script>
-
 <script src="/scripts/google-calendar/cal_Auth.js" type="text/javascript"></script>
-
 
 <script type="text/javascript" language="javascript">
 	// <![CDATA[
@@ -59,12 +56,12 @@
 	<p />
 
 {% if enable_edit_controls %}
-<form method="post" >    <!-- cancel ride form -->
+<form method="post" >	 <!-- cancel ride form -->
 	<p><strong>Cancel your ride</strong></br>
 	You are the driver on this ride. But if your plans have changed and you cannot
 	take the ride then you should cancel
 	the ride. All passengers that you have approved on the ride will be notified
-	of the cancellation so they	have time to make other plans.
+	of the cancellation so they have time to make other plans.
 	</p>
 	<input type="hidden" name="do_cancel_ride" value="True"/>
 	<input class="button"  value="Cancel Ride" type="submit">
@@ -72,7 +69,7 @@
 {% endif %}
 
 {% if enable_passenger_withdraw %}
-<form method="post" >    <!-- passenger withdraw from ride form -->
+<form method="post" >	 <!-- passenger withdraw from ride form -->
 	<p><strong>Withdraw from this ride</strong></br>
 	Because you are a passenger on this ride, you can withdraw from it at any time.
 	If your plans have changed and you cannot take the ride then you should withdraw
@@ -83,95 +80,87 @@
 	<input class="button"  value="Withdraw" type="submit">
 </form>
 {% endif %}
+
 <!-- calendar scripts begin-->
 {% if not has_occurred %}
-                 <!--hidden field use to insert into calendar-->
-			<input  id="from" type="hidden" value="{{ ride.source.get_addressname }}" />
-			<input  id="to" type="hidden" value="{{ ride.destination.get_addressname }}" />
-			<input  id="startTime" type="hidden" value="{{ ride.date }}T{{ ride.departure_time }}.00Z" />
-			<input  id="endTime" type="hidden" value="{{ ride.date }}T{{ ride.arrival_time }}.00Z" />
+	<!--hidden field use to insert into calendar-->
+	<input id="from" type="hidden" value="{{ ride.source.get_addressname }}" />
+	<input id="to" type="hidden" value="{{ ride.destination.get_addressname }}" />
+	<input id="startTime" type="hidden" value="{{ ride.date }}T{{ ride.departure_time }}.00Z" />
+	<input id="endTime" type="hidden" value="{{ ride.date }}T{{ ride.arrival_time }}.00Z" />
+	<input id="ride_id" type="hidden" value="{{ride.key.id }}" />
 
-			 <input  id="ride_id" type="hidden" value="{{ride.key.id }}" />
-
-		<br/>
-	   <form id="log_in"  style="display:none">
-
-		         <!--if no google calendar Token show following field-->
-			<strong>Create a google calendar reminder:</strong>&nbsp;&nbsp;&nbsp;<input type="button" class="button" value="Grant access" onClick=" logMeIn(); return false;" >
-		</form>
-		<form id="wait" style="display:none">
-		    <strong>Processing, please wait... </strong>
-		</form>
-				<!--if has google calendar Token show following field-->
-
-		<form id="add_event" style="display:none"  name="remindForm"  >
-
-		          <strong>Create a google calendar reminder:</strong><br/>
-
-				 <span id="errorMs" style="display:none"><ul class="errorlist"><li>Please enter a time between 5 minutes and 28 days.  </li></ul></span>
-				  <table>
-				  <tr>
-				    <td>
-		         <input id="byEmail" class="checkbox" type="checkbox" name="reminder" value="email" >Email&nbsp;&nbsp;&nbsp;
-				 </td>
-				 <td>
-				  <input id="remindTime1" type="text" name="remindTime1" value="30" />
-
-				 <select id="timeBase1">
-                   <option>minutes</option>
-                   <option>hours</option>
-                   <option>days</option>
-                 </select>
-				    </td>
-				 </tr>
-				 <tr>
-				    <td>
-                 <input id="bySms" class="checkbox" type="checkbox" name="reminder"  value="sms" >SMS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				    </td>
-					<td>
-				 <input id="remindTime2" type="text" name="remindTime2" value="30" />
-
-				 <select id="timeBase2">
-                   <option>minutes</option>
-                   <option>hours</option>
-                   <option>days</option>
-                 </select>
-				</td>
-
-                </tr>
-	</table>
-
-				 <br/>
-  <span id="addcalendar">
-  <input id="create" class="button" type="button" value="Create" onClick="valid_insert();return false; "/>
-
-  </span>
-		</form>
-<!--calendar scripts end-->
-
-
-
-
-<form method="post"><!-- request a seat form-->
-	{% if is_full %} <!-- then show a 'no seats available' message-->
-		<h3 class="full">No more seats available</h3>
-		 <strong>Sorry, the driver has approved passengers for all of the available seats on this ride.</strong>
-	{% else %}
-		{% if not requestable %} <!-- the user has already requested, show the instruction-->
-			<strong>
-				Your request for a seat on this ride has been recorded
-				and you will be notified when it is approved.
-			</strong>
-		{% else %} <!-- not full, so show the # of seats and request button-->
-		<h3 class="green">{{ ride.count_emptyseats }} seat{{ ride.count_emptyseats|pluralize }} available</h3>
-			<input type="hidden" name="do_request_ride" value="True"/>
-			<input class="button"  value="Request a Seat" type="submit">
-		{% endif %}
-	{% endif %}
-
+	<br/>
+	<form id="log_in"  style="display:none">
+		<!--if no google calendar Token show following field-->
+		<strong>Create a google calendar reminder:</strong>&nbsp;&nbsp;&nbsp;<input type="button" class="button" value="Grant access" onClick=" logMeIn(); return false;" >
+	</form>
 	
-</form>
-<p/>
+	<form id="wait" style="display:none">
+		<strong>Processing, please wait... </strong>
+	</form>
+				
+	<!--if has google calendar Token show following field-->
+	<form id="add_event" style="display:none"  name="remindForm">
+		<strong>Create a google calendar reminder:</strong><br/>
+
+		<span id="errorMs" style="display:none"><ul class="errorlist"><li>Please enter a time between 5 minutes and 28 days.</li></ul></span>
+		<table>
+			<tr>
+				<td>
+					<input id="byEmail" class="checkbox" type="checkbox" name="reminder" value="email" >Email&nbsp;&nbsp;&nbsp;
+				</td>
+				<td>
+					<input id="remindTime1" type="text" name="remindTime1" value="30" />
+					<select id="timeBase1">
+						<option>minutes</option>
+						<option>hours</option>
+						<option>days</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input id="bySms" class="checkbox" type="checkbox" name="reminder"	 value="sms" >SMS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				</td>
+				<td>
+					<input id="remindTime2" type="text" name="remindTime2" value="30" />
+					<select id="timeBase2">
+						<option>minutes</option>
+						<option>hours</option>
+						<option>days</option>
+					</select>
+				</td>
+			</tr>
+		</table>
+		
+		<br/>
+		<span id="addcalendar">
+			<input id="create" class="button" type="button" value="Create" onClick="valid_insert();return false; "/>
+		</span>
+	</form>
+	<!--calendar scripts end-->
+
+	{% ifnotequal ride.owner current_user %} <!-- don't show 'request a seat' to ride owner -->
+		<form method="post"><!-- request a seat form-->
+			{% if is_full %} <!-- then show a 'no seats available' message-->
+				<h3 class="full">No more seats available</h3>
+				<strong>Sorry, the driver has approved passengers for all of the available seats on this ride.</strong>
+			{% else %}
+				{% if not requestable %} <!-- the user has already requested, show the instruction-->
+					<strong>
+						Your request for a seat on this ride has been recorded
+						and you will be notified when it is approved.
+					</strong>
+				{% else %} <!-- not full, so show the # of seats and request button-->
+					<h3 class="green">{{ ride.count_emptyseats }} seat{{ ride.count_emptyseats|pluralize }} available</h3>
+					<input type="hidden" name="do_request_ride" value="True"/>
+					<input class="button"  value="Request a Seat" type="submit">
+				{% endif %}
+			{% endif %}
+		</form>
+	{% endifnotequal %} <!-- end if not owner -->
+	<p/>
 {% endif %} <!-- end if not has occurred -->
 
 {% if has_passengers %}<!-- show passengers -->
@@ -226,22 +215,20 @@
 	<th>User</th>
 	<th>Date Requested</th>
 	</tr>
-
 	{% for prq in ride.passengerrequests %}
 		<tr class="row-a">
-
 			<td>
 				{{prq.owner.get_name_tag}}
 			</td>
 			<td>
 				{{prq.created|date_for_table}}
 			</td>
-		{% if enable_edit_controls %} <!-- show "approve" -->
-			<td>
-				 <a href="/ride?id={{ride.key.id}}&amp;prq_id={{prq.key.id}}&amp;action=APRV"><strong>Approve Request</strong></a></td>
-			</td>
-		{% endif %}
-	  </tr>
+			{% if enable_edit_controls %} <!-- show "approve" -->
+				<td>
+				 	<a href="/ride?id={{ride.key.id}}&amp;prq_id={{prq.key.id}}&amp;action=APRV"><strong>Approve Request</strong></a></td>
+				</td>
+			{% endif %}
+		</tr>
 	{% endfor %}
 	</table>
 {% endif %}{% endif %}<!-- end if show passenger requests -->
@@ -296,18 +283,18 @@
 
 
 
-{% if message_list.count %}  <!-- ride messages -->
+{% if message_list.count %}	 <!-- ride messages -->
 <h2>discussion</h2>
 <table class="messages">
 	{% for message in message_list %}
-       <tr class="message-{{ message.style }}"> <td>
-        <strong>{{message.title|escape }}</strong><br/>
-		<a href="/profile?id={{ message.author.key.id }}">{{message.author.user.email}}</a>{% ifequal message.style "user" %} {% else %} ({{ message.style }}) {% endifequal %}  {{message.created|datetime_for_table}} <br/>
-    </td></tr>
-    <tr class="message-text" ><td>
-    {{message.text|escape}}
-    </td></tr>
-    <tr class="message-space"></tr>
+	   <tr class="message-{{ message.style }}"> <td>
+		<strong>{{message.title|escape }}</strong><br/>
+		<a href="/profile?id={{ message.author.key.id }}">{{message.author.user.email}}</a>{% ifequal message.style "user" %} {% else %} ({{ message.style }}) {% endifequal %}	 {{message.created|datetime_for_table}} <br/>
+	</td></tr>
+	<tr class="message-text" ><td>
+	{{message.text|escape}}
+	</td></tr>
+	<tr class="message-space"></tr>
 	{% endfor %}
 </table>
 
