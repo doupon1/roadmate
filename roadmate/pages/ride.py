@@ -5,6 +5,7 @@ import os
 import logging
 
 from google.appengine.api import users
+from google.appengine.api import mail
 from google.appengine.ext import db
 from google.appengine.ext import webapp
 from google.appengine.api import urlfetch
@@ -15,6 +16,8 @@ from roadmate.converters import is_true
 from roadmate.google.googlemaps import GoogleMaps
 from roadmate.google.googlecalendar import GoogleCalendar
 from roadmate.handlers.baserequesthandler import BaseRequestHandler
+
+from roadmate.filters import time_for_table
 
 from roadmate.models.roadmateuser import RoadMateUser
 from roadmate.models.passengerrequest import PassengerRequest
@@ -99,13 +102,13 @@ class ViewRidePageHandler(BaseRequestHandler):
 		template_values['googlemaps_key'] = GoogleMaps.get_key()
 		template_values['google_calendar_key'] = GoogleCalendar.get_key()
 		template_values['has_passengers'] = (ride.count_seats() - ride.count_emptyseats()) > 0 # has some passengers
-		template_values['message_list'] = ride.ridemessages # the list of comments
-		template_values['has_occurred'] =  False #(ride.date < ride.date.today()) # is in the past
+		template_values['message_list'] = ride.ridemessages.order('created') # the list of comments
+		template_values['has_occurred'] =  (ride.date < ride.date.today()) # is in the past
 		template_values['is_full'] = (ride.count_emptyseats() == 0) # no empty seats
-		template_values['enable_feedback_on_driver'] = True #(ride.date < ride.date.today()) & ride.is_passenger(current_user) # ride is in the past and current user has been passenger
-		template_values['enable_feedback_on_passengers'] = True #(ride.date < ride.date.today()) & (current_user == ride.owner) # ride is in the past and current user was owner
-		template_values['enable_edit_controls'] =  True #(ride.date >= ride.date.today()) & (current_user == ride.owner) # ride is in the future and current user is owner
-		template_values['enable_passenger_withdraw'] = True #(ride.date >= ride.date.today()) & ride.is_passenger(current_user) # ride is in the future and current user is passenger
+		template_values['enable_feedback_on_driver'] = (ride.date < ride.date.today()) & ride.is_passenger(current_user) # ride is in the past and current user has been passenger
+		template_values['enable_feedback_on_passengers'] = (ride.date < ride.date.today()) & (current_user == ride.owner) # ride is in the past and current user was owner
+		template_values['enable_edit_controls'] =  (ride.date >= ride.date.today()) & (current_user == ride.owner) # ride is in the future and current user is owner
+		template_values['enable_passenger_withdraw'] = (ride.date >= ride.date.today()) & ride.is_passenger(current_user) # ride is in the future and current user is passenger
 
 		# --------------------------------------------------------------------
 		# Control the display of the form element
@@ -166,13 +169,13 @@ class ViewRidePageHandler(BaseRequestHandler):
 		template_values['googlemaps_key'] = GoogleMaps.get_key()
 		template_values['google_calendar_key'] = GoogleCalendar.get_key()
 		template_values['has_passengers'] = (ride.count_seats() - ride.count_emptyseats()) > 0 # has some passengers
-		template_values['message_list'] = ride.ridemessages # the list of comments
-		template_values['has_occurred'] =  False #(ride.date < ride.date.today()) # is in the past
+		template_values['message_list'] = ride.ridemessages.order('created') # the list of comments
+		template_values['has_occurred'] =  (ride.date < ride.date.today()) # is in the past
 		template_values['is_full'] = (ride.count_emptyseats() == 0) # no empty seats
-		template_values['enable_feedback_on_driver'] = True #(ride.date < ride.date.today()) & ride.is_passenger(current_user) # ride is in the past and current user has been passenger
-		template_values['enable_feedback_on_passengers'] = True #(ride.date < ride.date.today()) & (current_user == ride.owner) # ride is in the past and current user was owner
-		template_values['enable_edit_controls'] =  True #(ride.date >= ride.date.today()) & (current_user == ride.owner) # ride is in the future and current user is owner
-		template_values['enable_passenger_withdraw'] = True #(ride.date >= ride.date.today()) & ride.is_passenger(current_user) # ride is in the future and current user is passenger
+		template_values['enable_feedback_on_driver'] = (ride.date < ride.date.today()) & ride.is_passenger(current_user) # ride is in the past and current user has been passenger
+		template_values['enable_feedback_on_passengers'] = (ride.date < ride.date.today()) & (current_user == ride.owner) # ride is in the past and current user was owner
+		template_values['enable_edit_controls'] = (ride.date >= ride.date.today()) & (current_user == ride.owner) # ride is in the future and current user is owner
+		template_values['enable_passenger_withdraw'] = (ride.date >= ride.date.today()) & ride.is_passenger(current_user) # ride is in the future and current user is passenger
 
 
 		# --------------------------------------------------------------------
@@ -182,18 +185,21 @@ class ViewRidePageHandler(BaseRequestHandler):
 
 		# if user is cancelling their ride
 		if current_user == ride.owner and self.request.POST.has_key('do_cancel_ride'):
-		   #TODO notify all the passengers!
-		   ride.delete()
-		   self.redirect("/") # redirect to the main page
+			#TODO notify all the passengers!
+			ride.delete()
+			self.redirect("/") # redirect to the main page
+			return
+		
 
 		# if passenger is withdrawing
 		if ride.is_passenger(current_user) and self.request.POST.has_key('do_withdraw'):
-		   #TODO notify the driver!
-		   passenger_seat = ride.seats.filter('passenger = ', user).get() # find the passenger's seat
-		   passenger_seat.passenger = None
-		   passenger_seat.accepted = None #disassociate the seat from the user
-		   passenger_seat.save()
-		   self.redirect("/ride?id=%s" % ride.key().id()) # redirect back to the view page
+			#TODO notify the driver!
+			passenger_seat = ride.seats.filter('passenger = ', user).get() # find the passenger's seat
+			passenger_seat.passenger = None
+			passenger_seat.accepted = None #disassociate the seat from the user
+			passenger_seat.save()
+			self.redirect("/ride?id=%s" % ride.key().id()) # redirect back to the view page
+			return
 
 		#if user has already placed a request on this ride ~~appears in get and post
 		if ride.passengerrequests.filter('owner = ', current_user).get():

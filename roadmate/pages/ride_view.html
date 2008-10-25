@@ -50,7 +50,7 @@
 
 		<strong>Driver</strong> {{ride.owner.get_name_tag }}
 		{% if enable_feedback_on_driver %} <!-- if the ride has occurred and current user, enable feedback -->
-			   <a href="/feedback_create?ride={{ride.key.id}}&on={{ride.owner.key.id}}"><strong>Place feedback</strong></a>
+			   <a href="/feedback_create?ride={{ride.key.id}}&amp;on={{ride.owner.key.id}}"><strong>Place feedback</strong></a>
 			   <p><strong>You can now place feedback on the driver</strong></a><br />
 			   As you were a passenger on this ride, you are now able to place feedback on the driver which will be visible to other users
 			   on their <a href="/feedback?id={{ride.owner.key.id}}">feedback page</a> and will contribute to their social score</p>
@@ -156,19 +156,20 @@
 	{% if is_full %} <!-- then show a 'no seats available' message-->
 		<h3 class="full">No more seats available</h3>
 		 <strong>Sorry, the driver has approved passengers for all of the available seats on this ride.</strong>
-
-	{% else %} <!-- not full, so show the # of seats and request button-->
-		<h3 class="green">{{ ride.count_emptyseats }} seat{{ ride.count_emptyseats|pluralize }} available</h3>
-			<input type="hidden" name="do_request_ride" value="True"/>
-			<input class="button"  value="Request a Seat" type="submit">
-	{% endif %}
-
-	{% if not requestable %} <!-- the user has already requested, show the instruction-->
+	{% else %}
+		{% if not requestable %} <!-- the user has already requested, show the instruction-->
 			<strong>
 				Your request for a seat on this ride has been recorded
 				and you will be notified when it is approved.
 			</strong>
+		{% else %} <!-- not full, so show the # of seats and request button-->
+		<h3 class="green">{{ ride.count_emptyseats }} seat{{ ride.count_emptyseats|pluralize }} available</h3>
+			<input type="hidden" name="do_request_ride" value="True"/>
+			<input class="button"  value="Request a Seat" type="submit">
+		{% endif %}
 	{% endif %}
+
+	
 </form>
 <p/>
 {% endif %} <!-- end if not has occurred -->
