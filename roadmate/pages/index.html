@@ -35,7 +35,7 @@
 			{% for ride in rides %}
 				<tr class="list-item">
 				    <tr class="list-row">
-				        {% if not ride.is_full %}<th rowspan="2" class="list-header"></th>{% else %}<th rowspan="2" class="list-header-red"> {% endif %}
+				        {% if not ride.is_full %}<th rowspan="2" class="list-header"></th>{% else %}<th rowspan="2" class="list-header-red"></th>{% endif %}
 		    			<td> {{ride.date|date_for_table }}</td>
 		     			<td> {{ride.owner.get_name_tag}} </td>
 		     			<td> {{ride.status}} </td>
