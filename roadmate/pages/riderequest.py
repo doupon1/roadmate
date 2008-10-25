@@ -64,7 +64,7 @@ class ViewRideRequestPageHandler(BaseRequestHandler):
 
 		template_values['riderequest'] = riderequest
 		template_values['googlemaps_key'] = GoogleMaps.get_key()
-		template_values['message_list'] = riderequest.riderequestmessages
+		template_values['message_list'] = list(riderequest.riderequestmessages.order('created'))
 
 
 		# --------------------------------------------------------------------
@@ -121,7 +121,7 @@ class ViewRideRequestPageHandler(BaseRequestHandler):
 
 		template_values['riderequest'] = riderequest
 		template_values['googlemaps_key'] = GoogleMaps.get_key()
-		template_values['message_list'] = riderequest.riderequestmessages
+		template_values['message_list'] = list(riderequest.riderequestmessages.order('created'))
 
 		# --------------------------------------------------------------------
 		# Render and Serve Template

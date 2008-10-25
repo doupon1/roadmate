@@ -102,7 +102,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 		template_values['googlemaps_key'] = GoogleMaps.get_key()
 		template_values['google_calendar_key'] = GoogleCalendar.get_key()
 		template_values['has_passengers'] = (ride.count_seats() - ride.count_emptyseats()) > 0 # has some passengers
-		template_values['message_list'] = ride.ridemessages.order('created') # the list of comments
+		template_values['message_list'] = list(ride.ridemessages.order('created')) # the list of comments
 		template_values['has_occurred'] =  (ride.date < ride.date.today()) # is in the past
 		template_values['is_full'] = (ride.count_emptyseats() == 0) # no empty seats
 		template_values['enable_feedback_on_driver'] = (ride.date < ride.date.today()) & ride.is_passenger(current_user) # ride is in the past and current user has been passenger
@@ -169,7 +169,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 		template_values['googlemaps_key'] = GoogleMaps.get_key()
 		template_values['google_calendar_key'] = GoogleCalendar.get_key()
 		template_values['has_passengers'] = (ride.count_seats() - ride.count_emptyseats()) > 0 # has some passengers
-		template_values['message_list'] = ride.ridemessages.order('created') # the list of comments
+		template_values['message_list'] = list(ride.ridemessages.order('created')) # the list of comments
 		template_values['has_occurred'] =  (ride.date < ride.date.today()) # is in the past
 		template_values['is_full'] = (ride.count_emptyseats() == 0) # no empty seats
 		template_values['enable_feedback_on_driver'] = (ride.date < ride.date.today()) & ride.is_passenger(current_user) # ride is in the past and current user has been passenger
