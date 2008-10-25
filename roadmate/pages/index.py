@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 import os
+import datetime
+
 from google.appengine.api import users
 from google.appengine.ext import db
 from google.appengine.ext import webapp
@@ -39,8 +41,13 @@ class IndexPageHandler(BaseRequestHandler):
 			page_path)
 
 		#10 most recently created rides
+		OneDay = datetime.timedelta(days=1)
+		Yesterday = datetime.datetime.now() - OneDay
 
-		rides = db.GqlQuery("SELECT * FROM Ride ORDER BY created DESC LIMIT 10")
+		rides = db.GqlQuery("SELECT * FROM Ride \
+							WHERE date > :1 \
+							ORDER BY date, created DESC LIMIT 10", 
+							Yesterday)
 
 		# --------------------------------------------------------------------
 		# Store Template Values
