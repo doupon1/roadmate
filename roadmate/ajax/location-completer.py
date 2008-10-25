@@ -13,6 +13,8 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 
+from roadmate.google.googlemaps import GoogleMaps
+
 from roadmate.handlers.baserequesthandler import BaseRequestHandler
 
 from roadmate.models.location import Location
@@ -60,20 +62,20 @@ class LocationCompleterRequestHandler(BaseRequestHandler):
 		
 		fetch_url = WISES_FETCH_URL + '?address=' + urllib.quote_plus(current_value) 
 		
-		query_content = {}
+		closest_locations = []
 		
 		try:
 			content = urlfetch.fetch(fetch_url).content
 			query_content = simplejson.loads(content)
+			
+			if "results" in query_content:
+				results = query_content['results']
+				closest_locations = map(lambda x: x['full_address'], results)
+				closest_locations = filter(lambda x: GoogleMaps.is_valid_address(x), closest_locations)
+			
 		except:
 			self.error(500)
 			return
-		
-		closest_locations = []
-		
-		if "results" in query_content:
-			results = query_content['results']
-			closest_locations = map(lambda x: x['full_address'], results)
 		
 		template_values['closest_locations'] = closest_locations
 
