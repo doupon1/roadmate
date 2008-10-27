@@ -64,8 +64,6 @@ class IndexPageHandler(BaseRequestHandler):
 		# --------------------------------------------------------------------
 		template_values = self.generate_template_values(self.request.url)
 
-		template_values['logout_url'] = users.create_logout_url('/')
-
 		# --------------------------------------------------------------------
 		# Render and Server Template
 		# --------------------------------------------------------------------
