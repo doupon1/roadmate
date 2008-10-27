@@ -82,22 +82,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 					mail.send_mail(sender="massey.group.356@gmail.com",
 		              to=prq.owner.user.email(),
 		              subject="RoadMate - Your passenger request has been approved",
-		              body="""
-
-							  This is to notify you that your request for a seat on the ride has been approved.
-
-							  You can now view the details
-							  of this ride under Manage My Bookings. If your plans change,
-							  or you cannot make it to the ride, please use the Withdraw function
-							  to let the driver know you aren't coming so they can give the seat to
-							  someone else.
-
-							  Thanks,
-
-							  The RoadMate team.
-
-							  """
-							  )
+		              body=generate_approvepassenger_email_body(ride))
 
 		   	# Remove a passenger from the seat
 			if seat_id and action == 'RM':
@@ -107,19 +92,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 					mail.send_mail(sender="massey.group.356@gmail.com",
 		              to=seat.passenger.user.email(),
 		              subject="RoadMate - Removed from ride",
-		              body="""
-
-							  This is to notify you that you have been removed as a passenger from the ride
-
-							  Although you had been approved as a passenger on this ride, the driver
-							  has chosen to remove you. This is the driver's decision as it is their
-							  own responsibility to decide who will travel with them in their car.
-
-							  Thanks,
-
-							  The RoadMate team.
-
-							  """)
+		              body=generate_removedpassenger_email_body(ride))
 					#disassociate the seat from the user
 					seat.passenger = None
 					seat.accepted = None
@@ -236,19 +209,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 			mail.send_mail(sender="support@roadmate.com",
 		              to=ride.owner.user.email(),
 		              subject="RoadMate - Passenger has withdrawn",
-		              body="""
-
-							  This is to notify you that a passenger has withdrawn from one of your rides.
-
-							  If you want, you can now assign their seat to another user,
-							  via the Manage My Rides page.
-
-							  Thanks,
-
-							  The RoadMate team.
-
-							  """
-							  )
+		              body=generate_withdrawpassenger_email_body(ride))
 			#disassociate the seat from the user
 			passenger_seat.passenger = None
 			passenger_seat.accepted = None
@@ -414,6 +375,46 @@ class CreateRidePageHandler(BaseRequestHandler):
 
 		self.redirect("/ride?id=%s" % ride.key().id()) # redirect to the view page
 
+# functions to generate the body text for email notifications
+# this is removed from the rest of the class because the """ statements require absolute indenting
+# so putting these here make the code more legible
+	def generate_removedpassenger_email_body(ride):
+		return """
+This is to notify you that you have been removed as a passenger from the ride """ + ride.get_name + """
+
+Although you had been approved as a passenger on this ride, the driver
+has chosen to remove you. This is the driver's decision as it is their
+own responsibility to decide who will travel with them in their car.
+
+Thanks,
+
+The RoadMate team
+"""
+
+	def generate_withdrawpassenger_email_body(ride):
+		return """
+This is to notify you that a passenger has withdrawn from your ride, """ + ride.get_name + """
+
+If you want, you can assign their seat to another user,
+via the Manage My Rides page.
+
+Thanks,
+
+The RoadMate team.
+"""
+
+	def generate_approvepassenger_email_body(ride):
+		return """
+This is to notify you that your request for a seat on the ride """ + ride.get_name + """ has been approved.
+
+You can now view the details of this ride under Manage My Bookings. If your plans change,
+or you cannot make it to the ride, please use the Withdraw function to let the driver know you aren't coming
+so they can give the seat to someone else.
+
+Thanks,
+
+The RoadMate team.
+"""
 
 
 # ----------------------------------------------------------------------------
