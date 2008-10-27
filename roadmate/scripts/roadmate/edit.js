@@ -17,7 +17,8 @@ function editTextControl(fieldname, handler) {
 			highlightendcolor: "#E8E8E8",
 			okControl: 'link',
 			okText: 'save',
-			cancelControl: 'false'
+			cancelControl: 'false',
+			submitOnBlur: 'true'
 		}
 		);
 	};
