@@ -37,8 +37,8 @@ from roadmate.models.riderequest import RideRequest
 # so putting these here make the code more legible
 def generate_fromriderequest_email_body(ride):
 	return """
-""" + ride.owner.user.email + """ has created a ride that matches your request:
-""" + ride.get_name + """
+""" + ride.owner.user.email() + """ has created a ride that matches your request:
+""" + ride.get_ext_name() + """
 
 You should check the details of that ride, and if you wish to take it then
 place a request to be a passenger.
@@ -50,7 +50,7 @@ The RoadMate team
 
 def generate_cancelledride_email_body(ride):
 	return """
-This is a notification that the ride """ + ride.get_name + """ has been cancelled.
+This is a notification that the ride """ + ride.get_ext_name() + """ has been cancelled.
 
 You were a passenger on this ride, but the driver cannot take the ride. Perhaps
 the driver can take you at an alternate day or time, you should contact the driver directly.
@@ -64,7 +64,7 @@ The RoadMate team
 
 def generate_removedpassenger_email_body(ride):
 	return """
-This is to notify you that you have been removed as a passenger from the ride """ + ride.get_name + """
+This is to notify you that you have been removed as a passenger from the ride """ + ride.get_ext_name() + """
 
 Although you had been approved as a passenger on this ride, the driver
 has chosen to remove you. This is the driver's decision as it is their
@@ -77,7 +77,7 @@ The RoadMate team
 
 def generate_withdrawpassenger_email_body(ride):
 	return """
-This is to notify you that a passenger has withdrawn from your ride, """ + ride.get_name + """
+This is to notify you that a passenger has withdrawn from your ride, """ + ride.get_ext_name() + """
 
 If you want, you can assign their seat to another user,
 via the Manage My Rides page.
@@ -89,7 +89,7 @@ The RoadMate team.
 
 def generate_approvepassenger_email_body(ride):
 	return """
-This is to notify you that your request for a seat on the ride """ + ride.get_name + """ has been approved.
+This is to notify you that your request for a seat on the ride """ + ride.get_ext_name() + """ has been approved.
 
 You can now view the details of this ride under Manage My Bookings. If your plans change,
 or you cannot make it to the ride, please use the Withdraw function to let the driver know you aren't coming
