@@ -78,15 +78,55 @@ class ViewRidePageHandler(BaseRequestHandler):
 					empty_seat = ride.seats.filter('passenger = ', None).get() #retrieve the empty seats on this ride
 					empty_seat.assign(prq) #assign the seat: this method of Seat handles setting the "assigned time"
 					prq.delete() #delete the passenger request
+					# notify the approved passenger
+					mail.send_mail(sender="support@roadmate.com",
+		              to=prq.owner.user.email,
+		              subject="RoadMate - Your passenger request has been approved",
+		              body=str(seat.acceptedDateTime|date_for_table) + """
+
+
+							  This is to notify you that your request for a seat on the ride """ + ride.get_name + "has been approved by the driver." +
+							  """
+
+							  You can now view the details
+							  of this ride under Manage My Bookings. If your plans change,
+							  or you cannot make it to the ride, please use the Withdraw function
+							  to let the driver know you aren't coming so they can give the seat to
+							  someone else.
+
+							  Thanks,
+
+							  The RoadMate team.
+
+							  """
+							  )
 
 		   	# Remove a passenger from the seat
 			if seat_id and action == 'RM':
 				seat = Seat.get_by_id(seat_id) #only proceed if there is a valid seat
 				if seat:
+					# notify the removed passenger
+					mail.send_mail(sender="support@roadmate.com",
+		              to=seat.passenger.user.email,
+		              subject="RoadMate - Removed from ride",
+		              body="""
+
+							  This is to notify you that you have been removed as a passenger from the ride """ + ride.get_name +
+							  """
+							  Although you had been approved as a passenger on this ride, the driver
+							  has chosen to remove you. This is the driver's decision as it is their
+							  own responsibility to decide who will travel with them in their car.
+
+							  Thanks,
+
+							  The RoadMate team.
+
+							  """
+							  )
+					#disassociate the seat from the user
 					seat.passenger = None
-					seat.accepted = None #disassociate the seat from the user
+					seat.accepted = None
 					seat.save()
-					#TODO notify the passenger they have been removed
 
 
 
@@ -193,12 +233,30 @@ class ViewRidePageHandler(BaseRequestHandler):
 
 		# if passenger is withdrawing
 		if ride.is_passenger(current_user) and self.request.POST.has_key('do_withdraw'):
-			#TODO notify the driver!
 			passenger_seat = ride.seats.filter('passenger = ', user).get() # find the passenger's seat
-			passenger_seat.passenger = None
-			passenger_seat.accepted = None #disassociate the seat from the user
-			passenger_seat.save()
 			self.redirect("/ride?id=%s" % ride.key().id()) # redirect back to the view page
+			# notify the driver
+			mail.send_mail(sender="support@roadmate.com",
+		              to=ride.owner.user.email,
+		              subject="RoadMate - Passenger has withdrawn",
+		              body="""
+
+							  This is to notify you that a passenger, """ + passenger_seat.passenger.get_name_tag + " has withdrawn from your ride " + ride.get_name +
+							  """
+							  If you want, you can now assign their seat to another user,
+							  via the Manage My Rides page.
+
+							  Thanks,
+
+							  The RoadMate team.
+
+							  """
+							  )
+			#disassociate the seat from the user
+			passenger_seat.passenger = None
+			passenger_seat.accepted = None
+			passenger_seat.save()
+
 			return
 
 		#if user has already placed a request on this ride ~~appears in get and post
