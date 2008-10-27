@@ -22,8 +22,6 @@ class Seat(db.Model):
 			Maybe there should be methods on the seat for the passenger (once assigned)
 			to be able to contact the ride owner, and vice versa?
 
-			TODO cancel method for Prototype 3
-
 		Usage notes:
 			Use seat.passenger to determine whether it is assigned
 			Use seat.accept() to accept a passengerRequest, don't set passenger publicly

@@ -17,15 +17,6 @@ class Ride(db.Model):
 	"""
 		An instance of a ride.
 
-		For Prototype 3 The Ride will be given
-		the ability to recur by creating itself at intervals.
-		Thus recurring rides (commutes) can be established.
-		 _______
-		| RIDE |--|
-		|------|  | <<creates>>
-		|      |<-|
-		|______|
-
 		Use Ride.seats to get the collection of child Seats
 	"""
 
