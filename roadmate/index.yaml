@@ -10,7 +10,7 @@ indexes:
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
 
-# Used 4 times in query history.
+# Used 60 times in query history.
 - kind: Ride
   properties:
   - name: created
@@ -22,32 +22,38 @@ indexes:
   - name: creation_date
     direction: desc
 
-# Used 10 times in query history.
+# Used 3 times in query history.
 - kind: Ride
   properties:
   - name: date
   - name: created
     direction: desc
 
-# Unused in query history -- copied from input.
+# Used 40 times in query history.
 - kind: Ride
   properties:
   - name: owner
   - name: date
 
-# Used 35 times in query history.
+# Used 3 times in query history.
 - kind: RideMessage
   properties:
   - name: ride
   - name: created
 
-# Unused in query history -- copied from input.
+# Used once in query history.
+- kind: RideRequestMessage
+  properties:
+  - name: riderequest
+  - name: created
+
+# Used 4 times in query history.
 - kind: Seat
   properties:
   - name: passenger
   - name: date
 
-# Unused in query history -- copied from input.
+# Used 3 times in query history.
 - kind: Seat
   properties:
   - name: passenger

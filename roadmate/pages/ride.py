@@ -35,6 +35,32 @@ from roadmate.models.riderequest import RideRequest
 # functions to generate the body text for email notifications
 # this is removed from the rest of the class because the """ statements require absolute indenting
 # so putting these here make the code more legible
+def generate_fromriderequest_email_body(ride):
+	return """
+""" + ride.owner.user.email + """ has created a ride that matches your request:
+""" + ride.get_name + """
+
+You should check the details of that ride, and if you wish to take it then
+place a request to be a passenger.
+
+Thanks,
+
+The RoadMate team
+"""
+
+def generate_cancelledride_email_body(ride):
+	return """
+This is a notification that the ride """ + ride.get_name + """ has been cancelled.
+
+You were a passenger on this ride, but the driver cannot take the ride. Perhaps
+the driver can take you at an alternate day or time, you should contact the driver directly.
+
+The driver's email is """ + ride.owner.user.email() + """
+
+Thanks,
+
+The RoadMate team
+"""
 
 def generate_removedpassenger_email_body(ride):
 	return """
@@ -240,9 +266,16 @@ class ViewRidePageHandler(BaseRequestHandler):
 		# and handle the new request
 		# --------------------------------------------------------------------
 
-		# if user is cancelling their ride
+		# if driver is cancelling their ride
 		if current_user == ride.owner and self.request.POST.has_key('do_cancel_ride'):
-			#TODO notify all the passengers!
+			for seat in ride.seats:
+				if seat.passenger:
+					# notify the passengers
+					mail.send_mail(sender="support@roadmate.com",
+		              to=seat.passenger.user.email(),
+		              subject="RoadMate - Ride Cancelled",
+		              body=generate_cancelledride_email_body(ride))
+
 			ride.delete()
 			self.redirect("/") # redirect to the main page
 			return
