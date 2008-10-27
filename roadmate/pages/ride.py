@@ -119,8 +119,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 
 							  The RoadMate team.
 
-							  """
-							  )
+							  """)
 					#disassociate the seat from the user
 					seat.passenger = None
 					seat.accepted = None
