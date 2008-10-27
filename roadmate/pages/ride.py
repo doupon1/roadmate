@@ -79,7 +79,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 					empty_seat.assign(prq) #assign the seat: this method of Seat handles setting the "assigned time"
 					prq.delete() #delete the passenger request
 					# notify the approved passenger
-					mail.send_mail(sender="support@roadmate.com",
+					mail.send_mail(sender="massey.group.356@gmail.com",
 		              to=prq.owner.user.email,
 		              subject="RoadMate - Your passenger request has been approved",
 		              body="""
@@ -104,7 +104,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 				seat = Seat.get_by_id(seat_id) #only proceed if there is a valid seat
 				if seat:
 					# notify the removed passenger
-					mail.send_mail(sender="support@roadmate.com",
+					mail.send_mail(sender="massey.group.356@gmail.com",
 		              to=seat.passenger.user.email,
 		              subject="RoadMate - Removed from ride",
 		              body="""
