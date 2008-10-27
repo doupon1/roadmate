@@ -447,7 +447,7 @@ class CreateRidePageHandler(BaseRequestHandler):
 			request = RideRequest.get_by_id(rq_id)
 			#notification if created by ride request
 			mail.send_mail(sender="support@roadmate.com",
-		              to=riderequest.owner.user.email(),
+		              to=request.owner.user.email(),
 		              subject="RoadMate - Ride Request Accepted",
 		              body=generate_fromriderequest_email_body(ride))
 
