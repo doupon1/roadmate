@@ -91,7 +91,7 @@ class Ride(db.Model):
 	# use this method to define a standard
 	# fornat of displaying the reference to a ride in an email, or outside the RoadMate site
 	def get_ext_name(self):
-		return self.source.get_addressname() + " <img border='0' alt='to' src='http://road-mate.appspot.com/images/arrow.gif'/> " + self.destination.get_addressname()
+		return self.source.get_addressname() + " to " + self.destination.get_addressname()
 
 
  	def __unicode__(self):
