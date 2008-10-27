@@ -84,8 +84,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 		              subject="RoadMate - Your passenger request has been approved",
 		              body="""
 
-							  This is to notify you that your request for a seat on the ride """ + ride.get_name + "has been approved by the driver." +
-							  """
+							  This is to notify you that your request for a seat on the ride has been approved.
 
 							  You can now view the details
 							  of this ride under Manage My Bookings. If your plans change,
@@ -110,8 +109,8 @@ class ViewRidePageHandler(BaseRequestHandler):
 		              subject="RoadMate - Removed from ride",
 		              body="""
 
-							  This is to notify you that you have been removed as a passenger from the ride """ + ride.get_name +
-							  """
+							  This is to notify you that you have been removed as a passenger from the ride
+
 							  Although you had been approved as a passenger on this ride, the driver
 							  has chosen to remove you. This is the driver's decision as it is their
 							  own responsibility to decide who will travel with them in their car.
@@ -240,8 +239,8 @@ class ViewRidePageHandler(BaseRequestHandler):
 		              subject="RoadMate - Passenger has withdrawn",
 		              body="""
 
-							  This is to notify you that a passenger, """ + passenger_seat.passenger.get_name_tag + " has withdrawn from your ride " + ride.get_name +
-							  """
+							  This is to notify you that a passenger has withdrawn from one of your rides.
+
 							  If you want, you can now assign their seat to another user,
 							  via the Manage My Rides page.
 
