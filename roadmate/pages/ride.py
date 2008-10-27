@@ -162,8 +162,8 @@ class ViewRidePageHandler(BaseRequestHandler):
 		template_values['message_list'] = list(ride.ridemessages.order('created')) # the list of comments
 		template_values['has_occurred'] =  False #(ride.date < ride.date.today()) # is in the past
 		template_values['is_full'] = (ride.count_emptyseats() == 0) # no empty seats
-		template_values['enable_feedback_on_driver'] =  template_values['has_occurred'] & ride.is_passenger(current_user) # ride is in the past and current user has been passenger
-		template_values['enable_feedback_on_passengers'] = template_values['has_occurred'] & (current_user == ride.owner) # ride is in the past and current user was owner
+		template_values['enable_feedback_on_driver'] =  True #template_values['has_occurred'] & ride.is_passenger(current_user) # ride is in the past and current user has been passenger
+		template_values['enable_feedback_on_passengers'] = True #template_values['has_occurred'] & (current_user == ride.owner) # ride is in the past and current user was owner
 		template_values['enable_edit_controls'] = (not template_values['has_occurred']) & (current_user == ride.owner) # ride is in the future and current user is owner
 		template_values['enable_passenger_withdraw'] = (not template_values['has_occurred']) & ride.is_passenger(current_user) # ride is in the future and current user is passenger
 
@@ -229,8 +229,8 @@ class ViewRidePageHandler(BaseRequestHandler):
 		template_values['message_list'] = list(ride.ridemessages.order('created')) # the list of comments
 		template_values['has_occurred'] =  False #(ride.date < ride.date.today()) # is in the past
 		template_values['is_full'] = (ride.count_emptyseats() == 0) # no empty seats
-		template_values['enable_feedback_on_driver'] =  template_values['has_occurred'] & ride.is_passenger(current_user) # ride is in the past and current user has been passenger
-		template_values['enable_feedback_on_passengers'] = template_values['has_occurred'] & (current_user == ride.owner) # ride is in the past and current user was owner
+		template_values['enable_feedback_on_driver'] =  True #template_values['has_occurred'] & ride.is_passenger(current_user) # ride is in the past and current user has been passenger
+		template_values['enable_feedback_on_passengers'] = True #template_values['has_occurred'] & (current_user == ride.owner) # ride is in the past and current user was owner
 		template_values['enable_edit_controls'] = (not template_values['has_occurred']) & (current_user == ride.owner) # ride is in the future and current user is owner
 		template_values['enable_passenger_withdraw'] = (not template_values['has_occurred']) & ride.is_passenger(current_user) # ride is in the future and current user is passenger
 
