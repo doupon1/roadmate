@@ -82,8 +82,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 					mail.send_mail(sender="support@roadmate.com",
 		              to=prq.owner.user.email,
 		              subject="RoadMate - Your passenger request has been approved",
-		              body=str(seat.acceptedDateTime|date_for_table) + """
-
+		              body="""
 
 							  This is to notify you that your request for a seat on the ride """ + ride.get_name + "has been approved by the driver." +
 							  """
