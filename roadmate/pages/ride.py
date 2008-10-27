@@ -445,14 +445,15 @@ class CreateRidePageHandler(BaseRequestHandler):
 		ride = ride_form.save() #else, the form is valid, so save it
 		if rq_id:
 			request = RideRequest.get_by_id(rq_id)
-			print(request.owner.user.email) #TODO notify him by email that a ride has been created
+			#notification if created by ride request
+			mail.send_mail(sender="support@roadmate.com",
+		              to=riderequest.owner.user.email(),
+		              subject="RoadMate - Ride Request Accepted",
+		              body=generate_fromriderequest_email_body(ride))
 
 		ride.create_seats(ride_form.clean_data.get('number_of_seats')) # create its seats
 
-		#notification if created by ride request
-		if rq_id:
-			request = RideRequest.get_by_id(rq_id)
-			print(request.owner.user.email) #TODO notify him by email that a ride has been created and send the link
+
 
 		self.redirect("/ride?id=%s" % ride.key().id()) # redirect to the view page
 

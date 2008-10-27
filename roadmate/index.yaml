@@ -22,7 +22,7 @@ indexes:
   - name: creation_date
     direction: desc
 
-# Used 3 times in query history.
+# Used 4 times in query history.
 - kind: Ride
   properties:
   - name: date
@@ -41,7 +41,7 @@ indexes:
   - name: ride
   - name: created
 
-# Used once in query history.
+# Used 4 times in query history.
 - kind: RideRequestMessage
   properties:
   - name: riderequest

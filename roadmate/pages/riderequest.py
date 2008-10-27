@@ -103,16 +103,6 @@ class ViewRideRequestPageHandler(BaseRequestHandler):
 			self.error(404)
 			return
 
-		#if user is cancelling the riderequest
-		if self.request.POST.has_key('do_cancel_request') and (current_user == riderequest.owner):
-			riderequest.delete() #delete the riderequest
-			self.redirect("/browse_riderequests") # redirect to the browse riderequest page
-
-		#if user is posting a message
-		if self.request.POST.has_key('do_post_message') and self.request.POST['do_post_message']:
-			message = RideRequestMessage(author=current_user, riderequest=riderequest, title=escape(self.request.POST['message_title']), text=escape(self.request.POST['message_body']))
-			message.put()
-
 		# --------------------------------------------------------------------
 		# Generate and Store Template Values
 		# --------------------------------------------------------------------
@@ -122,6 +112,17 @@ class ViewRideRequestPageHandler(BaseRequestHandler):
 		template_values['riderequest'] = riderequest
 		template_values['googlemaps_key'] = GoogleMaps.get_key()
 		template_values['message_list'] = list(riderequest.riderequestmessages.order('created'))
+
+		#if user is cancelling the riderequest
+		if self.request.POST.has_key('do_cancel_request') and (current_user == riderequest.owner):
+			riderequest.delete() #delete the riderequest
+			self.redirect("/browse_riderequests") # redirect to the browse riderequest page
+			return
+
+		#if user is posting a message
+		if self.request.POST.has_key('do_post_message') and self.request.POST['do_post_message']:
+			message = RideRequestMessage(author=current_user, riderequest=riderequest, title=escape(self.request.POST['message_title']), text=escape(self.request.POST['message_body']))
+			message.put()
 
 		# --------------------------------------------------------------------
 		# Render and Serve Template
