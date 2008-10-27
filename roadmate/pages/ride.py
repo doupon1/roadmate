@@ -80,7 +80,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 					prq.delete() #delete the passenger request
 					# notify the approved passenger
 					mail.send_mail(sender="massey.group.356@gmail.com",
-		              to=prq.owner.user.email,
+		              to=prq.owner.user.email(),
 		              subject="RoadMate - Your passenger request has been approved",
 		              body="""
 
@@ -105,7 +105,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 				if seat:
 					# notify the removed passenger
 					mail.send_mail(sender="massey.group.356@gmail.com",
-		              to=seat.passenger.user.email,
+		              to=seat.passenger.user.email(),
 		              subject="RoadMate - Removed from ride",
 		              body="""
 
@@ -234,7 +234,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 			self.redirect("/ride?id=%s" % ride.key().id()) # redirect back to the view page
 			# notify the driver
 			mail.send_mail(sender="support@roadmate.com",
-		              to=ride.owner.user.email,
+		              to=ride.owner.user.email(),
 		              subject="RoadMate - Passenger has withdrawn",
 		              body="""
 
