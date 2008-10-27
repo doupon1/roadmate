@@ -271,7 +271,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 			for seat in ride.seats:
 				if seat.passenger:
 					# notify the passengers
-					mail.send_mail(sender="support@roadmate.com",
+					mail.send_mail(sender="massey.group.356@gmail.com",
 		              to=seat.passenger.user.email(),
 		              subject="RoadMate - Ride Cancelled",
 		              body=generate_cancelledride_email_body(ride))
@@ -286,7 +286,7 @@ class ViewRidePageHandler(BaseRequestHandler):
 			passenger_seat = ride.seats.filter('passenger = ', user).get() # find the passenger's seat
 			self.redirect("/ride?id=%s" % ride.key().id()) # redirect back to the view page
 			# notify the driver
-			mail.send_mail(sender="support@roadmate.com",
+			mail.send_mail(sender="massey.group.356@gmail.com",
 		              to=ride.owner.user.email(),
 		              subject="RoadMate - Passenger has withdrawn",
 		              body=generate_withdrawpassenger_email_body(ride))
@@ -446,7 +446,7 @@ class CreateRidePageHandler(BaseRequestHandler):
 		if rq_id:
 			request = RideRequest.get_by_id(rq_id)
 			#notification if created by ride request
-			mail.send_mail(sender="support@roadmate.com",
+			mail.send_mail(sender="massey.group.356@gmail.com",
 		              to=request.owner.user.email(),
 		              subject="RoadMate - Ride Request Accepted",
 		              body=generate_fromriderequest_email_body(ride))
